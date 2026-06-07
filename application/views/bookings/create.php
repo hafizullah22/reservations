@@ -28,7 +28,7 @@
 
         /* Left panel - Focus on Presentation & Calendar */
         .calendar-panel {
-            flex: 1.4;
+            flex: 1;
             padding: 3rem;
             background: #0f172a;
             display: flex;
@@ -39,7 +39,7 @@
 
         .calendar-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 580px;
         }
 
         /* Right panel - Compact Data Entry Form */
@@ -255,6 +255,11 @@
             <div class="panel-header mb-4">
                 <h2>📅 Select a Date</h2>
                 <p>Choose an available calendar date for your booking reservation.</p>
+                <?php if($this->session->flashdata('error')): ?>
+                    <div class="alert alert-danger mt-3">
+                        <?= $this->session->flashdata('error'); ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="calendar-box">
@@ -267,7 +272,7 @@
 
     <!-- ================= RIGHT: DATA INPUT FORM ================= -->
     <div class="form-panel">
-        <div style="max-width: 440px; width: 100%; margin: 0 auto;">
+        <div style="max-width: 620px; width: 100%; margin: 0 auto;">
             <div class="panel-header mb-4">
                 <h2>New Reservation</h2>
             </div>
@@ -283,23 +288,30 @@
 
                 <!-- Customer Info -->
                 <div class="mb-3">
-                    <label class="form-label">Customer Account</label>
-                    <input type="text" class="form-control" value="<?= $customer->first_name; ?>" readonly>
+                    <!-- <label class="form-label">Customer Account</label> -->
+                    <input type="text" class="form-control" value="<?= $customer->first_name; ?>" hidden>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Time Slot</label>
-                        <select name="booking_time" class="form-select">
-                            <option value="morning">Morning</option>
-                            <option value="afternoon">Afternoon</option>
-                            <option value="evening">Evening</option>
-                        </select>
+                        <select name="booking_time" id="booking_time" class="form-select" required>
+                        <option value="">-- Select Time Slot --</option>
+                        <option value="afternoon">12.00 to 4.30 PM</option>
+                        <option value="evening">5.00 to 12.00 AM</option>
+                    </select>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Table No.</label>
-                        <input type="number" name="table_number" class="form-control" placeholder="e.g. 5" min="1" required>
+                        
+                    <select name="table_number" id="table_number" class="form-select" required>
+                        <option value="">-- Select Table --</option>
+                        <?php foreach ($tables as $table): ?>
+                            <option value="<?= $table->table_number; ?>"><?= $table->table_name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    
                     </div>
                 </div>
 
@@ -307,17 +319,17 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Arrival Time</label>
-
-                        <input type="time" name="arrival_time" class="form-control" required>
-                        
-                    </div>
+                    <label class="form-label">Arrival Time</label>
+                    <select name="arrival_time" id="arrival_time" class="form-control" required>
+                        <option value="">-- Select Arrival Time --</option>
+                    </select>
+                </div>
 
                     <div class="col-md-6 mb-3">
                        <label class="form-label">Total Guests</label>
-                    <input type="number" name="number_of_guests" class="form-control" placeholder="e.g. 4" min="1" required>
+                    <input type="number" id="number_of_guests" name="number_of_guests" min="1" class="form-control" required placeholder="Enter number of guests">
                     </div>
-                </div>
+                     </div>
 
                 <div class="mb-3">
                     <label class="form-label">List of Guest name</label>
@@ -360,6 +372,97 @@
             }
         });
     });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const bookingTime = document.getElementById("booking_time");
+    const arrivalTime = document.getElementById("arrival_time");
+
+    const timeSlots = {
+        afternoon: ["12:00", "12:30", "13:00"],
+        evening: ["17:00", "17:30", "18:00"]
+    };
+
+    bookingTime.addEventListener("change", function () {
+
+        const selected = this.value;
+
+        // reset dropdown
+        arrivalTime.innerHTML = '<option value="">-- Select Arrival Time --</option>';
+
+        if (!timeSlots[selected]) return;
+
+        timeSlots[selected].forEach(time => {
+            const option = document.createElement("option");
+            option.value = time;
+            option.textContent = formatTime(time);
+            arrivalTime.appendChild(option);
+        });
+    });
+
+    function formatTime(time24) {
+        // Convert 24h → 12h format for UI
+        const [hour, minute] = time24.split(":");
+        let h = parseInt(hour);
+        const ampm = h >= 12 ? "PM" : "AM";
+
+        h = h % 12 || 12;
+
+        return `${h}:${minute} ${ampm}`;
+    }
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tableSelect = document.getElementById("table_number");
+    const guestInput = document.querySelector('input[name="number_of_guests"]');
+
+    function getMaxGuests(tableNumber) {
+        tableNumber = parseInt(tableNumber);
+
+        if (tableNumber >= 11 && tableNumber <= 34) {
+            return 10;
+        }
+
+        if (
+            (tableNumber >= 1 && tableNumber <= 10) ||
+            (tableNumber >= 40 && tableNumber <= 50)
+        ) {
+            return 15;
+        }
+
+        return 0; // invalid table
+    }
+
+    function validateGuests() {
+        const tableNo = tableSelect.value;
+        const guests = parseInt(guestInput.value || 0);
+
+        if (!tableNo) return;
+
+        const max = getMaxGuests(tableNo);
+
+        if (max === 0) {
+            alert("Invalid table selection!");
+            guestInput.value = "";
+            return;
+        }
+
+        if (guests > max) {
+            alert(`This table allows maximum ${max} guests.`);
+            guestInput.value = max;
+        }
+    }
+
+    tableSelect.addEventListener("change", validateGuests);
+    guestInput.addEventListener("input", validateGuests);
+
+});
 </script>
 
 </body>

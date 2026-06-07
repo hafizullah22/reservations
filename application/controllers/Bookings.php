@@ -55,68 +55,114 @@ class Bookings extends CI_Controller {
         ->row();
 
     $data['disabled_dates'] = $disabled_dates;
+    $data['tables'] = $this->db->get('tables')->result(); 
 
     $this->load->view('bookings/create', $data);
 }
-    // =========================
-    // STORE BOOKING
-    // =========================
+    
     public function store()
-    {
-        $customer_id = $this->session->userdata('customer_id');
+{
+    $customer_id = $this->session->userdata('customer_id');
 
-        if (!$customer_id) {
-            redirect('login');
-        }
-
-        $booking_date = $this->input->post('booking_date', TRUE);
-        $booking_time = $this->input->post('booking_time', TRUE);
-        $table_number = $this->input->post('table_number', TRUE);
-        $guests       = $this->input->post('number_of_guests', TRUE);
-
-        // =========================
-        // VALIDATION - EMPTY CHECK
-        // =========================
-        if (empty($booking_date) || empty($booking_time) || empty($table_number)) {
-            $this->session->set_flashdata('error', 'All fields are required.');
-            redirect('bookings/create');
-        }
-
-        // =========================
-        // CHECK DUPLICATE BOOKING
-        // =========================
-        $this->db->where([
-            'table_number' => $table_number,
-            'booking_date' => $booking_date,
-            'booking_time' => $booking_time
-        ]);
-
-        $exists = $this->db->get('bookings')->num_rows();
-
-        if ($exists > 0) {
-            $this->session->set_flashdata('error', 'This table is already booked for selected time!');
-            redirect('bookings/create');
-        }
-
-        // =========================
-        // INSERT BOOKING
-        // =========================
-        $this->db->insert('bookings', [
-            'customer_id'       => $customer_id,
-            'booking_date'      => $booking_date,
-            'booking_time'      => $booking_time,
-            'table_number'      => $table_number,
-            'number_of_guests'  => $guests,
-            'status'            => 'pending'
-        ]);
-
-        $this->session->set_flashdata('success', 'Booking created successfully!');
-        redirect('bookings');
+    if (!$customer_id) {
+        redirect('login');
     }
 
     // =========================
-    // DELETE BOOKING
+    // INPUTS
     // =========================
+    $table_number  = (int) $this->input->post('table_number', TRUE);
+    $guests        = (int) $this->input->post('number_of_guests', TRUE);
+    $booking_date  = $this->input->post('booking_date', TRUE);
+    $booking_time  = $this->input->post('booking_time', TRUE);
+    $arrival_time  = $this->input->post('arrival_time', TRUE);
+    $guest_names   = $this->input->post('guest_names', TRUE);
+
+    // =========================
+    // BASIC VALIDATION
+    // =========================
+    if (empty($booking_date) || empty($booking_time) || empty($table_number)) {
+        $this->session->set_flashdata('error', 'All fields are required.');
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // TABLE CAPACITY RULE
+    // =========================
+    if ($table_number >= 11 && $table_number <= 34) {
+        $max_guests = 10;
+    } elseif (
+        ($table_number >= 1 && $table_number <= 10) ||
+        ($table_number >= 40 && $table_number <= 50)
+    ) {
+        $max_guests = 15;
+    } else {
+        $this->session->set_flashdata('error', 'Invalid table number.');
+        redirect('bookings/create');
+    }
+
+    if ($guests > $max_guests) {
+        $this->session->set_flashdata(
+            'error',
+            "Maximum {$max_guests} guests allowed for this table."
+        );
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // DUPLICATE BOOKING CHECK
+    // (same table, same date, same time)
+    // =========================
+    $exists = $this->db->where([
+        'table_number' => $table_number,
+        'booking_date' => $booking_date,
+        'booking_time' => $booking_time
+    ])->count_all_results('bookings');
+
+    if ($exists > 0) {
+        $this->session->set_flashdata(
+            'error',
+            'This table is already booked for selected time!'
+        );
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // GLOBAL MEMBER LIMIT
+    // MAX 2 CONFIRMED BOOKINGS (ANY DATE)
+    // =========================
+    $confirmedCount = $this->db
+        ->where('customer_id', $customer_id)
+        ->where('status', 'confirmed')
+        ->count_all_results('bookings');
+
+    if ($confirmedCount >= 2) {
+        $this->session->set_flashdata(
+            'error',
+            'You can only have maximum 2 confirmed reservations at a time.'
+        );
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // INSERT BOOKING
+    // =========================
+    $this->db->insert('bookings', [
+        'customer_id'      => $customer_id,
+        'booking_date'     => $booking_date,
+        'booking_time'     => $booking_time,
+        'table_number'     => $table_number,
+        'number_of_guests' => $guests,
+        'arrival_time'     => $arrival_time,
+        'guest_names'      => $guest_names,
+        'status'           => 'confirmed'
+    ]);
+
+    $this->session->set_flashdata('success', 'Booking created successfully!');
+    redirect('bookings');
+}
+
+
     public function delete($id)
     {
         $this->db->where('booking_id', $id);
