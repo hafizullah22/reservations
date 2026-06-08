@@ -60,11 +60,24 @@ class Bookings extends CI_Controller {
     $this->load->view('bookings/create', $data);
 }
     
-    public function store()
+ public function store()
 {
     $customer_id = $this->session->userdata('customer_id');
 
     if (!$customer_id) {
+        redirect('login');
+    }
+
+    // =========================
+    // CUSTOMER INFO
+    // =========================
+    $customer = $this->db
+        ->where('customer_id', $customer_id)
+        ->get('customers')
+        ->row();
+
+    if (!$customer) {
+        $this->session->set_flashdata('error', 'Customer account not found.');
         redirect('login');
     }
 
@@ -110,8 +123,7 @@ class Bookings extends CI_Controller {
     }
 
     // =========================
-    // DUPLICATE BOOKING CHECK
-    // (same table, same date, same time)
+    // DUPLICATE TABLE CHECK
     // =========================
     $exists = $this->db->where([
         'table_number' => $table_number,
@@ -122,14 +134,13 @@ class Bookings extends CI_Controller {
     if ($exists > 0) {
         $this->session->set_flashdata(
             'error',
-            'This table is already booked for selected time!'
+            'This table is already booked for the selected time.'
         );
         redirect('bookings/create');
     }
 
     // =========================
-    // GLOBAL MEMBER LIMIT
-    // MAX 2 CONFIRMED BOOKINGS (ANY DATE)
+    // MAX 2 CONFIRMED BOOKINGS
     // =========================
     $confirmedCount = $this->db
         ->where('customer_id', $customer_id)
@@ -139,29 +150,122 @@ class Bookings extends CI_Controller {
     if ($confirmedCount >= 2) {
         $this->session->set_flashdata(
             'error',
-            'You can only have maximum 2 confirmed reservations at a time.'
+            'You can only have a maximum of 2 confirmed reservations at one time.'
         );
         redirect('bookings/create');
     }
 
     // =========================
+    // BOOKING REFERENCE
+    // =========================
+    $reservation_no = 'RES-' . date('Ymd') . '-' . rand(1000, 9999);
+
+    // =========================
     // INSERT BOOKING
     // =========================
-    $this->db->insert('bookings', [
-        'customer_id'      => $customer_id,
-        'booking_date'     => $booking_date,
-        'booking_time'     => $booking_time,
-        'table_number'     => $table_number,
-        'number_of_guests' => $guests,
-        'arrival_time'     => $arrival_time,
-        'guest_names'      => $guest_names,
-        'status'           => 'confirmed'
+    $insert = $this->db->insert('bookings', [
+        'reservation_no'  => $reservation_no, // remove if column doesn't exist
+        'customer_id'     => $customer_id,
+        'booking_date'    => $booking_date,
+        'booking_time'    => $booking_time,
+        'table_number'    => $table_number,
+        'number_of_guests'=> $guests,
+        'arrival_time'    => $arrival_time,
+        'guest_names'     => $guest_names,
+        'status'          => 'confirmed'
     ]);
 
-    $this->session->set_flashdata('success', 'Booking created successfully!');
+    if (!$insert) {
+        $this->session->set_flashdata(
+            'error',
+            'Unable to create booking. Please try again.'
+        );
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // SEND EMAIL
+    // =========================
+    try {
+
+        $this->load->library('email');
+
+        $this->email->from(
+            'hafizulah322@gmail.com',
+            'Table Reservation System'
+        );
+
+        $this->email->to($customer->email);
+
+        $this->email->subject(
+            'Reservation Confirmation #' . $reservation_no
+        );
+
+        $message = '
+        <html>
+        <body>
+            <h2>Reservation Confirmed</h2>
+
+            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
+
+            <p>Your reservation has been successfully confirmed.</p>
+
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr>
+                    <td><strong>Reservation No.</strong></td>
+                    <td>' . $reservation_no . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Date</strong></td>
+                    <td>' . $booking_date . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Time Slot</strong></td>
+                    <td>' . ucfirst($booking_time) . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Table Number</strong></td>
+                    <td>' . $table_number . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Arrival Time</strong></td>
+                    <td>' . $arrival_time . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Guests</strong></td>
+                    <td>' . $guests . '</td>
+                </tr>
+            </table>
+
+            <br>
+
+            <p>Thank you for your reservation.</p>
+        </body>
+        </html>';
+
+        $this->email->message($message);
+
+        if (!$this->email->send()) {
+            log_message(
+                'error',
+                'Booking Email Error: ' . $this->email->print_debugger()
+            );
+        }
+
+    } catch (Exception $e) {
+        log_message('error', 'Email Exception: ' . $e->getMessage());
+    }
+
+    // =========================
+    // SUCCESS
+    // =========================
+    $this->session->set_flashdata(
+        'success',
+        'Booking created successfully.'
+    );
+
     redirect('bookings');
 }
-
 
     public function delete($id)
     {
