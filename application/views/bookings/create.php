@@ -27,20 +27,22 @@
         }
 
         /* Left panel - Focus on Presentation & Calendar */
-        /* .calendar-panel {
+        .calendar-panel {
             flex: 1;
-            padding: 1rem;
+            padding: 3rem;
+           
             background: #0f172a;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
           
-        } */
+        }
 
         .calendar-container {
             width: 100%;
             max-width: 1120px;
+            //padding: 3rem;
         }
 
         /* Right panel - Compact Data Entry Form */
@@ -115,7 +117,7 @@
 
         .flatpickr-months .flatpickr-prev-month, 
         .flatpickr-months .flatpickr-next-month {
-            fill: #99900f !important;
+            fill: #f15e08 !important;
             width: 30px !important;
             padding: 40px !important;
             color: #f15e08 !important;
@@ -308,17 +310,7 @@
             </select>
         </div>
 
-        <!-- GUESTS -->
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Total Guests</label>
-            <input type="number"
-                   id="number_of_guests"
-                   name="number_of_guests"
-                   min="1"
-                   class="form-control"
-                   required
-                   placeholder="Enter number of guests">
-        </div>
+      
 
        
    <!-- ================= TIME SLOT ================= -->
@@ -332,7 +324,17 @@
             </select>
         </div>
    
-    
+      <!-- GUESTS -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Total Guests</label>
+            <input type="number"
+                   id="number_of_guests"
+                   name="number_of_guests"
+                   min="1"
+                   class="form-control"
+                   required
+                   placeholder="Enter number of guests">
+        </div>
 
     </div>
 
