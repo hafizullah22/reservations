@@ -162,7 +162,7 @@
 
         .flatpickr-day.flatpickr-disabled, 
         .flatpickr-day.flatpickr-disabled:hover {
-            color: #475569 !important;
+            color: #f73707 !important;
             background: transparent !important;
             cursor: not-allowed;
         }
@@ -229,6 +229,24 @@
             transform: translateY(0);
         }
 
+       
+        .fp-tooltip {
+            position: absolute;
+            background: #111827;
+            color: #fff;
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 6px;
+            z-index: 99999;
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transform: translate(-50%, -120%);
+            opacity: 0;
+            transition: 0.15s ease;
+        }
+
+
         /* Responsive adaptations */
         @media (max-width: 991px) {
             .page-wrapper {
@@ -246,7 +264,7 @@
     </style>
 </head>
 <body>
-
+<div id="fp-tooltip" class="fp-tooltip"></div>
 <div class="page-wrapper">
 
     <!-- ================= LEFT: CALENDAR VIEW ================= -->
@@ -352,26 +370,116 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        flatpickr("#booking_date", {
+let calendarInstance = null;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tooltip = document.getElementById("fp-tooltip");
+
+    function initCalendar(disabledDates = []) {
+
+        const bookedSet = new Set(disabledDates); // ⭐ fast lookup
+
+        const dateInput = document.getElementById("booking_date");
+        const hiddenDate = document.getElementById("hidden_date");
+        const displayDate = document.getElementById("display_date");
+
+        if (calendarInstance) {
+            calendarInstance.destroy();
+        }
+
+        calendarInstance = flatpickr(dateInput, {
             inline: true,
             dateFormat: "Y-m-d",
             minDate: "today",
-            // Append directly inside the box styling wrapper
-            appendTo: document.getElementById('inline_calendar_target'),
-            onChange: function(selectedDates, dateStr) {
-                // Populate structural input values
-                document.getElementById("hidden_date").value = dateStr;
-                
-                // Set human-friendly feedback format for the form panel
-                if(selectedDates.length > 0) {
-                    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-                    document.getElementById("display_date").value = selectedDates[0].toLocaleDateString('en-US', options);
+            disable: disabledDates,
+
+            onChange: function (selectedDates, dateStr) {
+                hiddenDate.value = dateStr;
+
+                if (selectedDates.length > 0) {
+                    displayDate.value = selectedDates[0].toLocaleDateString(
+                        'en-US',
+                        { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+                    );
+                }
+            },
+
+            onDayCreate: function (dObj, dStr, fp, dayElem) {
+
+                const dateStr = dayElem.dateObj
+                    ? fp.formatDate(dayElem.dateObj, "Y-m-d")
+                    : null;
+
+                if (!dateStr) return;
+
+                const today = new Date();
+                today.setHours(0,0,0,0);
+
+                const cellDate = new Date(dayElem.dateObj);
+                cellDate.setHours(0,0,0,0);
+
+                const isPast = cellDate < today;
+                const isBooked = bookedSet.has(dateStr);
+
+                // Only attach tooltip for non-selectable dates
+                if (isPast || isBooked) {
+
+                    dayElem.addEventListener("mouseenter", function () {
+
+                        if (isPast) {
+                            tooltip.innerText = "You cannot select past dates.";
+                        } 
+                        else if (isBooked) {
+                            tooltip.innerText = "This date is already booked.";
+                        }
+
+                        tooltip.style.opacity = "1";
+                    });
+
+                    dayElem.addEventListener("mousemove", function (e) {
+                        tooltip.style.left = e.pageX + "px";
+                        tooltip.style.top = e.pageY + "px";
+                    });
+
+                    dayElem.addEventListener("mouseleave", function () {
+                        tooltip.style.opacity = "0";
+                    });
                 }
             }
         });
-    });
+    }
+
+    async function fetchBookedDates() {
+
+        const table = document.getElementById("table_number").value;
+        const time  = document.getElementById("booking_time").value;
+
+        if (!table || !time) return;
+
+        const res = await fetch("<?= site_url('bookings/get-booked-dates'); ?>", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                table_number: table,
+                booking_time: time
+            })
+        });
+
+        const data = await res.json();
+        initCalendar(data.booked_dates || []);
+    }
+
+    document.getElementById("table_number").addEventListener("change", fetchBookedDates);
+    document.getElementById("booking_time").addEventListener("change", fetchBookedDates);
+
+    initCalendar([]);
+
+});
 </script>
 
 <script>
@@ -454,16 +562,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (guests > max) {
-            alert(`This table allows maximum ${max} guests.`);
-            guestInput.value = max;
-        }
+        Swal.fire({
+            icon: 'error',
+            title: 'Guest Limit Exceeded',
+            text: `This table allows maximum ${max} guests.`,
+            confirmButtonColor: '#d33'
+        });
+
+        guestInput.value = max;
+    }
     }
 
     tableSelect.addEventListener("change", validateGuests);
     guestInput.addEventListener("input", validateGuests);
 
 });
+
+
 </script>
+<!-- // SweetAlert2 CDN  -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
 

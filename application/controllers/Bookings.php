@@ -27,9 +27,36 @@ class Bookings extends CI_Controller {
         $this->load->view('bookings/index', $data);
     }
 
-    // =========================
-    // CREATE FORM (LOGGED IN CUSTOMER)
-    // =========================
+public function get_booked_dates()
+{
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    $table = $input['table_number'] ?? null;
+    $time  = $input['booking_time'] ?? null;
+
+    if (!$table || !$time) {
+        echo json_encode(['booked_dates' => []]);
+        return;
+    }
+
+    $this->db->select('booking_date');
+    $this->db->from('bookings');
+    $this->db->where('table_number', $table);
+    $this->db->where('booking_time', $time);
+    $this->db->where('status !=', 'Cancelled');
+
+    $query = $this->db->get()->result();
+
+    $dates = [];
+
+    foreach ($query as $row) {
+        $dates[] = $row->booking_date;
+    }
+
+    echo json_encode([
+        'booked_dates' => $dates
+    ]);
+}
   public function create()
 {
     $customer_id = $this->session->userdata('customer_id');
@@ -302,4 +329,138 @@ class Bookings extends CI_Controller {
 
         $this->load->view('bookings/show', $data);
     }
+
+
+    public function edit($id)
+    {
+        $data['booking'] = $this->db->where('booking_id', $id)->get('bookings')->row();
+        $data['tables'] = $this->db->get('tables')->result(); 
+
+        $this->load->view('bookings/edit', $data);
+    }
+
+    public function update($id)
+    {
+        $table_number  = (int) $this->input->post('table_number', TRUE);
+        $guests        = (int) $this->input->post('number_of_guests', TRUE);
+        $booking_date  = $this->input->post('booking_date', TRUE);
+        $booking_time  = $this->input->post('booking_time', TRUE);
+        $arrival_time  = $this->input->post('arrival_time', TRUE);
+        $guest_names   = $this->input->post('guest_names', TRUE);
+
+        // Basic validation
+        if (empty($booking_date) || empty($booking_time) || empty($table_number)) {
+            $this->session->set_flashdata('error', 'All fields are required.');
+            redirect("bookings/edit/{$id}");
+        }
+
+        // Update booking
+        $update = $this->db->where('booking_id', $id)->update('bookings', [
+            'booking_date'    => $booking_date,
+            'booking_time'    => $booking_time,
+            'table_number'    => $table_number,
+            'number_of_guests'=> $guests,
+            'arrival_time'    => $arrival_time,
+            'guest_names'     => $guest_names
+        ]);
+
+        if (!$update) {
+            $this->session->set_flashdata('error', 'Unable to update booking. Please try again.');
+            redirect("bookings/edit/{$id}");
+        }
+
+        // Success
+        $this->session->set_flashdata('success', 'Booking updated successfully!');
+        redirect('bookings');
+    }
+
+
+    public function cancel($id)
+    {
+        $this->db->where('booking_id', $id);
+        $this->db->update('bookings', ['status' => 'cancelled']);
+
+        $this->session->set_flashdata('success', 'Booking cancelled successfully!');
+        redirect('bookings');
+    }
+
+
+    public function update_status_cron()
+{
+    if (!$this->input->is_cli_request()) {
+        return;
+    }
+
+    $today = date('Y-m-d');
+
+    // Get all expired bookings
+    $bookings = $this->db
+        ->where('booking_date <', $today)
+        ->where('status', 'Confirmed')
+        ->get('bookings')
+        ->result();
+
+    if (empty($bookings)) {
+        log_message('info', 'Cron: No bookings found');
+        return;
+    }
+
+    $this->load->library('email');
+
+    foreach ($bookings as $booking) {
+
+        // OPTIONAL: fetch customer if stored separately
+        $customer = $this->db
+            ->where('customer_id', $booking->customer_id)
+            ->get('customers')
+            ->row();
+
+        if (!$customer) {
+            log_message('error', 'Customer not found for booking ID ' . $booking->booking_id);
+            continue;
+        }
+
+        // Email config
+        $this->email->clear();
+        $this->email->from('hafizulah322@gmail.com', 'Table Reservation System');
+        $this->email->to($customer->email);
+
+        $this->email->subject('Reservation Completed #' . $booking->reservation_no);
+
+        $message = '
+        <html>
+        <body>
+            <h2>Reservation Completed</h2>
+
+            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
+
+            <p>Your reservation has been marked as completed.</p>
+
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr><td><strong>Reservation No</strong></td><td>' . $booking->reservation_no . '</td></tr>
+                <tr><td><strong>Date</strong></td><td>' . $booking->booking_date . '</td></tr>
+                <tr><td><strong>Time</strong></td><td>' . $booking->booking_time . '</td></tr>
+                <tr><td><strong>Table</strong></td><td>' . $booking->table_number . '</td></tr>
+            </table>
+
+            <br>
+            <p>Thank you.</p>
+        </body>
+        </html>';
+
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+
+            // Update only this booking
+            $this->db->where('booking_id', $booking->booking_id)
+                     ->update('bookings', ['status' => 'Completed']);
+
+        } else {
+            log_message('error', 'Email failed for booking ID ' . $booking->booking_id);
+        }
+    }
 }
+
+
+} //End of Bookings controller
