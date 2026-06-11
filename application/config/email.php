@@ -5,7 +5,7 @@ $config['smtp_port'] = 587;
 $config['smtp_crypto'] = 'tls';
 
 $config['smtp_user'] = 'hafizulah322@gmail.com';
-$config['smtp_pass'] = '';
+$config['smtp_pass'] = 'xzlv gvlt fnda tipz';
 
 $config['mailtype'] = 'html';
 $config['charset'] = 'utf-8';

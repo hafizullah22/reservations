@@ -43,7 +43,8 @@ public function get_booked_dates()
     $this->db->from('bookings');
     $this->db->where('table_number', $table);
     $this->db->where('booking_time', $time);
-    $this->db->where('status !=', 'Cancelled');
+    // $this->db->where('status !=', 'Cancelled');
+    $this->db->where('status', 'Completed');
 
     $query = $this->db->get()->result();
 

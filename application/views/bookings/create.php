@@ -15,31 +15,32 @@
     <style>
         /* ================= BASE THEME & RESET ================= */
         body {
-            background-color: #0b0f19;
+            background-color: #dfe3ec;
             color: #f3f4f6;
             font-family: 'Inter', sans-serif;
             letter-spacing: -0.01em;
         }
 
         .page-wrapper {
-            display: flex;
-            min-height: 100vh;
+        display: block;
+        min-height: 100vh;
         }
 
         /* Left panel - Focus on Presentation & Calendar */
-        .calendar-panel {
+        /* .calendar-panel {
             flex: 1;
-            padding: 3rem;
+            padding: 1rem;
             background: #0f172a;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
+          
+        } */
 
         .calendar-container {
             width: 100%;
-            max-width: 580px;
+            max-width: 1120px;
         }
 
         /* Right panel - Compact Data Entry Form */
@@ -72,6 +73,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
             border: 1px solid #334155;
             width: 100%;
+            
         }
 
         /* Hide the ugly standard text input since calendar is inline */
@@ -99,9 +101,11 @@
 
         /* Beautiful Modern Headers */
         .flatpickr-months .flatpickr-month {
-            color: #fff !important;
-            fill: #fff !important;
-            height: 34px;
+            color: #e4d9d9 !important;
+            fill: #080707 !important;
+            height: 40px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #334155 !important;
         }
 
         .flatpickr-current-month {
@@ -111,8 +115,10 @@
 
         .flatpickr-months .flatpickr-prev-month, 
         .flatpickr-months .flatpickr-next-month {
-            fill: #94a3b8 !important;
-            padding: 4px !important;
+            fill: #99900f !important;
+            width: 30px !important;
+            padding: 40px !important;
+            color: #f15e08 !important;
         }
 
         .flatpickr-months .flatpickr-prev-month:hover, 
@@ -121,7 +127,7 @@
         }
 
         span.flatpickr-weekday {
-            color: #64748b !important;
+            color: #f3f5f7 !important;
             font-weight: 600 !important;
         }
 
@@ -138,11 +144,15 @@
             font-weight: 500;
             height: 42px !important;
             line-height: 42px !important;
-            max-width: 42px !important;
-            margin: 2px 0 !important;
+            max-width: 110px !important;
+            margin: 0px 0 !important;
             transition: all 0.15s ease-in-out;
+            margin-top: 10px !important;
+            margin-left:10px !important;
+            border-top: 1px solid #334155 !important;
+            border-bottom: 1px solid #334155 !important;
+            
         }
-
         .flatpickr-day:hover {
             background: #334155 !important;
             color: #fff !important;
@@ -158,18 +168,20 @@
             background: #22c55e !important;
             color: #fff !important;
             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+
         }
 
         .flatpickr-day.flatpickr-disabled, 
         .flatpickr-day.flatpickr-disabled:hover {
-            color: #f73707 !important;
-            background: transparent !important;
+            color: #ece7e6 !important;
+            /* background: transparent !important; */
+            background:#f73707 !important;
             cursor: not-allowed;
         }
 
         .flatpickr-day.prevMonthDay, 
         .flatpickr-day.nextMonthDay {
-            color: #475569 !important;
+            color: #edf1f5 !important;
         }
 
         /* ================= MODERN FORM ELEMENTS ================= */
@@ -230,20 +242,19 @@
         }
 
        
+
         .fp-tooltip {
             position: absolute;
             background: #111827;
             color: #fff;
             padding: 6px 10px;
-            font-size: 12px;
             border-radius: 6px;
-            z-index: 99999;
+            font-size: 12px;
             pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transform: translate(-50%, -120%);
             opacity: 0;
-            transition: 0.15s ease;
+            z-index: 99999;
+            transition: opacity .15s ease;
+            white-space: nowrap;
         }
 
 
@@ -267,106 +278,137 @@
 <div id="fp-tooltip" class="fp-tooltip"></div>
 <div class="page-wrapper">
 
-    <!-- ================= LEFT: CALENDAR VIEW ================= -->
-    <div class="calendar-panel">
-        <div class="calendar-container">
-            <div class="panel-header mb-4">
-                <h2>📅 Select a Date</h2>
-                <p>Choose an available calendar date for your booking reservation.</p>
-                <?php if($this->session->flashdata('error')): ?>
-                    <div class="alert alert-danger mt-3">
-                        <?= $this->session->flashdata('error'); ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+   
 
-            <div class="calendar-box">
-                <!-- Keep input structurally but render flatpickr inline over it -->
-                <input type="text" id="booking_date" placeholder="Select date...">
-                <div id="inline_calendar_target"></div>
+    <!-- ================= RIGHT: DATA INPUT FORM ================= -->
+    <div class="form-panel">
+        <div style="max-width: 1120px; width: 100%; margin: 0 auto;">
+            <div class="panel-header mb-4">
+                <h2>New Reservation</h2>
+            </div>
+            
+
+            <form method="post" action="<?= site_url('bookings/store'); ?>">
+
+    <!-- ================= CUSTOMER INFO ================= -->
+    <input type="hidden" value="<?= $customer->first_name; ?>">
+
+    <div class="row">
+
+        <!-- TABLE -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Table No.</label>
+            <select name="table_number" id="table_number" class="form-select" required>
+                <option value="">-- Select Table --</option>
+                <?php foreach ($tables as $table): ?>
+                    <option value="<?= $table->table_number; ?>">
+                        <?= $table->table_name; ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <!-- GUESTS -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Total Guests</label>
+            <input type="number"
+                   id="number_of_guests"
+                   name="number_of_guests"
+                   min="1"
+                   class="form-control"
+                   required
+                   placeholder="Enter number of guests">
+        </div>
+
+       
+   <!-- ================= TIME SLOT ================= -->
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Time Slot</label>
+
+            <select name="booking_time" id="booking_time" class="form-select" required>
+                <option value="">-- Select Time Slot --</option>
+                <option value="afternoon">12.00 to 4.30 PM</option>
+                <option value="evening">5.00 to 12.00 AM</option>
+            </select>
+        </div>
+   
+    
+
+    </div>
+
+    <!-- ================= CALENDAR SECTION (MOVED OUTSIDE FORM GRID) ================= -->
+    <div class="mb-3">
+        <label class="form-label">Select Date</label>
+
+        <div class="calendar-panel">
+            <div class="calendar-container">
+
+                <div class="panel-header mb-3">
+                    <!-- <h2>📅 Select a Date</h2>
+                    <p>Choose an available booking date</p> -->
+
+                    <?php if($this->session->flashdata('error')): ?>
+                        <div class="alert alert-danger mt-2">
+                            <?= $this->session->flashdata('error'); ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="calendar-box">
+                    <input type="text" id="booking_date" placeholder="Select date...">
+                    <div id="inline_calendar_target"></div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- ================= RIGHT: DATA INPUT FORM ================= -->
-    <div class="form-panel">
-        <div style="max-width: 620px; width: 100%; margin: 0 auto;">
-            <div class="panel-header mb-4">
-                <h2>New Reservation</h2>
-            </div>
+    <!-- ================= SELECTED DATE ================= -->
+    <div class="mb-3">
+        <!-- <label class="form-label">Selected Date</label> -->
 
-            <form method="post" action="<?= site_url('bookings/store'); ?>">
+        <input type="text"
+               id="display_date"
+               class="form-control"
+               readonly
+               placeholder="Please click a date on calendar" hidden>
 
-                <!-- Selected Date UI Feedback (Enhances UX) -->
-                <div class="mb-3">
-                    <label class="form-label">Selected Date</label>
-                    <input type="text" id="display_date" class="form-control" readonly placeholder="Please click a date on the calendar">
-                    <input type="hidden" name="booking_date" id="hidden_date">
-                </div>
+        <input type="hidden" name="booking_date" id="hidden_date">
+    </div>
 
-                <!-- Customer Info -->
-                <div class="mb-3">
-                    <!-- <label class="form-label">Customer Account</label> -->
-                    <input type="text" class="form-control" value="<?= $customer->first_name; ?>" hidden>
-                </div>
+  <!-- ================= ARRIVAL TIME ================= -->
+        <div class="mb-3">
+            <label class="form-label">Arrival Time</label>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Time Slot</label>
-                        <select name="booking_time" id="booking_time" class="form-select" required>
-                        <option value="">-- Select Time Slot --</option>
-                        <option value="afternoon">12.00 to 4.30 PM</option>
-                        <option value="evening">5.00 to 12.00 AM</option>
-                    </select>
-                    </div>
+            <select name="arrival_time" id="arrival_time" class="form-control" required>
+                <option value="">-- Select Arrival Time --</option>
+            </select>
+        </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Table No.</label>
-                        
-                    <select name="table_number" id="table_number" class="form-select" required>
-                        <option value="">-- Select Table --</option>
-                        <?php foreach ($tables as $table): ?>
-                            <option value="<?= $table->table_number; ?>"><?= $table->table_name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    </div>
-                </div>
+    <!-- ================= GUEST NAMES ================= -->
+    <div class="mb-3">
+        <label class="form-label">List of Guest Names</label>
+
+        <textarea name="guest_names"
+                  class="form-control"
+                  placeholder="Enter guest names separated by commas"></textarea>
+    </div>
+
+    <!-- ================= SUBMIT ================= -->
+    <button type="submit" class="btn btn-submit w-100">
+        Confirm Booking
+    </button>
+
+</form>
 
 
-
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                    <label class="form-label">Arrival Time</label>
-                    <select name="arrival_time" id="arrival_time" class="form-control" required>
-                        <option value="">-- Select Arrival Time --</option>
-                    </select>
-                </div>
-
-                    <div class="col-md-6 mb-3">
-                       <label class="form-label">Total Guests</label>
-                    <input type="number" id="number_of_guests" name="number_of_guests" min="1" class="form-control" required placeholder="Enter number of guests">
-                    </div>
-                     </div>
-
-                <div class="mb-3">
-                    <label class="form-label">List of Guest name</label>
-                    <textarea name="guest_names" id="" class="form-control" placeholder="Enter guest names separated by commas"></textarea>
-                </div>
-               
-              
-
-
-
-                <button type="submit" class="btn btn-submit w-100">
-                    Confirm Booking 
-                </button>
-
-            </form>
         </div>
     </div>
 
 </div>
+
+
+
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -379,106 +421,141 @@ let calendarInstance = null;
 document.addEventListener("DOMContentLoaded", function () {
 
     const tooltip = document.getElementById("fp-tooltip");
+    const dateInput = document.getElementById("booking_date");
+    const hiddenDate = document.getElementById("hidden_date");
+    const displayDate = document.getElementById("display_date");
+    const tableSelect = document.getElementById("table_number");
+    const timeSelect = document.getElementById("booking_time");
 
     function initCalendar(disabledDates = []) {
 
-        const bookedSet = new Set(disabledDates); // ⭐ fast lookup
+        const bookedSet = new Set(disabledDates);
 
-        const dateInput = document.getElementById("booking_date");
-        const hiddenDate = document.getElementById("hidden_date");
-        const displayDate = document.getElementById("display_date");
-
+        // Destroy existing calendar before rebuilding
         if (calendarInstance) {
             calendarInstance.destroy();
         }
 
         calendarInstance = flatpickr(dateInput, {
             inline: true,
+            appendTo: document.getElementById("inline_calendar_target"),
             dateFormat: "Y-m-d",
             minDate: "today",
             disable: disabledDates,
 
             onChange: function (selectedDates, dateStr) {
+
                 hiddenDate.value = dateStr;
 
-                if (selectedDates.length > 0) {
+                if (selectedDates.length) {
                     displayDate.value = selectedDates[0].toLocaleDateString(
-                        'en-US',
-                        { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }
+                        "en-US",
+                        {
+                            weekday: "short",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric"
+                        }
                     );
                 }
             },
 
             onDayCreate: function (dObj, dStr, fp, dayElem) {
 
-                const dateStr = dayElem.dateObj
-                    ? fp.formatDate(dayElem.dateObj, "Y-m-d")
-                    : null;
+                if (!dayElem.dateObj) return;
 
-                if (!dateStr) return;
+                const dateStr = fp.formatDate(dayElem.dateObj, "Y-m-d");
 
                 const today = new Date();
-                today.setHours(0,0,0,0);
+                today.setHours(0, 0, 0, 0);
 
                 const cellDate = new Date(dayElem.dateObj);
-                cellDate.setHours(0,0,0,0);
+                cellDate.setHours(0, 0, 0, 0);
 
                 const isPast = cellDate < today;
                 const isBooked = bookedSet.has(dateStr);
+                const isAvailable = !isPast && !isBooked;
 
-                // Only attach tooltip for non-selectable dates
-                if (isPast || isBooked) {
-
-                    dayElem.addEventListener("mouseenter", function () {
-
-                        if (isPast) {
-                            tooltip.innerText = "You cannot select past dates.";
-                        } 
-                        else if (isBooked) {
-                            tooltip.innerText = "This date is already booked.";
-                        }
-
-                        tooltip.style.opacity = "1";
-                    });
-
-                    dayElem.addEventListener("mousemove", function (e) {
-                        tooltip.style.left = e.pageX + "px";
-                        tooltip.style.top = e.pageY + "px";
-                    });
-
-                    dayElem.addEventListener("mouseleave", function () {
-                        tooltip.style.opacity = "0";
-                    });
+                // Add custom classes
+                if (isBooked) {
+                    dayElem.classList.add("booked-date");
                 }
+
+                if (isAvailable) {
+                    dayElem.classList.add("available-date");
+                }
+
+                dayElem.addEventListener("mouseenter", function (e) {
+
+                    if (isPast) {
+                        tooltip.innerText = "Past date";
+                    } else if (isBooked) {
+                        tooltip.innerText = "Already booked";
+                    } else {
+                        tooltip.innerText = "Available";
+                    }
+
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                    tooltip.style.opacity = "1";
+                });
+
+                dayElem.addEventListener("mousemove", function (e) {
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                });
+
+                dayElem.addEventListener("mouseleave", function () {
+                    tooltip.style.opacity = "0";
+                });
             }
         });
     }
 
     async function fetchBookedDates() {
 
-        const table = document.getElementById("table_number").value;
-        const time  = document.getElementById("booking_time").value;
+        const table = tableSelect.value;
+        const time = timeSelect.value;
 
-        if (!table || !time) return;
+        if (!table || !time) {
+            initCalendar([]);
+            return;
+        }
 
-        const res = await fetch("<?= site_url('bookings/get-booked-dates'); ?>", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                table_number: table,
-                booking_time: time
-            })
-        });
+        try {
 
-        const data = await res.json();
-        initCalendar(data.booked_dates || []);
+            const response = await fetch(
+                "<?= site_url('bookings/get-booked-dates'); ?>",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        table_number: table,
+                        booking_time: time
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            initCalendar(data.booked_dates || []);
+
+        } catch (error) {
+
+            console.error("Error loading booked dates:", error);
+
+            initCalendar([]);
+        }
     }
 
-    document.getElementById("table_number").addEventListener("change", fetchBookedDates);
-    document.getElementById("booking_time").addEventListener("change", fetchBookedDates);
+    // Load booked dates when table or slot changes
+    tableSelect.addEventListener("change", fetchBookedDates);
+    timeSelect.addEventListener("change", fetchBookedDates);
 
+    // Initial calendar load
     initCalendar([]);
-
 });
 </script>
 
