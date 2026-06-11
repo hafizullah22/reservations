@@ -295,14 +295,14 @@ public function get_booked_dates()
     redirect('bookings');
 }
 
-    public function delete($id)
-    {
-        $this->db->where('booking_id', $id);
-        $this->db->delete('bookings');
+    // public function delete($id)
+    // {
+    //     $this->db->where('booking_id', $id);
+    //     $this->db->delete('bookings');
 
-        $this->session->set_flashdata('success', 'Booking deleted successfully!');
-        redirect('bookings');
-    }
+    //     $this->session->set_flashdata('success', 'Booking deleted successfully!');
+    //     redirect('bookings');
+    // }
 
     // =========================
     // UPDATE STATUS
