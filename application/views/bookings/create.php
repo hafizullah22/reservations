@@ -165,21 +165,32 @@
             color: #22c55e !important;
         }
 
-        .flatpickr-day.selected, 
-        .flatpickr-day.selected:hover {
-            background: #22c55e !important;
-            color: #fff !important;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        /* ================= PAST (GRAY) ================= */
+.flatpickr-day.past-date {
+    background: #334155 !important;
+    color: #64748b !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
-        }
+/* ================= BOOKED (RED) ================= */
+.flatpickr-day.booked-date {
+    background: #ef4444 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
 
-        .flatpickr-day.flatpickr-disabled, 
-        .flatpickr-day.flatpickr-disabled:hover {
-            color: #ece7e6 !important;
-            /* background: transparent !important; */
-            background:#f73707 !important;
-            cursor: not-allowed;
-        }
+/* ================= AVAILABLE ================= */
+.flatpickr-day.available-date {
+    background: transparent;
+}
+
+/* ================= SELECTED (GREEN) ================= */
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background: #22c55e !important;
+    color: #fff !important;
+}
 
         .flatpickr-day.prevMonthDay, 
         .flatpickr-day.nextMonthDay {
@@ -429,11 +440,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableSelect = document.getElementById("table_number");
     const timeSelect = document.getElementById("booking_time");
 
+    // ================= INIT CALENDAR =================
     function initCalendar(disabledDates = []) {
 
         const bookedSet = new Set(disabledDates);
 
-        // Destroy existing calendar before rebuilding
         if (calendarInstance) {
             calendarInstance.destroy();
         }
@@ -476,16 +487,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const isPast = cellDate < today;
                 const isBooked = bookedSet.has(dateStr);
-                const isAvailable = !isPast && !isBooked;
 
-                // Add custom classes
-                if (isBooked) {
+                // ================= STATE CLASSES =================
+
+                if (isPast) {
+                    dayElem.classList.add("past-date");
+                }
+
+                if (isBooked && !isPast) {
                     dayElem.classList.add("booked-date");
                 }
 
-                if (isAvailable) {
+                if (!isPast && !isBooked) {
                     dayElem.classList.add("available-date");
                 }
+
+                // ================= TOOLTIP =================
 
                 dayElem.addEventListener("mouseenter", function (e) {
 
@@ -514,6 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // ================= FETCH BOOKED DATES =================
     async function fetchBookedDates() {
 
         const table = tableSelect.value;
@@ -525,7 +543,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-
             const response = await fetch(
                 "<?= site_url('bookings/get-booked-dates'); ?>",
                 {
@@ -545,19 +562,18 @@ document.addEventListener("DOMContentLoaded", function () {
             initCalendar(data.booked_dates || []);
 
         } catch (error) {
-
             console.error("Error loading booked dates:", error);
-
             initCalendar([]);
         }
     }
 
-    // Load booked dates when table or slot changes
+    // ================= EVENTS =================
     tableSelect.addEventListener("change", fetchBookedDates);
     timeSelect.addEventListener("change", fetchBookedDates);
 
-    // Initial calendar load
+    // initial load
     initCalendar([]);
+
 });
 </script>
 
