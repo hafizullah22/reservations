@@ -183,6 +183,9 @@
 /* ================= AVAILABLE ================= */
 .flatpickr-day.available-date {
     background: transparent;
+    border: 1px solid #22c55e !important;
+            color: #22c55e !important;
+        
 }
 
 /* ================= SELECTED (GREEN) ================= */
