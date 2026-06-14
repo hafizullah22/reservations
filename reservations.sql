@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2026 at 06:52 PM
+-- Generation Time: Jun 14, 2026 at 04:02 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -48,9 +48,7 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`booking_id`, `customer_id`, `reservation_no`, `booking_date`, `booking_time`, `arrival_time`, `number_of_guests`, `table_number`, `guest_names`, `special_request`, `status`, `created_at`, `updated_at`) VALUES
-(7, 1, NULL, '2026-06-28', 'afternoon', '12:00', 5, 11, 'AAAAAAAAAAAAA', NULL, 'Confirmed', '2026-06-07 14:03:25', '2026-06-10 15:24:20'),
 (8, 1, NULL, '2026-06-29', 'afternoon', '12:00', 12, 10, 'AAAAA', NULL, 'Confirmed', '2026-06-07 14:07:56', '2026-06-10 15:24:28'),
-(9, 1, NULL, '2026-06-28', 'evening', '17:30', 5, 11, 'AAA', NULL, 'Confirmed', '2026-06-07 14:22:22', '2026-06-10 15:24:48'),
 (13, 99, 'RES-623441', '2026-06-28', 'evening', '6:00 PM', 10, 39, 'Guest-704', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (14, 78, 'RES-126261', '2026-06-28', 'afternoon', '2:00 PM', 5, 13, 'Guest-819', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (15, 84, 'RES-843286', '2026-06-28', 'afternoon', '6:00 PM', 10, 17, 'Guest-666', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
@@ -62,7 +60,6 @@ INSERT INTO `bookings` (`booking_id`, `customer_id`, `reservation_no`, `booking_
 (21, 91, 'RES-401966', '2026-06-28', 'afternoon', '1:00 PM', 7, 20, 'Guest-980', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (22, 71, 'RES-166178', '2026-06-28', 'evening', '12:30 PM', 6, 28, 'Guest-132', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (23, 93, 'RES-751623', '2026-06-28', 'evening', '2:00 PM', 7, 33, 'Guest-283', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(24, 1, 'RES-499699', '2026-06-28', 'afternoon', '6:00 PM', 5, 50, 'Guest-460', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (25, 53, 'RES-538625', '2026-06-28', 'evening', '1:00 PM', 7, 37, 'Guest-384', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (26, 100, 'RES-548889', '2026-06-28', 'evening', '12:30 PM', 1, 4, 'Guest-35', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (27, 75, 'RES-682447', '2026-06-28', 'afternoon', '2:00 PM', 10, 30, 'Guest-73', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
@@ -100,7 +97,8 @@ INSERT INTO `bookings` (`booking_id`, `customer_id`, `reservation_no`, `booking_
 (59, 65, 'RES-957904', '2026-06-28', 'evening', '6:00 PM', 3, 36, 'Guest-769', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (60, 90, 'RES-989029', '2026-06-28', 'afternoon', '1:00 PM', 3, 32, 'Guest-136', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
 (61, 80, 'RES-614976', '2026-06-28', 'evening', '12:30 PM', 8, 13, 'Guest-999', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(62, 55, 'RES-848437', '2026-06-28', 'afternoon', '2:00 PM', 9, 36, 'Guest-968', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49');
+(62, 55, 'RES-848437', '2026-06-28', 'afternoon', '2:00 PM', 9, 36, 'Guest-968', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
+(63, 1, 'RES-20260614-7752', '2026-06-20', 'afternoon', '12:00', 10, 38, 'AAA', NULL, 'Confirmed', '2026-06-14 13:50:02', '2026-06-14 13:50:02');
 
 -- --------------------------------------------------------
 
@@ -252,6 +250,30 @@ INSERT INTO `tables` (`table_number`, `table_name`) VALUES
 (49, 'Table 49'),
 (50, 'Table 50');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `table_available_dates`
+--
+
+CREATE TABLE `table_available_dates` (
+  `id` int(11) NOT NULL,
+  `table_number` int(11) NOT NULL,
+  `available_date` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `table_available_dates`
+--
+
+INSERT INTO `table_available_dates` (`id`, `table_number`, `available_date`, `created_at`) VALUES
+(1, 38, '2026-06-20', '2026-06-14 12:44:37'),
+(2, 38, '2026-06-21', '2026-06-14 12:44:37'),
+(3, 38, '2026-06-22', '2026-06-14 12:44:37'),
+(4, 39, '2026-07-01', '2026-06-14 12:44:37'),
+(5, 39, '2026-07-02', '2026-06-14 12:44:37');
+
 --
 -- Indexes for dumped tables
 --
@@ -278,6 +300,13 @@ ALTER TABLE `tables`
   ADD PRIMARY KEY (`table_number`);
 
 --
+-- Indexes for table `table_available_dates`
+--
+ALTER TABLE `table_available_dates`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_table_date` (`table_number`,`available_date`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -285,7 +314,7 @@ ALTER TABLE `tables`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -300,6 +329,12 @@ ALTER TABLE `tables`
   MODIFY `table_number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
+-- AUTO_INCREMENT for table `table_available_dates`
+--
+ALTER TABLE `table_available_dates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -308,6 +343,12 @@ ALTER TABLE `tables`
 --
 ALTER TABLE `bookings`
   ADD CONSTRAINT `fk_booking_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `table_available_dates`
+--
+ALTER TABLE `table_available_dates`
+  ADD CONSTRAINT `table_available_dates_ibfk_1` FOREIGN KEY (`table_number`) REFERENCES `tables` (`table_number`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

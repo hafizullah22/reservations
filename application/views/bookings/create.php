@@ -371,7 +371,7 @@
                 </div>
 
                 <div class="calendar-box">
-                    <input type="text" id="booking_date" placeholder="Select date...">
+                    <input type="hidden" id="booking_date" placeholder="Select date...">
                     <div id="inline_calendar_target"></div>
                 </div>
 
@@ -431,7 +431,7 @@
 
 
 
-<script>
+<!-- <script>
 let calendarInstance = null;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -570,6 +570,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    
+
     // ================= EVENTS =================
     tableSelect.addEventListener("change", fetchBookedDates);
     timeSelect.addEventListener("change", fetchBookedDates);
@@ -577,6 +579,333 @@ document.addEventListener("DOMContentLoaded", function () {
     // initial load
     initCalendar([]);
 
+});
+</script>  -->
+
+<div id="fp-tooltip" style="position: absolute; opacity: 0; background: #333; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px; pointer-events: none; z-index: 9999; transition: opacity 0.15s ease;"></div>
+
+<!-- <script>
+let calendarInstance = null;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tooltip = document.getElementById("fp-tooltip");
+    const dateInput = document.getElementById("booking_date");
+    const hiddenDate = document.getElementById("hidden_date");
+    const displayDate = document.getElementById("display_date");
+    const tableSelect = document.getElementById("table_number");
+    const timeSelect = document.getElementById("booking_time");
+
+    // ================= INIT CALENDAR ENGINE =================
+    function initCalendar(datesArray = [], allowAll = true) {
+        
+        // Fast-lookup memory structure
+        const dateSet = new Set(datesArray);
+
+        if (calendarInstance) {
+            calendarInstance.destroy();
+        }
+
+        calendarInstance = flatpickr(dateInput, {
+            inline: true,
+            appendTo: document.getElementById("inline_calendar_target"),
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            
+            // Handles system block out states natively
+            disable: [
+                function(date) {
+                    const dateStr = flatpickr.formatDate(date, "Y-m-d");
+                    if (allowAll) {
+                        // Normal tables: Disable if it matches an existing reservation
+                        return dateSet.has(dateStr); 
+                    } else {
+                        // Holiday tables: Disable everything EXCEPT matched dates from DB array
+                        return !dateSet.has(dateStr); 
+                    }
+                }
+            ],
+
+            onChange: function (selectedDates, dateStr) {
+                hiddenDate.value = dateStr;
+
+                if (selectedDates.length) {
+                    displayDate.value = selectedDates[0].toLocaleDateString(
+                        "en-US",
+                        { weekday: "short", year: "numeric", month: "short", day: "numeric" }
+                    );
+                }
+            },
+
+            onDayCreate: function (dObj, dStr, fp, dayElem) {
+                if (!dayElem.dateObj) return;
+
+                const dateStr = fp.formatDate(dayElem.dateObj, "Y-m-d");
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const cellDate = new Date(dayElem.dateObj);
+                cellDate.setHours(0, 0, 0, 0);
+
+                const isPast = cellDate < today;
+                
+                // Determine layout conditions dynamically based on the table type rule
+                let isSelectable = false;
+                let reason = "Available to Book";
+
+                if (isPast) {
+                    reason = "Past date";
+                } else if (allowAll) {
+                    // Normal Table
+                    const isBooked = dateSet.has(dateStr);
+                    isSelectable = !isBooked;
+                    if (isBooked) reason = "Already booked";
+                } else {
+                    // Holiday Table
+                    const isAllowed = dateSet.has(dateStr);
+                    isSelectable = isAllowed;
+                    if (!isAllowed) reason = "Holiday / July & September Only";
+                }
+
+                // ================= VISUAL CSS ASSIGNMENTS =================
+                if (isPast || !isSelectable) {
+                    dayElem.classList.add("past-date"); // Fades text out completely like a dead date
+                    dayElem.classList.remove("available-date");
+                } else {
+                    dayElem.classList.add("available-date");
+                    dayElem.classList.remove("past-date");
+                }
+
+                // ================= HOVER TOOLTIP LOGIC =================
+                dayElem.addEventListener("mouseenter", function (e) {
+                    tooltip.innerText = reason;
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                    tooltip.style.opacity = "1";
+                });
+
+                dayElem.addEventListener("mousemove", function (e) {
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                });
+
+                dayElem.addEventListener("mouseleave", function () {
+                    tooltip.style.opacity = "0";
+                });
+            }
+        });
+    }
+
+    // ================= DYNAMIC RE-ROUTING DATA ENGINE =================
+    async function fetchCalendarStatus() {
+        const table = tableSelect.value;
+        const time = timeSelect.value;
+
+        // Force user to pick both parameters before opening up scheduling
+        if (!table || !time) {
+            initCalendar([], true); // Standard lockout representation
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "<?= site_url('bookings/get_available_dates'); ?>", 
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: new URLSearchParams({
+                        table_number: table,
+                        booking_time: time
+                    })
+                }
+            );
+
+            const data = await response.json();
+            
+            if (data.allow_all) {
+                // For Tables 1-37 & 43-50: Pass Booked Dates and flag configuration open
+                initCalendar(data.booked_dates || [], true);
+            } else {
+                // For Tables 38-42: Pass Allowed Database Configuration Dates and drop allowAll configuration flag
+                initCalendar(data.available_dates || [], false);
+            }
+
+        } catch (error) {
+            console.error("Critical communications error with routing matrix:", error);
+            initCalendar([], true);
+        }
+    }
+
+    // ================= APPLICATION EVENT ATTACHMENTS =================
+    tableSelect.addEventListener("change", fetchCalendarStatus);
+    timeSelect.addEventListener("change", fetchCalendarStatus);
+
+    // Bootstrap run with blank array values to cleanly display system setup
+    initCalendar([], true);
+});
+</script> -->
+
+
+<div id="fp-tooltip" style="position: absolute; opacity: 0; background: #333; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px; pointer-events: none; z-index: 9999; transition: opacity 0.15s ease;"></div>
+
+<script>
+let calendarInstance = null;
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tooltip = document.getElementById("fp-tooltip");
+    const dateInput = document.getElementById("booking_date");
+    const hiddenDate = document.getElementById("hidden_date");
+    const displayDate = document.getElementById("display_date");
+    const tableSelect = document.getElementById("table_number");
+    const timeSelect = document.getElementById("booking_time");
+
+    // ================= MAIN CALENDAR COMPILER =================
+    function initCalendar(allowedDates = [], bookedDates = [], allowAll = true) {
+        
+        const allowedSet = new Set(allowedDates);
+        const bookedSet = new Set(bookedDates);
+
+        if (calendarInstance) {
+            calendarInstance.destroy();
+        }
+
+        calendarInstance = flatpickr(dateInput, {
+            inline: true,
+            appendTo: document.getElementById("inline_calendar_target"),
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            
+            // BLOCK ENGINE: Disable date selection if it's already booked, OR if it's not a valid holiday date
+            disable: [
+                function(date) {
+                    const dateStr = flatpickr.formatDate(date, "Y-m-d");
+                    
+                    // Rule 1: If it's already booked, it's always disabled
+                    if (bookedSet.has(dateStr)) return true;
+                    
+                    // Rule 2: If it's a holiday table, it must be explicitly within the allowed window
+                    if (!allowAll && !allowedSet.has(dateStr)) return true;
+                    
+                    return false;
+                }
+            ],
+
+            onChange: function (selectedDates, dateStr) {
+                hiddenDate.value = dateStr;
+                if (selectedDates.length) {
+                    displayDate.value = selectedDates[0].toLocaleDateString("en-US", {
+                        weekday: "short", year: "numeric", month: "short", day: "numeric"
+                    });
+                }
+            },
+
+            onDayCreate: function (dObj, dStr, fp, dayElem) {
+                if (!dayElem.dateObj) return;
+
+                const dateStr = fp.formatDate(dayElem.dateObj, "Y-m-d");
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const cellDate = new Date(dayElem.dateObj);
+                cellDate.setHours(0, 0, 0, 0);
+
+                const isPast = cellDate < today;
+                const isBooked = bookedSet.has(dateStr);
+                const isHolidayAllowed = allowAll || allowedSet.has(dateStr);
+
+                // Clean visual state resets before binding
+                dayElem.classList.remove("past-date", "booked-date", "available-date");
+
+                let reason = "Available to Book";
+
+                // ================= COLOR STATE RENDERING MANAGEMENT =================
+                if (isPast) {
+                    dayElem.classList.add("past-date");
+                    reason = "Past date";
+                } else if (isBooked) {
+                    // Confirmed reservation found: apply distinctive booked style (Red Color trigger)
+                    dayElem.classList.add("booked-date"); 
+                    reason = "Already booked";
+                } else if (!isHolidayAllowed) {
+                    // Out-of-bounds holiday cell rendering adjustment
+                    dayElem.classList.add("past-date"); 
+                    reason = "Holiday / July & September Only";
+                } else {
+                    dayElem.classList.add("available-date");
+                }
+
+                // ================= HOVER MOUSE EVENT LISTENERS =================
+                dayElem.addEventListener("mouseenter", function (e) {
+                    tooltip.innerText = reason;
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                    tooltip.style.opacity = "1";
+                });
+
+                dayElem.addEventListener("mousemove", function (e) {
+                    tooltip.style.left = e.pageX + "px";
+                    tooltip.style.top = (e.pageY - 20) + "px";
+                });
+
+                dayElem.addEventListener("mouseleave", function () {
+                    tooltip.style.opacity = "0";
+                });
+            }
+        });
+    }
+
+    // ================= CENTRALIZED AJAX DATA ENGINE =================
+    async function fetchCalendarStatus() {
+        const table = tableSelect.value;
+        const time = timeSelect.value;
+
+        if (!table || !time) {
+            initCalendar([], [], true); // Render a clean template until configuration drops
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "<?= site_url('bookings/get_available_dates'); ?>", 
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({
+                        table_number: table,
+                        booking_time: time
+                    })
+                }
+            );
+
+            const data = await response.json();
+            
+            // Pass all variables through the application router array mapping
+            initCalendar(
+                data.allowed_dates || [], 
+                data.booked_dates || [], 
+                data.allow_all !== false
+            );
+
+        } catch (error) {
+            console.error("Communication breakdown with booking array endpoints:", error);
+            initCalendar([], [], true);
+        }
+    }
+
+    // Event attachments
+    tableSelect.addEventListener("change", fetchCalendarStatus);
+    timeSelect.addEventListener("change", fetchCalendarStatus);
+
+    // Bootstrap execution block layout state
+    initCalendar([], [], true);
 });
 </script>
 
@@ -683,15 +1012,4 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
