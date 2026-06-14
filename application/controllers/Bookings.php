@@ -27,37 +27,7 @@ class Bookings extends CI_Controller {
         $this->load->view('bookings/index', $data);
     }
 
-public function get_booked_dates()
-{
-    $input = json_decode(file_get_contents("php://input"), true);
 
-    $table = $input['table_number'] ?? null;
-    $time  = $input['booking_time'] ?? null;
-
-    if (!$table || !$time) {
-        echo json_encode(['booked_dates' => []]);
-        return;
-    }
-
-    $this->db->select('booking_date');
-    $this->db->from('bookings');
-    $this->db->where('table_number', $table);
-    $this->db->where('booking_time', $time);
-    // $this->db->where('status !=', 'Cancelled');
-    $this->db->where('status', 'Confirmed');
-
-    $query = $this->db->get()->result();
-
-    $dates = [];
-
-    foreach ($query as $row) {
-        $dates[] = $row->booking_date;
-    }
-
-    echo json_encode([
-        'booked_dates' => $dates
-    ]);
-}
   public function create()
 {
     $customer_id = $this->session->userdata('customer_id');
@@ -66,28 +36,72 @@ public function get_booked_dates()
         redirect('login');
     }
 
-    // Get all booked dates
-    $booked_dates = $this->db
-        ->select('booking_date')
-        ->from('bookings')
-        ->group_by('booking_date')
-        ->get()
-        ->result_array();
-
-    // Convert to simple array
-    $disabled_dates = array_column($booked_dates, 'booking_date');
 
     $data['customer'] = $this->db
         ->where('customer_id', $customer_id)
         ->get('customers')
         ->row();
 
-    $data['disabled_dates'] = $disabled_dates;
     $data['tables'] = $this->db->get('tables')->result(); 
 
     $this->load->view('bookings/create', $data);
 }
+
+public function get_available_dates()
+{
+    // Parse JSON payload coming from the JavaScript Fetch API
+    $input = json_decode(file_get_contents("php://input"), true);
+
+    $table = $input['table_number'] ?? null;
+    $time  = $input['booking_time'] ?? null;
+
+    if (!$table || !$time) {
+        echo json_encode([
+            'allow_all'       => true,
+            'allowed_dates'   => [],
+            'booked_dates'    => []
+        ]);
+        return;
+    }
+
+    // 1. Fetch dates that are explicitly CONFIRMED/booked for this table at this time slot
+    $this->db->select('booking_date');
+    $this->db->from('bookings');
+    $this->db->where('table_number', $table);
+    $this->db->where('booking_time', $time);
+    $this->db->where('status', 'Confirmed');
     
+    $query_booked = $this->db->get()->result_array();
+    $booked_dates = array_column($query_booked, 'booking_date');
+
+    // 2. Evaluate Seasonal Restriction Rules (Tables 38 to 42)
+    $table_number = (int)$table;
+    if ($table_number >= 38 && $table_number <= 42) {
+        
+        $query_allowed = $this->db
+            ->select('available_date')
+            ->where('table_number', $table_number)
+            ->order_by('available_date', 'ASC')
+            ->get('table_available_dates')
+            ->result_array();
+
+        $allowed_dates = array_column($query_allowed, 'available_date');
+
+        echo json_encode([
+            'allow_all'       => false, // Forces restriction to holiday rules
+            'allowed_dates'   => $allowed_dates,
+            'booked_dates'    => $booked_dates // Frontend turns these matching values red
+        ]);
+        return;
+    }
+
+    // 3. Normal Tables configuration (1-37 and 43-50)
+    echo json_encode([
+        'allow_all'       => true, // Open calendar layout
+        'allowed_dates'   => [],
+        'booked_dates'    => $booked_dates
+    ]);
+}
  public function store()
 {
     $customer_id = $this->session->userdata('customer_id');
@@ -130,7 +144,7 @@ public function get_booked_dates()
     // =========================
     // TABLE CAPACITY RULE
     // =========================
-    if ($table_number >= 11 && $table_number <= 34) {
+    if ($table_number >= 11 && $table_number <= 39) {
         $max_guests = 10;
     } elseif (
         ($table_number >= 1 && $table_number <= 10) ||
