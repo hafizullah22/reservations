@@ -628,7 +628,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function getMaxGuests(tableNumber) {
         tableNumber = parseInt(tableNumber);
 
-        if (tableNumber >= 11 && tableNumber <= 34) {
+        if ((tableNumber >= 11 && tableNumber <= 34) || (tableNumber >= 35 && tableNumber <= 39)) {
             return 10;
         }
 
