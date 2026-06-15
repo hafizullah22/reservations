@@ -126,13 +126,47 @@ public function delete_table_rule($available_date)
     }
 }
 
-public function users()
+public function users($page = 0)
 {
-    $data['users'] = $this->db->get('customers')->result();
+    $this->load->library('pagination');
+
+    $per_page = 10;
+
+    // Total users
+    $config['total_rows'] = $this->db->count_all('customers');
+
+    $config['base_url'] = site_url('admin/users');
+    $config['per_page'] = $per_page;
+
+    // Pagination UI (Bootstrap style)
+    $config['full_tag_open'] = '<ul class="pagination">';
+    $config['full_tag_close'] = '</ul>';
+
+    $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
+    $config['num_tag_close'] = '</span></li>';
+
+    $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
+    $config['cur_tag_close'] = '</span></li>';
+
+    $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
+    $config['next_tag_close'] = '</span></li>';
+
+    $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
+    $config['prev_tag_close'] = '</span></li>';
+
+    $this->pagination->initialize($config);
+
+    // Get paginated users
+    $data['users'] = $this->db
+        ->limit($per_page, $page)
+        ->order_by('customer_id', 'DESC')
+        ->get('customers')
+        ->result();
+
+    $data['pagination'] = $this->pagination->create_links();
 
     $this->load->view('admin/users/all_users', $data);
 }
-
 public function bookings()
     {
         $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');

@@ -56,6 +56,58 @@ label {
     margin-bottom: 6px;
 }
 
+.pagination {
+    justify-content: center;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+/* EACH ITEM */
+.page-item {
+    list-style: none;
+}
+
+/* LINK STYLE */
+.page-link {
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: #111827;
+    background: #f3f4f6;
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+/* HOVER EFFECT */
+.page-link:hover {
+    background: #111827;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ACTIVE PAGE */
+.page-item.active .page-link {
+    background: linear-gradient(135deg, #111827, #374151);
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 14px rgba(17, 24, 39, 0.25);
+}
+
+/* DISABLED */
+.page-item.disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* MOBILE */
+@media (max-width:768px) {
+    .page-link {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+}
+
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
 
@@ -63,14 +115,7 @@ label {
         padding: 12px;
     }
 
-    .topbar {
-        text-align: center;
-    }
-
-    .topbar h4 {
-        font-size: 18px;
-    }
-
+    
     .row.align-items-end {
         flex-direction: column;
     }
@@ -168,10 +213,16 @@ label {
                 </tbody>
 
             </table>
+
+            <div class="mt-3">
+                <?= $pagination; ?>
+            </div>
+
         </div>
 
     </div>
 
 </div>
+
 
 <?php $this->load->view('admin/layout/footer'); ?>

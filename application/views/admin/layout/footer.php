@@ -1,7 +1,63 @@
-</div> <!-- main -->
+<!-- FOOTER -->
+<footer class="main-footer">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="footer-left">
+        © <?php echo date('Y'); ?> 
+        <strong>School Management System</strong> 
+        | All Rights Reserved
+    </div>
+
+    <div class="footer-right">
+        Developed by 
+        <a href="#" target="_blank" class="text-decoration-none">
+            Your Company
+        </a>
+    </div>
+
+</footer>
+
+<style> 
+
+    .main-footer{
+    background:#fff;
+    border-top:1px solid #dee2e6;
+    padding:12px 18px;
+    font-size:14px;
+    color:#6c757d;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:auto;
+}
+
+.main-footer strong{
+    color:#343a40;
+}
+
+.main-footer a{
+    color:#0d6efd;
+    font-weight:500;
+}
+
+@media(max-width:768px){
+    .main-footer{
+        flex-direction:column;
+        gap:5px;
+        text-align:center;
+    }
+}
+</style>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('show');
+    }
+</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -42,77 +98,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+
 <?php endif; ?>
 
+</div> <!-- Close .content-wrapper (Opened in header) -->
+</div> <!-- Close #app-wrapper / .wrapper (Opened in header) -->
 
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core Responsive Layout Engine Handles Sidebar States -->
 <script>
-function deleteRule(btn) {
+    function toggleSidebar() {
+        const wrapper = document.getElementById('app-wrapper');
+        
+        // Breakpoint matching CSS media query max-width: 992px
+        if (window.innerWidth <= 992) {
+            wrapper.classList.toggle('sidebar-open');
+            wrapper.classList.remove('sidebar-collapsed');
+        } else {
+            // Desktop behavior
+            wrapper.classList.toggle('sidebar-collapsed');
+            wrapper.classList.remove('sidebar-open');
+        }
+    }
 
-    const url = btn.getAttribute('data-url');
-    const row = btn.closest('tr');
-
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "This rule will be permanently deleted!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        reverseButtons: true
-    }).then((result) => {
-
-        if (result.isConfirmed) {
-
-            fetch(url, {
-                method: 'POST', // safer than GET
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-
-                if (data.status === 'success') {
-
-                    // remove row smoothly
-                    row.style.transition = "0.3s";
-                    row.style.opacity = "0";
-                    setTimeout(() => row.remove(), 300);
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted!',
-                        text: data.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-
-                } else {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed!',
-                        text: data.message || 'Something went wrong'
-                    });
-
-                }
-            })
-            .catch(() => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Server error occurred'
-                });
-            });
+    // Safeguard: Clear out mobile active layouts if user scales viewport up to desktop
+    window.addEventListener('resize', function() {
+        const wrapper = document.getElementById('app-wrapper');
+        if (window.innerWidth > 992) {
+            wrapper.classList.remove('sidebar-open');
         }
     });
-
-}
 </script>
-</body>
 
+</body>
 </html>
+
+
+
+
