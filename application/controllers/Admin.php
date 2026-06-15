@@ -14,7 +14,13 @@ class Admin extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('admin/dashboard');
+        $data['total_bookings'] = $this->db->count_all('bookings');
+        $data['total_customers'] = $this->db->count_all('customers');
+        $data['total_tables']    = $this->db->count_all('tables');
+        $data['recent_bookings'] = $this->db->order_by('booking_id', 'DESC')
+        ->JOIN('customers', 'bookings.customer_id = customers.customer_id', 'left')
+        ->limit(5)->get('bookings')->result();
+        $this->load->view('admin/dashboard',$data);
     }
 
     public function tables_rules()
@@ -119,6 +125,26 @@ public function delete_table_rule($available_date)
         ]);
     }
 }
+
+public function users()
+{
+    $data['users'] = $this->db->get('customers')->result();
+
+    $this->load->view('admin/users/all_users', $data);
+}
+
+public function bookings()
+    {
+        $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+        $this->db->from('bookings');
+        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+        $this->db->order_by('bookings.booking_id', 'DESC');
+
+        $data['bookings'] = $this->db->get()->result();
+
+        $this->load->view('/admin/bookings/index', $data);
+    }
+
 public function logout()
 {
     $this->session->sess_destroy();

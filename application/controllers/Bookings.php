@@ -24,7 +24,7 @@ class Bookings extends CI_Controller {
 
         $data['bookings'] = $this->db->get()->result();
 
-        $this->load->view('bookings/index', $data);
+        $this->load->view('admin/bookings/index', $data);
     }
 
 

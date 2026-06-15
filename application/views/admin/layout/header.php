@@ -77,7 +77,7 @@
 <div class="sidebar d-none d-lg-block">
     <h4 class="text-center py-3">Reservation Admin</h4>
 
-    <a href="<?= base_url('admin/dashboard') ?>">
+    <a href="<?= site_url('admin') ?>">
         <i class="fa fa-chart-line"></i> Dashboard
     </a>
 
@@ -85,7 +85,7 @@
         <i class="fa fa-calendar"></i> Bookings
     </a>
 
-    <a href="<?= site_url('admin/customers') ?>">
+    <a href="<?= site_url('admin/users') ?>">
         <i class="fa fa-users"></i> Customers
     </a>
 
@@ -117,7 +117,7 @@
 
     <div class="offcanvas-body p-0">
 
-        <a class="d-block p-3 border-bottom" href="<?= base_url('admin/dashboard') ?>">
+        <a class="d-block p-3 border-bottom" href="<?= site_url('admin') ?>">
             <i class="fa fa-chart-line"></i> Dashboard
         </a>
 
