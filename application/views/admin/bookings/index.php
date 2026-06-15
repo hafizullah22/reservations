@@ -41,6 +41,9 @@
     -webkit-overflow-scrolling: touch;
 }
 
+
+
+
 /* ================= MOBILE ================= */
 
 @media (max-width:768px) {
@@ -67,19 +70,44 @@
 
     <!-- ================= TOPBAR ================= -->
 
-    <div class="topbar d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+  <div class="topbar d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
 
-        <h4 class="mb-0">
+    <!-- TITLE -->
+    <!-- <h5 class="mb-0 fw-semibold">
+        All Bookings
+    </h5> -->
+
+    <!-- MENU BUTTON GROUP -->
+    <div class="btn-group booking-menu" role="group">
+
+        <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
+            <i class="fa fa-list"></i>
             All Bookings
-        </h4>
+        </a>
 
-        <a href="<?= site_url('bookings/create'); ?>"
-           class="btn btn-primary">
+        <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
             <i class="fa fa-plus"></i>
             New Booking
         </a>
 
+        <a href="<?= site_url('bookings/completed'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-check"></i>
+            Completed
+        </a>
+
+        <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-times"></i>
+            Canceled
+        </a>
+
+        <a href="<?= site_url('bookings/completed'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-check"></i>
+            Confirmed
+        </a>
+
     </div>
+
+</div>
 
     <!-- ================= FLASH MESSAGE ================= -->
 
