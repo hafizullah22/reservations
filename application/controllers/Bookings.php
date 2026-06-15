@@ -109,7 +109,7 @@ public function get_available_dates()
     ]);
 }
 
- public function store()
+public function store()
 {
     $customer_id = $this->session->userdata('customer_id');
 
@@ -149,7 +149,22 @@ public function get_available_dates()
     }
 
     // =========================
-    // TABLE CAPACITY RULE
+    // GET TABLE + TYPE
+    // =========================
+    $table = $this->db
+        ->where('table_number', $table_number)
+        ->get('tables')
+        ->row();
+
+    if (!$table) {
+        $this->session->set_flashdata('error', 'Invalid table selected.');
+        redirect('bookings/create');
+    }
+
+   
+
+    // =========================
+    // CAPACITY RULE
     // =========================
     if ($table_number >= 11 && $table_number <= 39) {
         $max_guests = 10;
@@ -189,11 +204,11 @@ public function get_available_dates()
     }
 
     // =========================
-    // MAX 2 CONFIRMED BOOKINGS
+    // MAX CONFIRMED BOOKINGS
     // =========================
     $confirmedCount = $this->db
         ->where('customer_id', $customer_id)
-        ->where('status', 'confirmed')
+        ->where('status', 'Confirmed')
         ->count_all_results('bookings');
 
     if ($confirmedCount >= 2) {
@@ -201,6 +216,31 @@ public function get_available_dates()
             'error',
             'You can only have a maximum of 2 confirmed reservations at one time.'
         );
+        redirect('bookings/create');
+    }
+
+    // =========================
+    // TIME SLOT LIMIT (FIXED SQL)
+    // =========================
+    $timeSlotCheck = $this->db->query("
+        SELECT b.booking_date, b.booking_time, COUNT(*) AS total_bookings
+        FROM bookings b
+        JOIN customers c ON b.customer_id = c.customer_id
+        WHERE c.role = 'Member'
+          AND c.customer_type = 'Non-Resident'
+          AND b.status = 'confirmed'
+          AND b.booking_date = '{$booking_date}'
+          AND b.booking_time = '{$booking_time}'
+        GROUP BY b.booking_date, b.booking_time
+    ");
+
+    $timeSlot = $timeSlotCheck->row();
+
+    if ($timeSlot && $timeSlot->total_bookings >= 20) {
+        $this->session->set_flashdata(
+    'error',
+    "You Cannot Book on {$booking_date} at {$booking_time} is fully booked. Only 20 bookings allowed per time slot. Please choose a different time or date."
+);
         redirect('bookings/create');
     }
 
@@ -213,15 +253,15 @@ public function get_available_dates()
     // INSERT BOOKING
     // =========================
     $insert = $this->db->insert('bookings', [
-        'reservation_no'  => $reservation_no, // remove if column doesn't exist
-        'customer_id'     => $customer_id,
-        'booking_date'    => $booking_date,
-        'booking_time'    => $booking_time,
-        'table_number'    => $table_number,
-        'number_of_guests'=> $guests,
-        'arrival_time'    => $arrival_time,
-        'guest_names'     => $guest_names,
-        'status'          => 'confirmed'
+        'reservation_no'   => $reservation_no,
+        'customer_id'      => $customer_id,
+        'booking_date'     => $booking_date,
+        'booking_time'     => $booking_time,
+        'table_number'     => $table_number,
+        'number_of_guests' => $guests,
+        'arrival_time'     => $arrival_time,
+        'guest_names'      => $guest_names,
+        'status'           => 'Confirmed'
     ]);
 
     if (!$insert) {
@@ -233,7 +273,7 @@ public function get_available_dates()
     }
 
     // =========================
-    // SEND EMAIL
+    // EMAIL
     // =========================
     try {
 
@@ -246,9 +286,7 @@ public function get_available_dates()
 
         $this->email->to($customer->email);
 
-        $this->email->subject(
-            'Reservation Confirmation #' . $reservation_no
-        );
+        $this->email->subject('Reservation Confirmation #' . $reservation_no);
 
         $message = '
         <html>
@@ -260,33 +298,13 @@ public function get_available_dates()
             <p>Your reservation has been successfully confirmed.</p>
 
             <table border="1" cellpadding="8" cellspacing="0">
-                <tr>
-                    <td><strong>Reservation No.</strong></td>
-                    <td>' . $reservation_no . '</td>
-                </tr>
-                <tr>
-                    <td><strong>Date</strong></td>
-                    <td>' . $booking_date . '</td>
-                </tr>
-                <tr>
-                    <td><strong>Time Slot</strong></td>
-                    <td>' . ucfirst($booking_time) . '</td>
-                </tr>
-                <tr>
-                    <td><strong>Table Number</strong></td>
-                    <td>' . $table_number . '</td>
-                </tr>
-                <tr>
-                    <td><strong>Arrival Time</strong></td>
-                    <td>' . $arrival_time . '</td>
-                </tr>
-                <tr>
-                    <td><strong>Guests</strong></td>
-                    <td>' . $guests . '</td>
-                </tr>
+                <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
+                <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
+                <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
+                <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
+                <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
+                <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
             </table>
-
-            <br>
 
             <p>Thank you for your reservation.</p>
         </body>
@@ -294,27 +312,21 @@ public function get_available_dates()
 
         $this->email->message($message);
 
-        if (!$this->email->send()) {
-            log_message(
-                'error',
-                'Booking Email Error: ' . $this->email->print_debugger()
-            );
-        }
+        $this->email->send();
 
     } catch (Exception $e) {
-        log_message('error', 'Email Exception: ' . $e->getMessage());
+        log_message('error', $e->getMessage());
     }
 
     // =========================
     // SUCCESS
     // =========================
-    $this->session->set_flashdata(
-        'success',
-        'Booking created successfully.'
-    );
-
+    $this->session->set_flashdata('success', 'Booking created successfully.');
     redirect('bookings');
 }
+
+
+
 
     public function delete($id)
     {
