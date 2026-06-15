@@ -52,10 +52,11 @@ public function get_available_dates()
     // Parse JSON payload coming from the JavaScript Fetch API
     $input = json_decode(file_get_contents("php://input"), true);
 
-    $table = $input['table_number'] ?? null;
+    $table = isset($input['table_number']) ? (int)$input['table_number'] : null;
     $time  = $input['booking_time'] ?? null;
 
-    if (!$table || !$time) {
+    // Fallback: If absolutely no table is provided, return empty
+    if (!$table) {
         echo json_encode([
             'allow_all'       => true,
             'allowed_dates'   => [],
@@ -64,44 +65,50 @@ public function get_available_dates()
         return;
     }
 
-    // 1. Fetch dates that are explicitly CONFIRMED/booked for this table at this time slot
-    $this->db->select('booking_date');
-    $this->db->from('bookings');
-    $this->db->where('table_number', $table);
-    $this->db->where('booking_time', $time);
-    $this->db->where('status', 'Confirmed');
-    
-    $query_booked = $this->db->get()->result_array();
-    $booked_dates = array_column($query_booked, 'booking_date');
+    $booked_dates = [];
+
+    // 1. Fetch booked dates ONLY if a time slot is explicitly selected
+    if ($time) {
+        $query_booked = $this->db->select('booking_date')
+            ->from('bookings')
+            ->where('table_number', $table)
+            ->where('booking_time', $time)
+            ->where('status', 'Confirmed')
+            ->get()
+            ->result_array();
+            
+        $booked_dates = array_column($query_booked, 'booking_date');
+    }
 
     // 2. Evaluate Seasonal Restriction Rules (Tables 38 to 42)
-    $table_number = (int)$table;
-    if ($table_number >= 38 && $table_number <= 42) {
+    if ($table >= 38 && $table <= 42) {
         
-        $query_allowed = $this->db
-            ->select('available_date')
-            ->where('table_number', $table_number)
+        $query_allowed = $this->db->select('available_date')
+            ->from('table_available_dates')
+            ->where('table_number', $table)
             ->order_by('available_date', 'ASC')
-            ->get('table_available_dates')
+            ->get()
             ->result_array();
 
         $allowed_dates = array_column($query_allowed, 'available_date');
 
         echo json_encode([
-            'allow_all'       => false, // Forces restriction to holiday rules
+            'allow_all'       => false, // Forces restriction to holiday/seasonal rules immediately
             'allowed_dates'   => $allowed_dates,
-            'booked_dates'    => $booked_dates // Frontend turns these matching values red
+            'booked_dates'    => $booked_dates 
         ]);
         return;
     }
 
-    // 3. Normal Tables configuration (1-37 and 43-50)
+    // 3. Normal Tables configuration (1-37 and 43+)
+    // If it's a normal table but no time is selected yet, we treat it as fully open until they pick a time.
     echo json_encode([
-        'allow_all'       => true, // Open calendar layout
+        'allow_all'       => true, 
         'allowed_dates'   => [],
         'booked_dates'    => $booked_dates
     ]);
 }
+
  public function store()
 {
     $customer_id = $this->session->userdata('customer_id');
