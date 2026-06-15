@@ -100,40 +100,44 @@ label {
     <!-- ================= FORM ================= -->
     <div class="card p-3">
 
-        <form action="<?php echo site_url('admin/set_table_rules'); ?>" method="post">
+       <form action="<?php echo site_url('admin/set_table_rules'); ?>" method="post">
 
-            <div class="row align-items-end g-3">
+    <div class="row align-items-end g-3">
 
-                <!-- TABLE TYPE -->
-                <div class="col-md-4 col-12">
-                    <label>Table Type</label>
-                    <select class="form-control bg-light" disabled>
-                        <option value="patio_38_42" selected>
-                            Patio Table (38–42)
-                        </option>
-                    </select>
-                </div>
+        <!-- TABLE TYPE (READONLY UI) -->
+        <div class="col-md-4 col-12">
+            <label>Table Type</label>
 
-                <!-- DATE -->
-                <div class="col-md-4 col-12">
-                    <label>Available Date</label>
-                    <input type="date"
-                           name="available_date"
-                           class="form-control"
-                           required>
-                </div>
+            <select class="form-control bg-light" disabled>
+                <option value="patio_38_42" selected>
+                    Patio Table (38–42)
+                </option>
+            </select>
 
-                <!-- BUTTON -->
-                <div class="col-md-4 col-12">
-                    <label class="d-none d-md-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary w-100">
-                        Save Rule
-                    </button>
-                </div>
+            <!-- IMPORTANT: hidden field for submit -->
+            <input type="hidden" name="table_group" value="patio_38_42">
+        </div>
 
-            </div>
+        <!-- DATE -->
+        <div class="col-md-4 col-12">
+            <label>Available Date</label>
+            <input type="date"
+                   name="available_date"
+                   class="form-control"
+                   required>
+        </div>
 
-        </form>
+        <!-- BUTTON -->
+        <div class="col-md-4 col-12">
+            <label class="d-none d-md-block">&nbsp;</label>
+            <button type="submit" class="btn btn-primary w-100">
+                Save Rule
+            </button>
+        </div>
+
+    </div>
+
+</form>
 
     </div>
 

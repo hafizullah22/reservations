@@ -36,17 +36,52 @@ class Admin extends CI_Controller {
     $this->load->view('admin/tables_rules', $data);
 }
 
-  public function set_table_rules()
+public function set_table_rules()
 {
-    $table_group   = $this->input->post('table_group');
+    $table_group    = $this->input->post('table_group');
     $available_date = $this->input->post('available_date');
 
-    $table_numbers = [];
+    // =========================
+    // 1. VALIDATION
+    // =========================
+    if (empty($table_group) || empty($available_date)) {
 
-    if ($table_group == 'patio_38_42') {
-        $table_numbers = range(38, 42);
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Missing Data!');
+        $this->session->set_flashdata('msg_text', 'Table group and date are required.');
+
+        return redirect('admin/tables_rules');
     }
 
+    // =========================
+    // 2. TABLE GROUP MAP
+    // =========================
+    $table_numbers = [];
+
+    switch ($table_group) {
+
+        case 'patio_38_42':
+            $table_numbers = range(38, 42);
+            break;
+
+        default:
+            $table_numbers = [];
+            break;
+    }
+
+    // If invalid group
+    if (empty($table_numbers)) {
+
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Invalid Group!');
+        $this->session->set_flashdata('msg_text', 'No tables found for selected group.');
+
+        return redirect('admin/tables_rules');
+    }
+
+    // =========================
+    // 3. INSERT LOGIC
+    // =========================
     $inserted = 0;
     $skipped  = 0;
 
@@ -58,19 +93,21 @@ class Admin extends CI_Controller {
         ])->count_all_results('table_available_dates');
 
         if (!$exists) {
+
             $this->db->insert('table_available_dates', [
                 'table_number'   => $table_number,
                 'available_date' => $available_date
             ]);
 
             $inserted++;
+
         } else {
             $skipped++;
         }
     }
 
     // =========================
-    // Flash Messages (Correct)
+    // 4. FLASH MESSAGES
     // =========================
     if ($inserted > 0) {
 
@@ -78,16 +115,16 @@ class Admin extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Success!');
         $this->session->set_flashdata(
             'msg_text',
-            "$inserted table rule(s) added successfully."
+            "$inserted Patio Table rule(s) added successfully."
         );
 
-    } elseif ($skipped > 0) {
+    } elseif ($skipped > 0 && $inserted == 0) {
 
         $this->session->set_flashdata('msg_type', 'warning');
         $this->session->set_flashdata('msg_title', 'Already Exists!');
         $this->session->set_flashdata(
             'msg_text',
-            "No new records added. $skipped rule(s) already exist."
+            "No new records inserted. $skipped Patio Table rule(s) already exist."
         );
 
     } else {
@@ -96,11 +133,11 @@ class Admin extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Failed!');
         $this->session->set_flashdata(
             'msg_text',
-            'No table rules were inserted.'
+            'No Patio Table rules were inserted.'
         );
     }
 
-   redirect('admin/tables_rules');
+    return redirect('admin/tables_rules');
 }
 
 public function delete_table_rule($available_date)
@@ -167,6 +204,8 @@ public function users($page = 0)
 
     $this->load->view('admin/users/all_users', $data);
 }
+
+
 public function bookings()
     {
         $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');

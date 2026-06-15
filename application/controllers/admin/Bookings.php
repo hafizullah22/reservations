@@ -17,14 +17,14 @@ class Bookings extends CI_Controller {
     // =========================
     public function index()
     {
-        $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+     $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
         $this->db->from('bookings');
         $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
         $this->db->order_by('bookings.booking_id', 'DESC');
 
         $data['bookings'] = $this->db->get()->result();
 
-        $this->load->view('bookings/index', $data);
+        $this->load->view('/admin/bookings/index', $data);
     }
 
 
@@ -498,14 +498,113 @@ public function store()
 
 
 
-public function delete_all()
+ public function completed()
+    {
+     $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+        $this->db->from('bookings');
+        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+        $this->db->where('bookings.status', 'Completed');   
+        $this->db->order_by('bookings.booking_id', 'DESC');
+
+        $data['bookings'] = $this->db->get()->result();
+
+        $this->load->view('/admin/bookings/completed', $data);
+    }
+
+
+     public function cancelled()
+    {
+     $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+        $this->db->from('bookings');
+        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+        $this->db->where('bookings.status', 'Cancelled');   
+        $this->db->order_by('bookings.booking_id', 'DESC');
+
+        $data['bookings'] = $this->db->get()->result();
+
+        $this->load->view('/admin/bookings/cancelled', $data);
+    }
+
+
+ public function booking_details()
 {
-    $this->db->empty_table('bookings');
+    $booking_id = $this->input->get('q', true);
 
-    $this->session->set_flashdata('success', 'All bookings deleted successfully!');
-} 
+    // sanitize → force integer
+    $booking_id = (int) $booking_id;
 
+    if ($booking_id <= 0) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Invalid ID');
+        $this->session->set_flashdata('msg_text', 'Please enter a valid Booking ID.');
 
+        return redirect('admin/bookings');
+    }
 
+    $this->db->select('
+        bookings.*,
+        customers.first_name AS customer_name,
+        customers.phone
+    ');
+
+    $this->db->from('bookings');
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+
+    // INT safe match
+    $this->db->where('bookings.booking_id', $booking_id);
+
+    $booking = $this->db->get()->row();
+
+    if (!$booking) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Not Found');
+        $this->session->set_flashdata('msg_text', 'No booking found with ID: ' . $booking_id);
+
+        return redirect('admin/bookings');
+    }
+
+    $data['booking'] = $booking;
+
+    $this->load->view('admin/bookings/booking_details', $data);
+}
+
+public function ajax_booking_search()
+{
+    $q = $this->input->get('q', true);
+    $q = trim($q);
+
+    $this->db->select('
+        bookings.*,
+        customers.first_name AS customer_name,
+        customers.phone
+    ');
+
+    $this->db->from('bookings');
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+
+    if (!empty($q)) {
+
+        $this->db->group_start();
+
+        if (is_numeric($q)) {
+            $this->db->where('bookings.booking_id', (int)$q);
+            $this->db->or_like('customers.phone', $q);
+        } else {
+            $this->db->like('customers.first_name', $q);
+        }
+
+        $this->db->group_end();
+    }
+
+    $this->db->order_by('bookings.booking_id', 'DESC');
+
+    $bookings = $this->db->get()->result();
+
+    // Return JSON
+    echo json_encode([
+        'status' => 'success',
+        'data'   => $bookings
+    ]);
+}
 
 }//End of Bookings controller

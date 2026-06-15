@@ -262,8 +262,20 @@ $username = $this->session->userdata('username');
                 <a href="<?php echo site_url('admin/bookings');?>">
                     <i class="bi bi-person-badge"></i> Bookings
                 </a>
+                <a href="<?php echo site_url('admin/bookings_report');?>">
+                    <i class="bi bi-person-badge"></i> Bookings Report
+                </a>
                 <a href="<?php echo site_url('admin/tables_rules');?>">
                     <i class="bi bi-building"></i> Patio Table Rules
+                </a>
+                <a href="<?php echo site_url('admin/tables_rules');?>">
+                    <i class="bi bi-building"></i> Tax Retun
+                </a>
+                <a href="<?php echo site_url('admin/tables_rules');?>">
+                    <i class="bi bi-building"></i> Trustee Meeting
+                </a>
+                <a href="<?php echo site_url('admin/tables_rules');?>">
+                    <i class="bi bi-building"></i> Financial Report
                 </a>
                 <a href="<?php echo site_url('admin/logout');?>">
                     <i class="bi bi-journal"></i> Logout 

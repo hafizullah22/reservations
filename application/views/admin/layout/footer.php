@@ -132,6 +132,73 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 </script>
 
+
+<script>
+function deleteRule(btn)
+{
+    let url = btn.getAttribute('data-url');
+    let row = btn.closest('tr');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This rule will be permanently deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status === 'success') {
+
+                    // remove row instantly
+                    row.remove();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: data.message || 'Rule deleted successfully',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                } else {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        text: data.message || 'Something went wrong'
+                    });
+
+                }
+
+            })
+            .catch(() => {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Server error occurred'
+                });
+
+            });
+        }
+    });
+}
+</script>
+
 </body>
 </html>
 

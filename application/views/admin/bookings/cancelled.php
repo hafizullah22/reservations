@@ -15,58 +15,33 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
 }
 
+/* ================= MENU ================= */
+
 .booking-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     background: #f3f4f6;
     padding: 8px;
     border-radius: 12px;
 }
 
-/* BUTTON STYLE */
 .booking-menu .btn {
     border-radius: 10px;
     font-weight: 500;
     white-space: nowrap;
+    transition: .2s;
 }
 
-/* ACTIVE STATE */
-.booking-menu .btn.active {
+.booking-menu .btn i {
+    margin-right: 5px;
+}
+
+.booking-menu .btn.active,
+.booking-menu .btn:hover {
     background: #111827;
     color: #fff;
-}
-
-/* SEARCH */
-.booking-search {
-    display: flex;
-    align-items: center;
-}
-
-.booking-search input {
-    width: 250px;
-    height:40px;
-    border-radius: 10px;
-    border: 1px solid #000;
-}
-
-/* MOBILE */
-@media (max-width:768px) {
-
-    .booking-menu {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-
-    .booking-search {
-        width: 100%;
-    }
-
-    .booking-search input {
-        width: 100%;
-    }
-
-    .booking-search button {
-        width: 100%;
-    }
+    border-color: #111827;
 }
 
 /* ================= CARD ================= */
@@ -126,52 +101,34 @@
 
 <div class="topbar">
 
-   <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
+    <div class="booking-menu">
 
-    <!-- NAV BUTTONS -->
-    <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
-        <i class="fa fa-list"></i> All Bookings
-    </a>
+        <a href="<?= site_url('bookings'); ?>"
+           class="btn btn-outline-dark">
+            <i class="fa fa-list"></i> All Bookings
+        </a>
 
-    <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-plus"></i> New Booking
-    </a>
+        <a href="<?= site_url('bookings/create'); ?>"
+           class="btn btn-outline-dark">
+            <i class="fa fa-plus"></i> New Booking
+        </a>
 
-    <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check"></i> Completed
-    </a>
+        <a href="<?= site_url('bookings/completed'); ?>"
+           class="btn btn-outline-dark ">
+            <i class="fa fa-check"></i> Completed
+        </a>
 
-    <a href="<?= site_url('bookings/cancelled'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-times"></i> Cancelled
-    </a>
+        <a href="<?= site_url('bookings/cancelled'); ?>"
+           class="btn btn-outline-dark active">
+            <i class="fa fa-times"></i> Cancelled
+        </a>
 
-    <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check-circle"></i> Confirmed
-    </a>
+        <a href="<?= site_url('bookings/confirmed'); ?>"
+           class="btn btn-outline-dark">
+            <i class="fa fa-check-circle"></i> Confirmed
+        </a>
 
-    <!-- SEARCH FORM -->
-    <!-- <form action="<?= site_url('admin/bookings/booking_details'); ?>" method="GET"
-          class="d-flex ms-auto booking-search">
-
-        <input type="text"
-               name="q"
-               class="form-control form-control-sm"
-               placeholder="Enter Booking ID">
-
-        <button type="submit" class="btn btn-dark btn-sm ms-2">
-            <i class="fa fa-search"></i>
-        </button>
-
-    </form> -->
-
-    <div class="booking-search ms-auto">
-    <input type="text"
-           id="liveSearch"
-           class="form-control form-control-sm"
-           placeholder="Search ID, Name, Phone...">
-</div>
-
-</div>
+    </div>
 
 </div>
 
@@ -206,7 +163,7 @@
                     </tr>
                 </thead>
 
-                <tbody id="bookingTableBody">
+                <tbody>
 
                 <?php if(!empty($bookings)): ?>
 
@@ -258,11 +215,7 @@
 
                 <?php endif; ?>
 
-                
-
                 </tbody>
-
-
 
             </table>
 
@@ -331,60 +284,6 @@ function deleteBooking(btn)
 
     });
 }
-</script>
-
-
-<script>
-let timer = null;
-
-document.getElementById('liveSearch').addEventListener('keyup', function () {
-
-    clearTimeout(timer);
-
-    let query = this.value;
-
-    timer = setTimeout(() => {
-
-        fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q=" + query)
-            .then(res => res.json())
-            .then(data => {
-
-                let html = '';
-
-                if (data.data.length > 0) {
-
-                    data.data.forEach(b => {
-
-                        html += `
-                            <tr>
-                                <td>${b.booking_id}</td>
-                                <td>${b.customer_name ?? ''}</td>
-                                <td>${b.booking_date}</td>
-                                <td>${b.booking_time}</td>
-                                <td>${b.table_number}</td>
-                                <td>${b.number_of_guests}</td>
-                                <td>${b.status}</td>
-                                <td><a href="">Edit</a></td>
-                            </tr>
-                        `;
-                    });
-
-                } else {
-                    html = `
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">
-                                No results found
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                document.getElementById('bookingTableBody').innerHTML = html;
-
-            });
-
-    }, 300); // debounce
-});
 </script>
 
 <?php $this->load->view('admin/layout/footer'); ?>

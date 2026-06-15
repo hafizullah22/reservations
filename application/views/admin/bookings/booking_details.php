@@ -150,7 +150,7 @@
     </a>
 
     <!-- SEARCH FORM -->
-    <!-- <form action="<?= site_url('admin/bookings/booking_details'); ?>" method="GET"
+    <form action="<?= site_url('admin/bookings/booking_details'); ?>" method="GET"
           class="d-flex ms-auto booking-search">
 
         <input type="text"
@@ -162,14 +162,7 @@
             <i class="fa fa-search"></i>
         </button>
 
-    </form> -->
-
-    <div class="booking-search ms-auto">
-    <input type="text"
-           id="liveSearch"
-           class="form-control form-control-sm"
-           placeholder="Search ID, Name, Phone...">
-</div>
+    </form>
 
 </div>
 
@@ -206,16 +199,16 @@
                     </tr>
                 </thead>
 
-                <tbody id="bookingTableBody">
+                <tbody>
 
-                <?php if(!empty($bookings)): ?>
+                <?php if(!empty($booking)): ?>
 
-                    <?php foreach($bookings as $b): ?>
+                    
 
                         <?php
                         $badge = 'secondary';
 
-                        switch(strtolower($b->status)) {
+                        switch(strtolower($booking->status)) {
                             case 'confirmed': $badge = 'success'; break;
                             case 'pending': $badge = 'warning'; break;
                             case 'cancelled': $badge = 'danger'; break;
@@ -224,29 +217,29 @@
                         ?>
 
                         <tr>
-                            <td><?= $b->booking_id; ?></td>
-                            <td><?= $b->customer_name; ?></td>
-                            <td><?= date('M d, Y', strtotime($b->booking_date)); ?></td>
-                            <td><?= $b->booking_time; ?></td>
-                            <td><?= $b->table_number; ?></td>
-                            <td><?= $b->number_of_guests; ?></td>
+                            <td><?= $booking->booking_id; ?></td>
+                            <td><?= $booking->customer_name; ?></td>
+                            <td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td>
+                            <td><?= $booking->booking_time; ?></td>
+                            <td><?= $booking->table_number; ?></td>
+                            <td><?= $booking->number_of_guests; ?></td>
 
                             <td>
                                 <span class="badge bg-<?= $badge; ?>">
-                                    <?= ucfirst($b->status); ?>
+                                    <?= ucfirst($booking->status); ?>
                                 </span>
                             </td>
 
                             <td>
                                 <button class="btn btn-danger btn-sm"
                                         onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('bookings/delete/'.$b->booking_id); ?>">
+                                        data-url="<?= site_url('bookings/delete/'.$booking->booking_id); ?>">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
 
-                    <?php endforeach; ?>
+                  
 
                 <?php else: ?>
 
@@ -258,11 +251,7 @@
 
                 <?php endif; ?>
 
-                
-
                 </tbody>
-
-
 
             </table>
 
@@ -331,60 +320,6 @@ function deleteBooking(btn)
 
     });
 }
-</script>
-
-
-<script>
-let timer = null;
-
-document.getElementById('liveSearch').addEventListener('keyup', function () {
-
-    clearTimeout(timer);
-
-    let query = this.value;
-
-    timer = setTimeout(() => {
-
-        fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q=" + query)
-            .then(res => res.json())
-            .then(data => {
-
-                let html = '';
-
-                if (data.data.length > 0) {
-
-                    data.data.forEach(b => {
-
-                        html += `
-                            <tr>
-                                <td>${b.booking_id}</td>
-                                <td>${b.customer_name ?? ''}</td>
-                                <td>${b.booking_date}</td>
-                                <td>${b.booking_time}</td>
-                                <td>${b.table_number}</td>
-                                <td>${b.number_of_guests}</td>
-                                <td>${b.status}</td>
-                                <td><a href="">Edit</a></td>
-                            </tr>
-                        `;
-                    });
-
-                } else {
-                    html = `
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">
-                                No results found
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                document.getElementById('bookingTableBody').innerHTML = html;
-
-            });
-
-    }, 300); // debounce
-});
 </script>
 
 <?php $this->load->view('admin/layout/footer'); ?>
