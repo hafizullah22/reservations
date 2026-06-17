@@ -133,7 +133,7 @@
         <i class="fa fa-list"></i> All Bookings
     </a>
 
-    <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
+    <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
         <i class="fa fa-plus"></i> New Booking
     </a>
 

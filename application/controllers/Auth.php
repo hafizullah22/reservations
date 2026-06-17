@@ -43,8 +43,11 @@ class Auth extends CI_Controller {
 
     // Check user exists
     if (!$user) {
-        $this->session->set_flashdata('error', 'Invalid email or password.');
-        redirect('login');
+        
+            $this->session->set_flashdata('msg_type', 'error');
+            $this->session->set_flashdata('msg_title', 'Error');
+            $this->session->set_flashdata('msg_text', 'You Are Not Authorized Person');
+            redirect('auth/admin');
     }
 
     // Verify password
@@ -80,12 +83,11 @@ class Auth extends CI_Controller {
     
     else {
 
-        $this->session->set_flashdata(
-            'error',
-            'You are not authorized to access the Admin Panel.'
-        );
+            $this->session->set_flashdata('msg_type', 'error');
+            $this->session->set_flashdata('msg_title', 'Error');
+            $this->session->set_flashdata('msg_text', 'You Are Not Authorized Person');
 
-        redirect('/');
+        redirect('admin');
     }
 }
 
@@ -108,31 +110,31 @@ class Auth extends CI_Controller {
         $this->load->view('bookings/create', $data);
     }
 
-public function logout()
-{
-    $role = $this->session->userdata('role');
+    public function logout()
+    {
+        $role = $this->session->userdata('role');
 
-    // Clear session data
-    $this->session->unset_userdata([
-        'user_id',
-        'name',
-        'email',
-        'phone',
-        'role',
-        'logged_in'
-    ]);
+        // Clear session data
+        $this->session->unset_userdata([
+            'user_id',
+            'name',
+            'email',
+            'phone',
+            'role',
+            'logged_in'
+        ]);
 
-    $this->session->sess_destroy();
+        $this->session->sess_destroy();
 
-    // Redirect based on role
-    if ($role == 'Admin') {
-        redirect('auth/admin');
-    } elseif ($role == 'Member') {
-        redirect('auth/myaccount');
-    } else {
-        redirect('login');
+        // Redirect based on role
+        if ($role == 'Admin') {
+            redirect('auth/admin');
+        } elseif ($role == 'Member') {
+            redirect('auth/myaccount');
+        } else {
+            redirect('login');
+        }
     }
-}
 
    
 }

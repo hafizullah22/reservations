@@ -57,5 +57,5 @@ $route['bookings/get-booked-dates'] = 'bookings/get_booked_dates';
 $route['admin'] = 'auth/admin';
 $route['myaccount']='auth/myaccount';
 
-
+// $route['admin/bookings/get_customer'] = 'admin/bookings/get_customer';
 //$route['admin/dashboard/dashboard']

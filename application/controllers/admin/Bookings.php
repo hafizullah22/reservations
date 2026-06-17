@@ -12,14 +12,14 @@ class Bookings extends CI_Controller {
         $this->load->helper(['url', 'form']);
 
         // 🔒 Block access if not logged in
-    if (!$this->session->userdata('logged_in')) {
+        // if (!$this->session->userdata('logged_in')) {
 
-        $this->session->set_flashdata('msg_type', 'error');
-        $this->session->set_flashdata('msg_title', 'Unauthorize!');
-        $this->session->set_flashdata('msg_text', 'You are not authorized to access');
+        //     $this->session->set_flashdata('msg_type', 'error');
+        //     $this->session->set_flashdata('msg_title', 'Unauthorize!');
+        //     $this->session->set_flashdata('msg_text', 'You are not authorized to access');
 
-        redirect('auth/admin');
-    }
+        //     redirect('auth/admin');
+        // }
     }
    
     public function index()
@@ -34,98 +34,107 @@ class Bookings extends CI_Controller {
         $this->load->view('/admin/bookings/index', $data);
     }
 
-
-  public function create()
+   public function get_customer()
 {
-    $customer_id = $this->session->userdata('customer_id');
+    $customer_id = $this->input->post('customer_id');
 
-    if (!$customer_id) {
-        redirect('login');
-    }
-
-
-    $data['customer'] = $this->db
+    $customer = $this->db
         ->where('customer_id', $customer_id)
         ->get('customers')
         ->row();
 
-    $data['tables'] = $this->db->get('tables')->result(); 
-
-    $this->load->view('admin/bookings/create', $data);
+    if ($customer) {
+        echo json_encode([
+            'status' => true,
+            'customer' => $customer
+        ]);
+    } else {
+        echo json_encode([
+            'status' => false,
+            'msg' => 'Customer not found'
+        ]);
+    }
 }
 
-public function get_available_dates()
-{
-    // Parse JSON payload coming from the JavaScript Fetch API
-    $input = json_decode(file_get_contents("php://input"), true);
+    public function create()
+    {
+        $data['tables'] = $this->db->get('tables')->result();
 
-    $table = isset($input['table_number']) ? (int)$input['table_number'] : null;
-    $time  = $input['booking_time'] ?? null;
-
-    // Fallback: If absolutely no table is provided, return empty
-    if (!$table) {
-        echo json_encode([
-            'allow_all'       => true,
-            'allowed_dates'   => [],
-            'booked_dates'    => []
-        ]);
-        return;
+        $this->load->view('admin/bookings/create', $data);
     }
 
-    $booked_dates = [];
 
-    // 1. Fetch booked dates ONLY if a time slot is explicitly selected
-    if ($time) {
-        $query_booked = $this->db->select('booking_date')
-            ->from('bookings')
-            ->where('table_number', $table)
-            ->where('booking_time', $time)
-            ->where('status', 'Confirmed')
-            ->get()
-            ->result_array();
+    public function get_available_dates()
+    {
+        // Parse JSON payload coming from the JavaScript Fetch API
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        $table = isset($input['table_number']) ? (int)$input['table_number'] : null;
+        $time  = $input['booking_time'] ?? null;
+
+        // Fallback: If absolutely no table is provided, return empty
+        if (!$table) {
+            echo json_encode([
+                'allow_all'       => true,
+                'allowed_dates'   => [],
+                'booked_dates'    => []
+            ]);
+            return;
+        }
+
+        $booked_dates = [];
+
+        // 1. Fetch booked dates ONLY if a time slot is explicitly selected
+        if ($time) {
+            $query_booked = $this->db->select('booking_date')
+                ->from('bookings')
+                ->where('table_number', $table)
+                ->where('booking_time', $time)
+                ->where('status', 'Confirmed')
+                ->get()
+                ->result_array();
+                
+            $booked_dates = array_column($query_booked, 'booking_date');
+        }
+
+        // 2. Evaluate Seasonal Restriction Rules (Tables 38 to 42)
+        if ($table >= 38 && $table <= 42) {
             
-        $booked_dates = array_column($query_booked, 'booking_date');
-    }
+            $query_allowed = $this->db->select('available_date')
+                ->from('table_available_dates')
+                ->where('table_number', $table)
+                ->order_by('available_date', 'ASC')
+                ->get()
+                ->result_array();
 
-    // 2. Evaluate Seasonal Restriction Rules (Tables 38 to 42)
-    if ($table >= 38 && $table <= 42) {
-        
-        $query_allowed = $this->db->select('available_date')
-            ->from('table_available_dates')
-            ->where('table_number', $table)
-            ->order_by('available_date', 'ASC')
-            ->get()
-            ->result_array();
+            $allowed_dates = array_column($query_allowed, 'available_date');
 
-        $allowed_dates = array_column($query_allowed, 'available_date');
+            echo json_encode([
+                'allow_all'       => false, // Forces restriction to holiday/seasonal rules immediately
+                'allowed_dates'   => $allowed_dates,
+                'booked_dates'    => $booked_dates 
+            ]);
+            return;
+        }
 
+        // 3. Normal Tables configuration (1-37 and 43+)
+        // If it's a normal table but no time is selected yet, we treat it as fully open until they pick a time.
         echo json_encode([
-            'allow_all'       => false, // Forces restriction to holiday/seasonal rules immediately
-            'allowed_dates'   => $allowed_dates,
-            'booked_dates'    => $booked_dates 
+            'allow_all'       => true, 
+            'allowed_dates'   => [],
+            'booked_dates'    => $booked_dates
         ]);
-        return;
     }
-
-    // 3. Normal Tables configuration (1-37 and 43+)
-    // If it's a normal table but no time is selected yet, we treat it as fully open until they pick a time.
-    echo json_encode([
-        'allow_all'       => true, 
-        'allowed_dates'   => [],
-        'booked_dates'    => $booked_dates
-    ]);
-}
-
 public function store()
 {
-    $customer_id = $this->session->userdata('customer_id');
+    $customer_id = $this->input->post('customer_id');
 
     if (!$customer_id) {
         redirect('login');
     }
 
     // =========================
-    // CUSTOMER INFO
+    // CUSTOMER VALIDATION
     // =========================
     $customer = $this->db
         ->where('customer_id', $customer_id)
@@ -152,11 +161,11 @@ public function store()
     // =========================
     if (empty($booking_date) || empty($booking_time) || empty($table_number)) {
         $this->session->set_flashdata('error', 'All fields are required.');
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
 
     // =========================
-    // GET TABLE + TYPE
+    // TABLE VALIDATION
     // =========================
     $table = $this->db
         ->where('table_number', $table_number)
@@ -165,10 +174,8 @@ public function store()
 
     if (!$table) {
         $this->session->set_flashdata('error', 'Invalid table selected.');
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
-
-   
 
     // =========================
     // CAPACITY RULE
@@ -182,7 +189,7 @@ public function store()
         $max_guests = 15;
     } else {
         $this->session->set_flashdata('error', 'Invalid table number.');
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
 
     if ($guests > $max_guests) {
@@ -190,16 +197,16 @@ public function store()
             'error',
             "Maximum {$max_guests} guests allowed for this table."
         );
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
 
     // =========================
-    // DUPLICATE TABLE CHECK
+    // DUPLICATE BOOKING CHECK
     // =========================
     $exists = $this->db->where([
-        'table_number' => $table_number,
-        'booking_date' => $booking_date,
-        'booking_time' => $booking_time
+        'table_number'  => $table_number,
+        'booking_date'  => $booking_date,
+        'booking_time'  => $booking_time
     ])->count_all_results('bookings');
 
     if ($exists > 0) {
@@ -207,15 +214,15 @@ public function store()
             'error',
             'This table is already booked for the selected time.'
         );
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
 
     // =========================
-    // MAX CONFIRMED BOOKINGS
+    // MAX ACTIVE BOOKINGS PER CUSTOMER
     // =========================
     $confirmedCount = $this->db
         ->where('customer_id', $customer_id)
-        ->where('status', 'Confirmed')
+        ->where('status', 'confirmed')
         ->count_all_results('bookings');
 
     if ($confirmedCount >= 2) {
@@ -223,38 +230,35 @@ public function store()
             'error',
             'You can only have a maximum of 2 confirmed reservations at one time.'
         );
-        redirect('bookings/create');
+        redirect('admin/bookings/create');
     }
 
     // =========================
-    // TIME SLOT LIMIT (FIXED SQL)
+    // SLOT LIMIT CHECK (SAFE QUERY)
     // =========================
-    $timeSlotCheck = $this->db->query("
-        SELECT b.booking_date, b.booking_time, COUNT(*) AS total_bookings
-        FROM bookings b
-        JOIN customers c ON b.customer_id = c.customer_id
-        WHERE c.role = 'Member'
-          AND c.customer_type = 'Non-Resident'
-          AND b.status = 'confirmed'
-          AND b.booking_date = '{$booking_date}'
-          AND b.booking_time = '{$booking_time}'
-        GROUP BY b.booking_date, b.booking_time
-    ");
+    $this->db->select('COUNT(*) AS total_bookings');
+    $this->db->from('bookings b');
+    $this->db->join('customers c', 'b.customer_id = c.customer_id');
+    $this->db->where('c.role', 'Member');
+    $this->db->where('c.customer_type', 'Non-Resident');
+    $this->db->where('b.status', 'confirmed');
+    $this->db->where('b.booking_date', $booking_date);
+    $this->db->where('b.booking_time', $booking_time);
 
-    $timeSlot = $timeSlotCheck->row();
+    $timeSlot = $this->db->get()->row();
 
     if ($timeSlot && $timeSlot->total_bookings >= 20) {
         $this->session->set_flashdata(
-    'error',
-    "You Cannot Book on {$booking_date} at {$booking_time} is fully booked. Only 20 bookings allowed per time slot. Please choose a different time or date."
-);
-        redirect('bookings/create');
+            'error',
+            "This slot is fully booked (20 limit reached). Please choose another time."
+        );
+        redirect('admin/bookings/create');
     }
 
     // =========================
-    // BOOKING REFERENCE
+    // RESERVATION NO
     // =========================
-    $reservation_no = 'RES-' . date('Ymd') . '-' . rand(1000, 9999);
+    $reservation_no = 'RES-' . date('YmdHis') . '-' . mt_rand(1000, 9999);
 
     // =========================
     // INSERT BOOKING
@@ -268,7 +272,7 @@ public function store()
         'number_of_guests' => $guests,
         'arrival_time'     => $arrival_time,
         'guest_names'      => $guest_names,
-        'status'           => 'Confirmed'
+        'status'           => 'confirmed'
     ]);
 
     if (!$insert) {
@@ -276,64 +280,16 @@ public function store()
             'error',
             'Unable to create booking. Please try again.'
         );
-        redirect('bookings/create');
-    }
-
-    // =========================
-    // EMAIL
-    // =========================
-    try {
-
-        $this->load->library('email');
-
-        $this->email->from(
-            'hafizulah322@gmail.com',
-            'Table Reservation System'
-        );
-
-        $this->email->to($customer->email);
-
-        $this->email->subject('Reservation Confirmation #' . $reservation_no);
-
-        $message = '
-        <html>
-        <body>
-            <h2>Reservation Confirmed</h2>
-
-            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
-
-            <p>Your reservation has been successfully confirmed.</p>
-
-            <table border="1" cellpadding="8" cellspacing="0">
-                <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
-                <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
-                <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
-                <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
-                <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
-                <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
-            </table>
-
-            <p>Thank you for your reservation.</p>
-        </body>
-        </html>';
-
-        $this->email->message($message);
-
-        $this->email->send();
-
-    } catch (Exception $e) {
-        log_message('error', $e->getMessage());
+        redirect('admin/bookings/create');
     }
 
     // =========================
     // SUCCESS
     // =========================
     $this->session->set_flashdata('success', 'Booking created successfully.');
-    redirect('bookings');
+    redirect('admin/bookings');
 }
-
-
-
+  
 
     public function delete($id)
     {

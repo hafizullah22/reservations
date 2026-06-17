@@ -28,6 +28,7 @@ class Bookings extends CI_Controller {
     }
 
 
+
   public function create()
 {
     $customer_id = $this->session->userdata('customer_id');
@@ -44,7 +45,7 @@ class Bookings extends CI_Controller {
 
     $data['tables'] = $this->db->get('tables')->result(); 
 
-    $this->load->view('bookings/create', $data);
+    $this->load->view('member/bookings/create', $data);
 }
 
 public function get_available_dates()
