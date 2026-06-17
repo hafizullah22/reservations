@@ -101,8 +101,8 @@
 
 <div class="d-grid mb-2">
     
-    <a href="<?= site_url('admin/bookings/export_pdf'); ?>"
-       id="pdfBtn" 
+    <a href="#"
+       id="pdfBtn" target="_blank"
        class="btn btn-danger btn-sm w-100 rounded-3"
        style="display:none; font-weight:bold;"><i class="bi bi-file-earmark-pdf"></i>
         Genarate PDF Booking Report 
@@ -211,11 +211,13 @@ function renderTable(data) {
 
     const tbody = document.getElementById('bookingTableBody');
     const pdfBtn = document.getElementById('pdfBtn');
+    const form = document.getElementById('filterForm');
 
-    // 👉 SHOW PDF BUTTON AFTER FILTER
-    pdfBtn.style.display = 'inline-block';
+    if (!tbody || !pdfBtn || !form) return;
 
+    // ❌ No data case
     if (!data || data.length === 0) {
+
         tbody.innerHTML = `
             <tr>
                 <td colspan="9" class="text-center text-muted">
@@ -223,11 +225,18 @@ function renderTable(data) {
                 </td>
             </tr>`;
 
-        // hide PDF if no data
         pdfBtn.style.display = 'none';
         return;
     }
 
+    // ✅ SHOW PDF BUTTON
+    pdfBtn.style.display = 'inline-block';
+
+    // ✅ UPDATE PDF LINK (IMPORTANT FIX)
+    const params = new URLSearchParams(new FormData(form));
+    pdfBtn.href = "<?= site_url('admin/bookings/export_pdf'); ?>?" + params.toString();
+
+    // ✅ BUILD TABLE
     let html = '';
     let sl = 1;
 

@@ -667,4 +667,140 @@ public function filter_ajax()
         ->set_content_type('application/json')
         ->set_output(json_encode($result));
 }
+
+public function test_pdf()
+{
+    $mpdf = new \Mpdf\Mpdf();
+
+    $mpdf->WriteHTML('<h1>Hello mPDF</h1>');
+
+    $mpdf->Output('test.pdf', 'I');
+}
+
+//use Mpdf\Mpdf;
+
+public function export_pdf()
+{
+    $start_date  = $this->input->get('start_date');
+    $end_date    = $this->input->get('end_date');
+    $booking_time = $this->input->get('booking_time');
+    $status      = $this->input->get('status');
+
+    $this->db->select('
+        bookings.*,
+        customers.first_name
+    ');
+    $this->db->from('bookings');
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+
+    if (!empty($start_date)) {
+        $this->db->where('bookings.booking_date >=', $start_date);
+    }
+
+    if (!empty($end_date)) {
+        $this->db->where('bookings.booking_date <=', $end_date);
+    }
+
+    if (!empty($booking_time)) {
+        $this->db->where('bookings.booking_time', $booking_time);
+    }
+
+    if (!empty($status)) {
+        $this->db->where('bookings.status', $status);
+    }
+
+    $bookings = $this->db->get()->result();
+
+    
+    $html = '
+<style>
+h2{
+    text-align:center;
+    margin-bottom:10px;
+    font-family: sans-serif;
+}
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 10pt;
+}
+
+th, td{
+    border:0.5px solid #000;
+    padding:5px;
+}
+
+th{
+    background:#eeeeee;
+    text-align:left;
+}
+</style>
+
+<h2>Booking Report';
+
+if (!empty($start_date) && !empty($end_date)) {
+    $html .= ' ('.date("M d, Y", strtotime($start_date)).' - '.date("M d, Y", strtotime($end_date)).')';
+}
+
+$html .= '</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>ID</th>
+            <th>Member</th>
+            <th>Booking Date</th>
+            <th>Time</th>
+            <th>Table</th>
+            <th>Persons</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>';
+
+$sl = 1;
+
+if (!empty($bookings)) {
+
+    foreach ($bookings as $b) {
+
+        $html .= '
+        <tr>
+            <td>'.$sl++.'</td>
+            <td>'.$b->booking_id.'</td>
+            <td>'.$b->first_name.'</td>
+            <td>'.date('M d, Y', strtotime($b->booking_date)).'</td>
+            <td>'.$b->booking_time.'</td>
+            <td>'.$b->table_number.'</td>
+            <td>'.$b->number_of_guests.'</td>
+            <td>'.$b->status.'</td>
+        </tr>';
+    }
+
+} else {
+
+    $html .= '
+    <tr>
+        <td colspan="8" style="text-align:center;">No records found</td>
+    </tr>';
+}
+
+$html .= '
+    </tbody>
+</table>';
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4-P'
+    ]);
+   
+
+    $mpdf->WriteHTML($html);
+
+    $mpdf->Output(
+        'booking_report_'.date('Ymd_His').'.pdf',
+        'I'
+    );
+}
 }//End of Bookings controller
