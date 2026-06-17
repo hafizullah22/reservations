@@ -1,159 +1,145 @@
 <?php $this->load->view('admin/layout/header'); ?>
 
     <style>
-        /* ================= BASE THEME & RESET ================= */
-        body {
-            background-color: #dfe3ec;
-            color: #f3f4f6;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: -0.01em;
-        }
+     /* ================= BASE ================= */
 
-        .page-wrapper {
-        display: block;
-        min-height: 100vh;
-        }
+body {
+    background-color: #dfe3ec;
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+}
 
-        /* Left panel - Focus on Presentation & Calendar */
-        .calendar-panel {
-            flex: 1;
-            padding: 3rem;
-           
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          
-        }
+/* ================= LAYOUT ================= */
 
-        .calendar-container {
-            width: 100%;
-            max-width: 1120px;
-            //padding: 3rem;
-        }
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+}
 
-        /* Right panel - Compact Data Entry Form */
-        .form-panel {
-            flex: 1;
-            padding: 3rem;
-            background: #fff;
-            border-left: 1px solid #1e293b;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* ================= PANELS ================= */
 
-        .panel-header h2 {
-            font-weight: 700;
-            font-size: 1.75rem;
-            color: #000;
-        }
+.calendar-panel,
+.form-panel {
+    flex: 1;
+    padding: 3rem;
+    background: #fff;
+}
 
-        .panel-header p {
-            color: #000;
-            font-size: 0.95rem;
-        }
+.form-panel {
+    border-left: 1px solid #1e293b;
+}
 
-        /* ================= PREMIUM FLATPICKR OVERRIDES ================= */
-        .calendar-box {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-            border: 1px solid #334155;
-            width: 100%;
-            
-        }
+/* ================= HEADER ================= */
 
-        /* Hide the ugly standard text input since calendar is inline */
-        #booking_date {
-            display: none;
-        }
+.panel-header h2 {
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #000;
+}
 
-        .flatpickr-calendar.inline {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            width: 100% !important;
-            max-width: 100% !important;
-        }
+.panel-header p {
+    color: #000;
+    font-size: 0.95rem;
+}
 
-        .flatpickr-innerContainer {
-            width: 100%;
-        }
+/* ================= CALENDAR ================= */
 
-        .flatpickr-rwd, .flatpickr-days, .dayContainer {
-            width: 100% !important;
-            min-width: 100% !important;
-            max-width: 100% !important;
-        }
+.calendar-box {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid #334155;
+    width: 100%;
+}
 
-        /* Beautiful Modern Headers */
-        .flatpickr-months .flatpickr-month {
-            color: #000 !important;
-            fill: #fff !important;
-            height: 40px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #334155 !important;
-        }
+/* Hide default input */
+#booking_date {
+    display: none;
+}
 
-        .flatpickr-current-month {
-            font-size: 1.1rem !important;
-            font-weight: 600 !important;
-        }
+/* Flatpickr reset */
+.flatpickr-calendar.inline {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
 
-        .flatpickr-months .flatpickr-prev-month, 
-        .flatpickr-months .flatpickr-next-month {
-            fill: #f15e08 !important;
-            width: 30px !important;
-            padding: 40px !important;
-            color: #f15e08 !important;
-        }
+.flatpickr-innerContainer,
+.flatpickr-rwd,
+.flatpickr-days,
+.dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
 
-        .flatpickr-months .flatpickr-prev-month:hover, 
-        .flatpickr-months .flatpickr-next-month:hover {
-            fill: #22c55e !important;
-        }
+/* Header */
+.flatpickr-months .flatpickr-month {
+    color: #000 !important;
+    height: 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #334155 !important;
+}
 
-        span.flatpickr-weekday {
-            color: #000 !important;
-            font-weight: 600 !important;
-        }
+.flatpickr-current-month {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+}
 
-        /* Fix grid structure instead of breaking layout with margins */
-        .dayContainer {
-            justify-content: space-between;
-        }
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+    fill: #f15e08 !important;
+    width: 30px !important;
+    padding: 40px !important;
+    color: #f15e08 !important;
+}
 
-        .flatpickr-day {
-            background: transparent;
-            color: #cbd5e1 !important;
-            border: none !important;
-            border-radius: 12px !important;
-            font-weight: 500;
-            height: 42px !important;
-            line-height: 42px !important;
-            max-width: 110px !important;
-            margin: 0px 0 !important;
-            transition: all 0.15s ease-in-out;
-            margin-top: 10px !important;
-            margin-left:10px !important;
-            border-top: 1px solid #334155 !important;
-            border-bottom: 1px solid #334155 !important;
-            
-        }
-        .flatpickr-day:hover {
-            background: #334155 !important;
-            color: #fff !important;
-        }
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+    fill: #22c55e !important;
+}
 
-        .flatpickr-day.today {
-            border: 1px solid #22c55e !important;
-            color: #22c55e !important;
-        }
+span.flatpickr-weekday {
+    color: #000 !important;
+    font-weight: 600 !important;
+}
 
-        /* ================= PAST (GRAY) ================= */
+/* Day grid */
+.dayContainer {
+    justify-content: space-between;
+}
+
+.flatpickr-day {
+    background: transparent;
+    color: #cbd5e1 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 500;
+    height: 42px !important;
+    line-height: 42px !important;
+    max-width: 110px !important;
+    margin: 0 !important;
+    margin-top: 10px !important;
+    margin-left: 10px !important;
+    border-top: 1px solid #334155 !important;
+    border-bottom: 1px solid #334155 !important;
+    transition: all 0.15s ease-in-out;
+}
+
+.flatpickr-day:hover {
+    background: #334155 !important;
+    color: #fff !important;
+}
+
+.flatpickr-day.today {
+    border: 1px solid #22c55e !important;
+    color: #22c55e !important;
+}
+
+/* States */
 .flatpickr-day.past-date {
     background: #334155 !important;
     color: #64748b !important;
@@ -161,139 +147,119 @@
     cursor: not-allowed;
 }
 
-/* ================= BOOKED (RED) ================= */
 .flatpickr-day.booked-date {
     background: #ef4444 !important;
     color: #fff !important;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 }
 
-/* ================= AVAILABLE ================= */
 .flatpickr-day.available-date {
     background: transparent;
     border: 1px solid #22c55e !important;
-            color: #22c55e !important;
-        
+    color: #22c55e !important;
 }
 
-/* ================= SELECTED (GREEN) ================= */
 .flatpickr-day.selected,
 .flatpickr-day.selected:hover {
     background: #22c55e !important;
     color: #fff !important;
 }
 
-        .flatpickr-day.prevMonthDay, 
-        .flatpickr-day.nextMonthDay {
-            color: #edf1f5 !important;
-        }
-
-        /* ================= MODERN FORM ELEMENTS ================= */
-        .form-label {
-            color: #000;
-            font-weight: 500;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-control, .form-select {
-            background-color: #fff;
-            border: 1px solid #334155;
-            color: #000;
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-control:focus, .form-select:focus {
-            background-color: #fff;
-            color: #000;
-            border-color: #22c55e;
-            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
-        }
-
-        .form-control[readonly] {
-            background-color: #fff;
-            border-color: #1e293b;
-            color: #000;
-            cursor: not-allowed;
-        }
-
-        /* Action Buttons */
-        .btn-submit {
-            background: #22c55e;
-            color: #fff;
-            border: none;
-            padding: 0.85rem;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.2);
-        }
-
-        .btn-submit:hover {
-            background: #16a34a;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
-        }
-
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-
-       
-
-        .fp-tooltip {
-            position: absolute;
-            background: #111827;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 99999;
-            transition: opacity .15s ease;
-            white-space: nowrap;
-        }
-.card{
-    border:none;
-    border-radius:12px;
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: #edf1f5 !important;
 }
 
-.card-header{
-    border-radius:12px 12px 0 0 !important;
-    font-weight:600;
+/* ================= FORM ================= */
+
+.form-label {
+    color: #000;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
 }
 
 .form-control,
-.form-select{
-    min-height:45px;
+.form-select {
+    background-color: #fff;
+    border: 1px solid #334155;
+    color: #000;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    min-height: 36px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 4px 10px;
+    font-size: 14px;
 }
 
-#inline_calendar_target{
-    display:flex;
-    justify-content:center;
+.form-control:focus,
+.form-select:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
 }
 
-        /* Responsive adaptations */
-        @media (max-width: 991px) {
-            .page-wrapper {
-                flex-direction: column;
-            }
-            .calendar-panel, .form-panel {
-                padding: 2rem 1.5rem;
-                flex: none;
-            }
-            .form-panel {
-                border-left: none;
-                border-top: 1px solid #1e293b;
-            }
-        }
+.form-control[readonly] {
+    background-color: #F8F9FA;
+    border-color: #1e293b;
+    color: #000;
+    cursor: not-allowed;
+}
+
+/* ================= CARD ================= */
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+}
+
+/* ================= TOOLTIP ================= */
+
+.fp-tooltip {
+    position: absolute;
+    background: #111827;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 99999;
+    transition: opacity .15s ease;
+    white-space: nowrap;
+}
+
+/* ================= CALENDAR CENTER ================= */
+
+#inline_calendar_target {
+    display: flex;
+    justify-content: center;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 991px) {
+    .page-wrapper {
+        flex-direction: column;
+    }
+
+    .calendar-panel,
+    .form-panel {
+        padding: 2rem 1.5rem;
+        flex: none;
+    }
+
+    .form-panel {
+        border-left: none;
+        border-top: 1px solid #1e293b;
+    }
+}
     </style>
 </head>
 <body>
@@ -326,8 +292,8 @@
                                 <div class="row">
 
                                     <div class="col-12 mb-3">
-                                        <label>Customer ID</label>
-                                        <input type="text" name="customer_id" id="customer_id" class="form-control">
+                                        <label>Member ID</label>
+                                        <input type="text" name="customer_id" id="customer_id" class="form-control" placeholder="Enter Member ID">
                                     </div>
 
                                     <div class="col-md-12 mb-3">
