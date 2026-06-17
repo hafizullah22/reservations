@@ -129,7 +129,7 @@
    <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
     <!-- NAV BUTTONS -->
-    <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
+    <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
         <i class="fa fa-list"></i> All Bookings
     </a>
 
@@ -141,7 +141,7 @@
         <i class="fa fa-check"></i> Completed
     </a>
 
-    <a href="<?= site_url('bookings/cancelled'); ?>" class="btn btn-outline-dark">
+    <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
         <i class="fa fa-times"></i> Cancelled
     </a>
 
@@ -149,20 +149,6 @@
         <i class="fa fa-check-circle"></i> Confirmed
     </a>
 
-    <!-- SEARCH FORM -->
-    <!-- <form action="<?= site_url('admin/bookings/booking_details'); ?>" method="GET"
-          class="d-flex ms-auto booking-search">
-
-        <input type="text"
-               name="q"
-               class="form-control form-control-sm"
-               placeholder="Enter Booking ID">
-
-        <button type="submit" class="btn btn-dark btn-sm ms-2">
-            <i class="fa fa-search"></i>
-        </button>
-
-    </form> -->
 
     <div class="booking-search ms-auto">
     <input type="text"

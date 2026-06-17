@@ -3,18 +3,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Bookings extends CI_Controller {
 
-    public function __construct()
+      public function __construct()
     {
         parent::__construct();
 
         $this->load->database();
         $this->load->library('session');
         $this->load->helper(['url', 'form']);
-    }
 
-    // =========================
-    // ALL BOOKINGS
-    // =========================
+        // 🔒 Block access if not logged in
+    if (!$this->session->userdata('logged_in')) {
+
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Unauthorize!');
+        $this->session->set_flashdata('msg_text', 'You are not authorized to access');
+
+        redirect('auth/admin');
+    }
+    }
+   
     public function index()
     {
      $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
@@ -44,7 +51,7 @@ class Bookings extends CI_Controller {
 
     $data['tables'] = $this->db->get('tables')->result(); 
 
-    $this->load->view('bookings/create', $data);
+    $this->load->view('admin/bookings/create', $data);
 }
 
 public function get_available_dates()
@@ -496,6 +503,18 @@ public function store()
     }
 }
 
+  public function confirmed()
+    {
+     $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+        $this->db->from('bookings');
+        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+        $this->db->where('bookings.status', 'Confirmed');   
+        $this->db->order_by('bookings.booking_id', 'DESC');
+
+        $data['bookings'] = $this->db->get()->result();
+
+        $this->load->view('/admin/bookings/confirmed', $data);
+    }
 
 
  public function completed()

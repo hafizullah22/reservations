@@ -265,7 +265,7 @@ $username = $this->session->userdata('username');
                 <a href="<?php echo site_url('admin/bookings_report');?>">
                     <i class="bi bi-person-badge"></i> Bookings Report
                 </a>
-                <a href="<?php echo site_url('admin/tables_rules');?>">
+                <a href="<?php echo site_url('admin/dashboard/tables_rules');?>">
                     <i class="bi bi-building"></i> Patio Table Rules
                 </a>
                 <a href="<?php echo site_url('admin/tables_rules');?>">
@@ -277,7 +277,7 @@ $username = $this->session->userdata('username');
                 <a href="<?php echo site_url('admin/tables_rules');?>">
                     <i class="bi bi-building"></i> Financial Report
                 </a>
-                <a href="<?php echo site_url('admin/logout');?>">
+                <a href="<?php echo site_url('admin/dashboard/logout');?>">
                     <i class="bi bi-journal"></i> Logout 
                 </a>
                
@@ -312,7 +312,7 @@ $username = $this->session->userdata('username');
                 </div>
 
                 <!-- Session Termination -->
-                <a class="logout-btn" href="<?php echo site_url('Welcome/logout'); ?>">
+                <a class="logout-btn" href="<?php echo site_url('auth/logout'); ?>">
                     <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
                 </a>
             </div>

@@ -114,7 +114,7 @@
         </a>
 
         <a href="<?= site_url('admin/bookings/completed'); ?>"
-           class="btn btn-outline-dark active">
+           class="btn btn-outline-dark">
             <i class="fa fa-check"></i> Completed
         </a>
 
@@ -124,7 +124,7 @@
         </a>
 
         <a href="<?= site_url('admin/bookings/confirmed'); ?>"
-           class="btn btn-outline-dark">
+           class="btn btn-outline-dark active">
             <i class="fa fa-check-circle"></i> Confirmed
         </a>
 
@@ -132,7 +132,6 @@
 
 </div>
 
-<!-- ================= FLASH MESSAGE ================= -->
 
 <?php if($this->session->flashdata('success')): ?>
     <div class="alert alert-success">
@@ -278,7 +277,7 @@ function deleteBooking(btn)
             })
             .catch(() => {
                 Swal.fire('Error', 'Something went wrong', 'error');
-                btn.disabled = false;
+                btn.disabled = falapplication/views/admin/bookings/completed.phpse;
             });
         }
 

@@ -103,27 +103,27 @@
 
     <div class="booking-menu">
 
-        <a href="<?= site_url('bookings'); ?>"
+        <a href="<?= site_url('admin/bookings'); ?>"
            class="btn btn-outline-dark">
             <i class="fa fa-list"></i> All Bookings
         </a>
 
-        <a href="<?= site_url('bookings/create'); ?>"
+        <a href="<?= site_url('admin/bookings/create'); ?>"
            class="btn btn-outline-dark">
             <i class="fa fa-plus"></i> New Booking
         </a>
 
-        <a href="<?= site_url('bookings/completed'); ?>"
+        <a href="<?= site_url('admin/bookings/completed'); ?>"
            class="btn btn-outline-dark ">
             <i class="fa fa-check"></i> Completed
         </a>
 
-        <a href="<?= site_url('bookings/cancelled'); ?>"
+        <a href="<?= site_url('admin/bookings/cancelled'); ?>"
            class="btn btn-outline-dark active">
             <i class="fa fa-times"></i> Cancelled
         </a>
 
-        <a href="<?= site_url('bookings/confirmed'); ?>"
+        <a href="<?= site_url('admin/bookings/confirmed'); ?>"
            class="btn btn-outline-dark">
             <i class="fa fa-check-circle"></i> Confirmed
         </a>
