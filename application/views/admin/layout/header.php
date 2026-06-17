@@ -257,7 +257,7 @@ $username = $this->session->userdata('username');
         </a>
 
         <div class="sidebar-menu">
-            <a href="<?php echo site_url('admin');?>" class="active">
+            <a href="<?php echo site_url('admin/dashboard');?>" class="active">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 

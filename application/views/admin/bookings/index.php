@@ -130,7 +130,7 @@
 
     <!-- NAV BUTTONS -->
     <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
-        <i class="fa fa-list"></i> All Bookings
+        <i class="fa fa-list"></i> All Bookings &nbsp;(<?= $total_bookings?>)
     </a>
 
     <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">

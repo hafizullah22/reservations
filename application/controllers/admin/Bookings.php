@@ -30,6 +30,7 @@ class Bookings extends CI_Controller {
         $this->db->order_by('bookings.booking_id', 'DESC');
 
         $data['bookings'] = $this->db->get()->result();
+        $data['total_bookings'] = $this->db->count_all('bookings');
 
         $this->load->view('/admin/bookings/index', $data);
     }
