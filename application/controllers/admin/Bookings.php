@@ -620,6 +620,7 @@ public function booking_details($booking_id = 0)
     $this->load->view('admin/bookings/booking_details', $data);
 }
 
+//Code For Booking Report 
 public function bookings_report()
 {
     $this->load->view('admin/bookings/booking_report');
@@ -668,16 +669,7 @@ public function filter_ajax()
         ->set_output(json_encode($result));
 }
 
-public function test_pdf()
-{
-    $mpdf = new \Mpdf\Mpdf();
 
-    $mpdf->WriteHTML('<h1>Hello mPDF</h1>');
-
-    $mpdf->Output('test.pdf', 'I');
-}
-
-//use Mpdf\Mpdf;
 
 public function export_pdf()
 {
@@ -803,4 +795,8 @@ $html .= '
         'I'
     );
 }
+
+// End Code For Booking Report 
+
+
 }//End of Bookings controller
