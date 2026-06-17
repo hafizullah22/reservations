@@ -8,7 +8,7 @@ $username = $this->session->userdata('username');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>School ERP</title>
+    <title>Clifton Park</title>
 
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -299,7 +299,7 @@ $username = $this->session->userdata('username');
                 <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar Navigation">
                     <i class="bi bi-list"></i>
                 </button>
-                <strong class="d-none d-sm-inline-block text-dark">Dashboard</strong>
+                <strong class="d-none d-sm-inline-block text-dark">Admin Panel</strong>
             </div>
 
             <div class="right-nav">
