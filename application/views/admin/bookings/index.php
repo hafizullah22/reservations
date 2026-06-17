@@ -343,15 +343,19 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
 
                         html += `
                             <tr>
-                                <td>${b.booking_id}</td>
-                                <td>${b.customer_name ?? ''}</td>
-                                <td>${b.booking_date}</td>
-                                <td>${b.booking_time}</td>
-                                <td>${b.table_number}</td>
-                                <td>${b.number_of_guests}</td>
-                                <td>${b.status}</td>
-                                <td><a href="">Edit</a></td>
-                            </tr>
+                        <td>${b.booking_id}</td>
+                        <td>${b.customer_name ?? ''}</td>
+                        <td>${b.booking_date}</td>
+                        <td>${b.booking_time}</td>
+                        <td>${b.table_number}</td>
+                        <td>${b.number_of_guests}</td>
+                        <td>${b.status}</td>
+                        <td>
+                            <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}">
+                                view
+                            </a>
+                        </td>
+                    </tr>
                         `;
                     });
 

@@ -284,10 +284,58 @@ public function store()
     }
 
     // =========================
+    // EMAIL
+    // =========================
+    try {
+
+        $this->load->library('email');
+
+        $this->email->from(
+            'hafizulah322@gmail.com',
+            'Table Reservation System'
+        );
+
+        $this->email->to($customer->email);
+
+        $this->email->subject('Reservation Confirmation #' . $reservation_no);
+
+        $message = '
+        <html>
+        <body>
+            <h2>Reservation Confirmed</h2>
+
+            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
+
+            <p>Your reservation has been successfully confirmed.</p>
+
+            <table border="1" cellpadding="8" cellspacing="0">
+                <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
+                <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
+                <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
+                <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
+                <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
+                <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
+            </table>
+
+            <p>Thank you for your reservation.</p>
+        </body>
+        </html>';
+
+        $this->email->message($message);
+
+        $this->email->send();
+
+    } catch (Exception $e) {
+        log_message('error', $e->getMessage());
+    }
+
+
+    // =========================
     // SUCCESS
     // =========================
     $this->session->set_flashdata('success', 'Booking created successfully.');
     redirect('admin/bookings');
+
 }
   
 
@@ -501,47 +549,7 @@ public function store()
     }
 
 
- public function booking_details()
-{
-    $booking_id = $this->input->get('q', true);
-
-    // sanitize → force integer
-    $booking_id = (int) $booking_id;
-
-    if ($booking_id <= 0) {
-        $this->session->set_flashdata('msg_type', 'error');
-        $this->session->set_flashdata('msg_title', 'Invalid ID');
-        $this->session->set_flashdata('msg_text', 'Please enter a valid Booking ID.');
-
-        return redirect('admin/bookings');
-    }
-
-    $this->db->select('
-        bookings.*,
-        customers.first_name AS customer_name,
-        customers.phone
-    ');
-
-    $this->db->from('bookings');
-    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
-
-    // INT safe match
-    $this->db->where('bookings.booking_id', $booking_id);
-
-    $booking = $this->db->get()->row();
-
-    if (!$booking) {
-        $this->session->set_flashdata('msg_type', 'error');
-        $this->session->set_flashdata('msg_title', 'Not Found');
-        $this->session->set_flashdata('msg_text', 'No booking found with ID: ' . $booking_id);
-
-        return redirect('admin/bookings');
-    }
-
-    $data['booking'] = $booking;
-
-    $this->load->view('admin/bookings/booking_details', $data);
-}
+ 
 
 public function ajax_booking_search()
 {
@@ -580,6 +588,35 @@ public function ajax_booking_search()
         'status' => 'success',
         'data'   => $bookings
     ]);
+}
+
+
+
+public function booking_details($booking_id = 0)
+{
+    $booking_id = (int) $booking_id;
+
+    if ($booking_id <= 0) {
+        redirect('admin/bookings');
+    }
+
+    $this->db->select('
+        bookings.*,
+        customers.*
+    ');
+
+    $this->db->from('bookings');
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+    $this->db->where('bookings.booking_id', $booking_id);
+
+    $booking = $this->db->get()->row();
+
+    if (!$booking) {
+        redirect('admin/bookings');
+    }
+
+    $data['booking'] = $booking;
+    $this->load->view('admin/bookings/booking_details', $data);
 }
 
 }//End of Bookings controller

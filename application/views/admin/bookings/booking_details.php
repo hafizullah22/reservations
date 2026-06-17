@@ -1,7 +1,8 @@
 <?php $this->load->view('admin/layout/header'); ?>
 
 <style>
-/* ================= GLOBAL STYLE ================= */
+
+/* ================= GLOBAL ================= */
 
 .main {
     padding: 20px;
@@ -15,58 +16,35 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
 }
 
+/* ================= MENU ================= */
+
 .booking-menu {
-    background: #f3f4f6;
-    padding: 8px;
-    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 }
 
-/* BUTTON STYLE */
+/* BUTTON */
 .booking-menu .btn {
     border-radius: 10px;
     font-weight: 500;
     white-space: nowrap;
 }
 
-/* ACTIVE STATE */
-.booking-menu .btn.active {
-    background: #111827;
-    color: #fff;
-}
-
 /* SEARCH */
 .booking-search {
     display: flex;
     align-items: center;
+    gap: 8px;
+    margin-left: auto;
 }
 
 .booking-search input {
     width: 250px;
-    height:40px;
+    height: 40px;
     border-radius: 10px;
     border: 1px solid #000;
-}
-
-/* MOBILE */
-@media (max-width:768px) {
-
-    .booking-menu {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-    }
-
-    .booking-search {
-        width: 100%;
-    }
-
-    .booking-search input {
-        width: 100%;
-    }
-
-    .booking-search button {
-        width: 100%;
-    }
 }
 
 /* ================= CARD ================= */
@@ -79,26 +57,13 @@
 
 /* ================= TABLE ================= */
 
+.table {
+    margin-bottom: 0;
+}
+
 .table thead {
     background: #111827;
     color: #fff;
-}
-
-.table thead th {
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* ================= BADGE ================= */
-
-.badge {
-    font-size: 12px;
-    padding: 6px 10px;
 }
 
 /* ================= MOBILE ================= */
@@ -109,151 +74,171 @@
         padding: 12px;
     }
 
+    .booking-search {
+        width: 100%;
+        margin-left: 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .booking-search input {
+        width: 100%;
+    }
+
     .table {
         min-width: 850px;
     }
-
-    .booking-menu {
-        overflow-x: auto;
-        flex-wrap: nowrap;
-    }
 }
+
 </style>
 
 <div class="main">
 
-<!-- ================= TOPBAR MENU ================= -->
-
+<!-- ================= TOPBAR ================= -->
 <div class="topbar">
 
-   <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
+    <div class="booking-menu">
 
-    <!-- NAV BUTTONS -->
-    <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
-        <i class="fa fa-list"></i> All Bookings
-    </a>
+        <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
+            All Bookings
+        </a>
 
-    <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-plus"></i> New Booking
-    </a>
+        <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
+            New Booking
+        </a>
 
-    <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check"></i> Completed
-    </a>
+        <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
+            Completed
+        </a>
 
-    <a href="<?= site_url('bookings/cancelled'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-times"></i> Cancelled
-    </a>
+        <a href="<?= site_url('bookings/cancelled'); ?>" class="btn btn-outline-dark">
+            Cancelled
+        </a>
 
-    <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check-circle"></i> Confirmed
-    </a>
+        <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
+            Confirmed
+        </a>
 
-    <!-- SEARCH FORM -->
-    <form action="<?= site_url('admin/bookings/booking_details'); ?>" method="GET"
-          class="d-flex ms-auto booking-search">
+        <!-- SEARCH -->
+        <form action="<?= site_url('admin/bookings/booking_details'); ?>"
+              method="GET"
+              class="booking-search">
 
-        <input type="text"
-               name="q"
-               class="form-control form-control-sm"
-               placeholder="Enter Booking ID">
+            <input type="text"
+                   name="q"
+                   class="form-control form-control-sm"
+                   placeholder="Booking ID">
 
-        <button type="submit" class="btn btn-dark btn-sm ms-2">
-            <i class="fa fa-search"></i>
-        </button>
+            <button type="submit" class="btn btn-dark btn-sm">
+                Search
+            </button>
 
-    </form>
+        </form>
+
+    </div>
 
 </div>
 
-</div>
-
-<!-- ================= FLASH MESSAGE ================= -->
-
+<!-- ================= FLASH ================= -->
 <?php if($this->session->flashdata('success')): ?>
     <div class="alert alert-success">
         <?= $this->session->flashdata('success'); ?>
     </div>
 <?php endif; ?>
 
-<!-- ================= TABLE ================= -->
+<!-- ================= CONTENT ================= -->
+<div class="row g-3">
 
-<div class="card">
+    <!-- LEFT: CUSTOMER -->
+    <div class="col-lg-4">
 
-    <div class="card-body">
+        <div class="card">
 
-        <div class="table-responsive">
+            <div class="card-header bg-primary text-white">
+                Customer Information
+            </div>
 
-            <table class="table table-bordered table-hover align-middle">
+            <div class="card-body p-0">
 
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Table</th>
-                        <th>Persons</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+                <table class="table table-bordered">
 
-                <tbody>
+                    <?php if(!empty($booking)): ?>
 
-                <?php if(!empty($booking)): ?>
+                        <tr><th>Member ID</th><td><?= $booking->customer_id; ?></td></tr>
+                        <tr><th>First Name</th><td><?= $booking->first_name; ?></td></tr>
+                        <tr><th>Last Name</th><td><?= $booking->last_name; ?></td></tr>
+                        <tr><th>Email</th><td><?= $booking->email; ?></td></tr>
+                        <tr><th>Phone</th><td><?= $booking->phone; ?></td></tr>
+                        <tr><th>Member Type</th><td><?= $booking->customer_type; ?></td></tr>
 
-                    
-
-                        <?php
-                        $badge = 'secondary';
-
-                        switch(strtolower($booking->status)) {
-                            case 'confirmed': $badge = 'success'; break;
-                            case 'pending': $badge = 'warning'; break;
-                            case 'cancelled': $badge = 'danger'; break;
-                            case 'completed': $badge = 'primary'; break;
-                        }
-                        ?>
+                    <?php else: ?>
 
                         <tr>
-                            <td><?= $booking->booking_id; ?></td>
-                            <td><?= $booking->customer_name; ?></td>
-                            <td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td>
-                            <td><?= $booking->booking_time; ?></td>
-                            <td><?= $booking->table_number; ?></td>
-                            <td><?= $booking->number_of_guests; ?></td>
+                            <td class="text-center text-muted">No customer data</td>
+                        </tr>
 
+                    <?php endif; ?>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT: BOOKING -->
+    <div class="col-lg-8">
+
+        <div class="card">
+
+            <div class="card-header bg-success text-white">
+                Booking Information
+            </div>
+
+            <div class="card-body p-0">
+
+                <table class="table table-bordered">
+
+                    <?php if(!empty($booking)): ?>
+
+                        <tr><th>Booking ID</th><td><?= $booking->booking_id; ?></td></tr>
+                        <tr><th>Date</th><td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td></tr>
+                        <tr><th>Time</th><td><?= $booking->booking_time; ?></td></tr>
+                        <tr><th>Table</th><td><?= $booking->table_number; ?></td></tr>
+                        <tr><th>Guests</th><td><?= $booking->number_of_guests; ?></td></tr>
+
+                        <tr>
+                            <th>Status</th>
                             <td>
+                                <?php
+                                $badge = 'secondary';
+                                switch(strtolower($booking->status)) {
+                                    case 'confirmed': $badge = 'success'; break;
+                                    case 'pending': $badge = 'warning'; break;
+                                    case 'cancelled': $badge = 'danger'; break;
+                                    case 'completed': $badge = 'primary'; break;
+                                }
+                                ?>
                                 <span class="badge bg-<?= $badge; ?>">
                                     <?= ucfirst($booking->status); ?>
                                 </span>
                             </td>
-
-                            <td>
-                                <button class="btn btn-danger btn-sm"
-                                        onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('bookings/delete/'.$booking->booking_id); ?>">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </td>
                         </tr>
 
-                  
+                        <tr><th>Guest Names</th><td><?= $booking->guest_names; ?></td></tr>
 
-                <?php else: ?>
+                    <?php else: ?>
 
-                    <tr>
-                        <td colspan="8" class="text-center text-muted">
-                            No bookings found
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="text-center text-muted">No booking data</td>
+                        </tr>
 
-                <?php endif; ?>
+                    <?php endif; ?>
 
-                </tbody>
+                </table>
 
-            </table>
+            </div>
 
         </div>
 
@@ -262,64 +247,5 @@
 </div>
 
 </div>
-
-<!-- ================= SWEET ALERT DELETE ================= -->
-
-<script>
-function deleteBooking(btn)
-{
-    let url = btn.dataset.url;
-    let row = btn.closest('tr');
-
-    Swal.fire({
-        title: 'Delete Booking?',
-        text: "This action cannot be undone.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, Delete'
-    }).then((result) => {
-
-        if(result.isConfirmed)
-        {
-            btn.disabled = true;
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-
-                if(data.status === 'success')
-                {
-                    row.remove();
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                }
-                else
-                {
-                    Swal.fire('Error', data.message, 'error');
-                }
-
-                btn.disabled = false;
-            })
-            .catch(() => {
-                Swal.fire('Error', 'Something went wrong', 'error');
-                btn.disabled = false;
-            });
-        }
-
-    });
-}
-</script>
 
 <?php $this->load->view('admin/layout/footer'); ?>
