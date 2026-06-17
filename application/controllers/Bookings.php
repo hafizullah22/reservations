@@ -10,6 +10,7 @@ class Bookings extends CI_Controller {
         $this->load->database();
         $this->load->library('session');
         $this->load->helper(['url', 'form']);
+        
     }
 
     // =========================
@@ -350,20 +351,7 @@ public function store()
         redirect('bookings');
     }
 
-    // =========================
-    // VIEW SINGLE BOOKING
-    // =========================
-    public function show($id)
-    {
-        $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone, customers.email, customers.address');
-        $this->db->from('bookings');
-        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
-        $this->db->where('bookings.booking_id', $id);
-
-        $data['booking'] = $this->db->get()->row();
-
-        $this->load->view('bookings/show', $data);
-    }
+   
 
 
     public function edit($id)
@@ -498,13 +486,6 @@ public function store()
 }
 
 
-
-public function delete_all()
-{
-    $this->db->empty_table('bookings');
-
-    $this->session->set_flashdata('success', 'All bookings deleted successfully!');
-} 
 
 
 

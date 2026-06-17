@@ -267,7 +267,7 @@ $username = $this->session->userdata('username');
                 <a href="<?php echo site_url('admin/bookings');?>">
                     <i class="bi bi-person-badge"></i> Bookings
                 </a>
-                <a href="<?php echo site_url('admin/bookings_report');?>">
+                <a href="<?php echo site_url('admin/bookings/bookings_report');?>">
                     <i class="bi bi-person-badge"></i> Bookings Report
                 </a>
                 <a href="<?php echo site_url('admin/dashboard/tables_rules');?>">

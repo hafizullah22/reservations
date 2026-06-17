@@ -12,14 +12,14 @@ class Bookings extends CI_Controller {
         $this->load->helper(['url', 'form']);
 
         // 🔒 Block access if not logged in
-        // if (!$this->session->userdata('logged_in')) {
+        if (!$this->session->userdata('logged_in')) {
 
-        //     $this->session->set_flashdata('msg_type', 'error');
-        //     $this->session->set_flashdata('msg_title', 'Unauthorize!');
-        //     $this->session->set_flashdata('msg_text', 'You are not authorized to access');
+            $this->session->set_flashdata('msg_type', 'error');
+            $this->session->set_flashdata('msg_title', 'Unauthorize!');
+            $this->session->set_flashdata('msg_text', 'You are not authorized to access');
 
-        //     redirect('auth/admin');
-        // }
+            redirect('auth/admin');
+        }
     }
    
     public function index()
@@ -620,4 +620,51 @@ public function booking_details($booking_id = 0)
     $this->load->view('admin/bookings/booking_details', $data);
 }
 
+public function bookings_report()
+{
+    $this->load->view('admin/bookings/booking_report');
+}
+
+public function filter_ajax()
+{
+    $input = $this->input->post();
+
+    $this->db->select('
+        bookings.booking_id,
+        bookings.booking_date,
+        bookings.booking_time,
+        bookings.table_number,
+        bookings.number_of_guests,
+        bookings.status,
+        customers.first_name,
+    ');
+
+    $this->db->from('bookings');
+
+    // JOIN customer table
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+
+    // FILTERS
+    if (!empty($input['start_date'])) {
+        $this->db->where('bookings.booking_date >=', $input['start_date']);
+    }
+
+    if (!empty($input['end_date'])) {
+        $this->db->where('bookings.booking_date <=', $input['end_date']);
+    }
+
+    if (!empty($input['booking_time'])) {
+        $this->db->where('bookings.booking_time', $input['booking_time']);
+    }
+
+    if (!empty($input['status'])) {
+        $this->db->where('bookings.status', $input['status']);
+    }
+
+    $result = $this->db->get()->result();
+
+    return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($result));
+}
 }//End of Bookings controller
