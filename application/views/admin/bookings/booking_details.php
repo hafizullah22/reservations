@@ -203,10 +203,11 @@
                     <?php if(!empty($booking)): ?>
 
                         <tr><th>Booking ID</th><td><?= $booking->booking_id; ?></td></tr>
-                        <tr><th>Date</th><td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td></tr>
-                        <tr><th>Time</th><td><?= $booking->booking_time; ?></td></tr>
+                        <tr><th>Booking Date</th><td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td></tr>
                         <tr><th>Table</th><td><?= $booking->table_number; ?></td></tr>
-                        <tr><th>Guests</th><td><?= $booking->number_of_guests; ?></td></tr>
+                        <tr><th>Booking Slot</th><td><?= $booking->booking_time; ?></td></tr>
+                        <tr><th>Arrival Time</th><td><?= $booking->arrival_time; ?></td></tr>
+                        <tr><th> No. of Guests</th><td><?= $booking->number_of_guests; ?></td></tr>
 
                         <tr>
                             <th>Status</th>
