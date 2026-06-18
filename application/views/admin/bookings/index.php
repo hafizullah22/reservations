@@ -155,7 +155,7 @@
            id="liveSearch"
            class="form-control form-control-sm"
            placeholder="Search ID, Name, Phone...">
-</div>
+    </div>
 
 </div>
 

@@ -3,45 +3,46 @@
     <style>
      /* ================= BASE ================= */
 
-body {
-    background-color: #dfe3ec;
-    color: #000;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: -0.01em;
-}
+    body {
+        background-color: #dfe3ec;
+        color: #000;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: -0.01em;
+    }
 
-/* ================= LAYOUT ================= */
+    /* ================= LAYOUT ================= */
 
-.page-wrapper {
-    display: flex;
-    flex-direction: column;
-}
+    .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        margin-top:-40px;
+    }
 
-/* ================= PANELS ================= */
+    /* ================= PANELS ================= */
 
-.calendar-panel,
-.form-panel {
-    flex: 1;
-    padding: 3rem;
-    background: #fff;
-}
+    .calendar-panel,
+    .form-panel {
+        flex: 1;
+        padding: 3rem;
+        background: #fff;
+    }
 
-.form-panel {
-    border-left: 1px solid #1e293b;
-}
+    .form-panel {
+        border-left: 1px solid #1e293b;
+    }
 
-/* ================= HEADER ================= */
+    /* ================= HEADER ================= */
 
-.panel-header h2 {
-    font-weight: 700;
-    font-size: 1.75rem;
-    color: #000;
-}
+    .panel-header h2 {
+        font-weight: 700;
+        font-size: 1.75rem;
+        color: #000;
+    }
 
-.panel-header p {
-    color: #000;
-    font-size: 0.95rem;
-}
+    .panel-header p {
+        color: #000;
+        font-size: 0.95rem;
+    }
 
 /* ================= CALENDAR ================= */
 
@@ -263,16 +264,34 @@ span.flatpickr-weekday {
     </style>
 </head>
 <body>
-<div id="fp-tooltip" class="fp-tooltip"></div>
+    <div id="fp-tooltip" class="fp-tooltip"></div>
 
-<div class="page-wrapper">
+    <div class="page-wrapper">
+        
+        <div class="form-panel">
+            <div style="max-width: 1120px; margin: 0 auto;">
 
-    <div class="form-panel">
-        <div style="max-width: 1120px; margin: 0 auto;">
+            <div class="topbar mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 
-            <div class="panel-header mb-3">
-                <h2>New Reservation</h2>
-            </div>
+        <div>
+            <h3 class="mb-0 fw-bold">New Reservation</h3>
+
+        </div>
+
+        <div class="btn-group">
+
+            <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-secondary">
+                All Bookings
+            </a>
+
+            <a href="<?= site_url('admin/bookings/bookings_report'); ?>" class="btn btn-danger">
+                Booking Reports
+            </a>
+
+
+        </div>
+
+    </div>
 
             <form method="post" action="<?= site_url('admin/bookings/store'); ?>">
 
@@ -431,6 +450,7 @@ span.flatpickr-weekday {
 
 
 
+
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -575,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     tooltip.style.left = e.pageX + "px";
                     tooltip.style.top = (e.pageY - 20) + "px";
                     tooltip.style.opacity = "1";
-                });
+                });        <small class="text-muted">Create and manage table bookings</small>
 
                 dayElem.addEventListener("mousemove", function (e) {
                     tooltip.style.left = e.pageX + "px";

@@ -38,6 +38,11 @@
 .topbar-wrapper {
     position: relative;
 }
+.form-control{
+    border: 1px solid #000;
+    min-height:32px;
+}
+label{font-weight:600;}
 
 @media (max-width:768px) {
     .main { padding: 12px; }

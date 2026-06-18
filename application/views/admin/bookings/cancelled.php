@@ -44,6 +44,19 @@
     border-color: #111827;
 }
 
+/* SEARCH */
+.booking-search {
+    display: flex;
+    align-items: center;
+}
+
+.booking-search input {
+    width: 250px;
+    height:40px;
+    border-radius: 10px;
+    border: 1px solid #000;
+}
+
 /* ================= CARD ================= */
 
 .card {
@@ -108,13 +121,13 @@
             <i class="fa fa-list"></i> All Bookings
         </a>
 
-        <a href="<?= site_url('admin/bookings/create'); ?>"
+        <a href="<?= site_url('bookings/create'); ?>"
            class="btn btn-outline-dark">
             <i class="fa fa-plus"></i> New Booking
         </a>
 
         <a href="<?= site_url('admin/bookings/completed'); ?>"
-           class="btn btn-outline-dark ">
+           class="btn btn-outline-dark">
             <i class="fa fa-check"></i> Completed
         </a>
 
@@ -127,18 +140,18 @@
            class="btn btn-outline-dark">
             <i class="fa fa-check-circle"></i> Confirmed
         </a>
+    <div class="booking-search ms-auto">
+        <input type="text"
+            id="liveSearch"
+            class="form-control form-control-sm"
+            placeholder="Search ID, Name, Phone...">
+    </div>
 
     </div>
 
 </div>
 
-<!-- ================= FLASH MESSAGE ================= -->
 
-<?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success'); ?>
-    </div>
-<?php endif; ?>
 
 <!-- ================= TABLE ================= -->
 
@@ -163,7 +176,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="bookingTableBody">
 
                 <?php if(!empty($bookings)): ?>
 
@@ -195,11 +208,17 @@
                             </td>
 
                             <td>
-                                <button class="btn btn-danger btn-sm"
-                                        onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('bookings/delete/'.$b->booking_id); ?>">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+
+                            <a href="<?= site_url('admin/bookings/booking_details/'.$b->booking_id); ?>"
+                        class="btn btn-success btn-sm">
+                            <i class="fa fa-eye"></i>
+                        </a>
+
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteBooking(this)"
+                                data-url="<?= site_url('admin/bookings/delete/'.$b->booking_id); ?>">
+                            <i class="fa fa-trash"></i>
+                        </button>
                             </td>
                         </tr>
 
@@ -284,6 +303,87 @@ function deleteBooking(btn)
 
     });
 }
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const input = document.getElementById('liveSearch');
+    const tbody = document.getElementById('bookingTableBody');
+
+    if (!input) {
+        console.error("liveSearch input not found");
+        return;
+    }
+
+    const bookingStatus = "<?= $status ?>"; // MUST be confirmed
+
+    let timer = null;
+
+    input.addEventListener('keyup', function () {
+
+        clearTimeout(timer);
+
+        const query = this.value;
+
+        timer = setTimeout(() => {
+
+            fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q="
+                + encodeURIComponent(query)
+                + "&status=" + bookingStatus
+            )
+            .then(res => res.json())
+            .then(res => {
+
+                let html = '';
+                const data = res.data || [];
+
+                if (data.length > 0) {
+
+                    let sl = 1;
+
+                    data.forEach(b => {
+
+                        html += `
+                            <tr>
+                                <td>${sl++}</td>
+                                <td>${b.booking_id}</td>
+                                <td>${b.customer_name ?? ''}</td>
+                                <td>${b.booking_date}</td>
+                                <td>${b.booking_time}</td>
+                                <td>${b.table_number}</td>
+                                <td>${b.number_of_guests}</td>
+                                <td>${b.status}</td>
+                                <td>
+                                    <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
+                                       class="btn btn-success btn-sm">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                } else {
+                    html = `
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">
+                                No results found
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                tbody.innerHTML = html;
+
+            })
+            .catch(err => console.error("AJAX error:", err));
+
+        }, 300);
+
+    });
+
+});
 </script>
 
 <?php $this->load->view('admin/layout/footer'); ?>

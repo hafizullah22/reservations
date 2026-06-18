@@ -44,6 +44,20 @@
     border-color: #111827;
 }
 
+/* SEARCH */
+.booking-search {
+    display: flex;
+    align-items: center;
+}
+
+.booking-search input {
+    width: 250px;
+    height:40px;
+    border-radius: 10px;
+    border: 1px solid #000;
+}
+
+
 /* ================= CARD ================= */
 
 .card {
@@ -101,43 +115,41 @@
 
 <div class="topbar">
 
-    <div class="booking-menu">
+   <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
-        <a href="<?= site_url('admin/bookings'); ?>"
-           class="btn btn-outline-dark">
-            <i class="fa fa-list"></i> All Bookings
-        </a>
+    <!-- NAV BUTTONS -->
+    <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
+        <i class="fa fa-list"></i> All Bookings &nbsp;
+    </a>
 
-        <a href="<?= site_url('bookings/create'); ?>"
-           class="btn btn-outline-dark">
-            <i class="fa fa-plus"></i> New Booking
-        </a>
+    <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
+        <i class="fa fa-plus"></i> New Booking
+    </a>
 
-        <a href="<?= site_url('admin/bookings/completed'); ?>"
-           class="btn btn-outline-dark">
-            <i class="fa fa-check"></i> Completed
-        </a>
+    <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
+        <i class="fa fa-check"></i> Completed
+    </a>
 
-        <a href="<?= site_url('admin/bookings/cancelled'); ?>"
-           class="btn btn-outline-dark">
-            <i class="fa fa-times"></i> Cancelled
-        </a>
+    <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
+        <i class="fa fa-times"></i> Cancelled
+    </a>
 
-        <a href="<?= site_url('admin/bookings/confirmed'); ?>"
-           class="btn btn-outline-dark active">
-            <i class="fa fa-check-circle"></i> Confirmed
-        </a>
+    <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
+        <i class="fa fa-check-circle"></i> Confirmed
+    </a>
 
+
+    <div class="booking-search ms-auto">
+    <input type="text"
+           id="liveSearch"
+           class="form-control form-control-sm"
+           placeholder="Search ID, Name, Phone...">
     </div>
 
 </div>
 
+</div>
 
-<?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success'); ?>
-    </div>
-<?php endif; ?>
 
 <!-- ================= TABLE ================= -->
 
@@ -162,7 +174,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody id="bookingTableBody">
 
                 <?php if(!empty($bookings)): ?>
 
@@ -226,63 +238,88 @@
 
 </div>
 
-<!-- ================= SWEET ALERT DELETE ================= -->
+
+
+
 
 <script>
-function deleteBooking(btn)
-{
-    let url = btn.dataset.url;
-    let row = btn.closest('tr');
+document.addEventListener('DOMContentLoaded', function () {
 
-    Swal.fire({
-        title: 'Delete Booking?',
-        text: "This action cannot be undone.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, Delete'
-    }).then((result) => {
+    const input = document.getElementById('liveSearch');
+    const tbody = document.getElementById('bookingTableBody');
 
-        if(result.isConfirmed)
-        {
-            btn.disabled = true;
+    if (!input) {
+        console.error("liveSearch input not found");
+        return;
+    }
 
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
+    const bookingStatus = "<?= $status ?>"; // MUST be confirmed
+
+    let timer = null;
+
+    input.addEventListener('keyup', function () {
+
+        clearTimeout(timer);
+
+        const query = this.value;
+
+        timer = setTimeout(() => {
+
+            fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q="
+                + encodeURIComponent(query)
+                + "&status=" + bookingStatus
+            )
             .then(res => res.json())
-            .then(data => {
+            .then(res => {
 
-                if(data.status === 'success')
-                {
-                    row.remove();
+                let html = '';
+                const data = res.data || [];
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted',
-                        timer: 1500,
-                        showConfirmButton: false
+                if (data.length > 0) {
+
+                    let sl = 1;
+
+                    data.forEach(b => {
+
+                        html += `
+                            <tr>
+                                <td>${sl++}</td>
+                                <td>${b.booking_id}</td>
+                                <td>${b.customer_name ?? ''}</td>
+                                <td>${b.booking_date}</td>
+                                <td>${b.booking_time}</td>
+                                <td>${b.table_number}</td>
+                                <td>${b.number_of_guests}</td>
+                                <td>${b.status}</td>
+                                <td>
+                                    <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
+                                       class="btn btn-success btn-sm">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
                     });
-                }
-                else
-                {
-                    Swal.fire('Error', data.message, 'error');
+
+                } else {
+                    html = `
+                        <tr>
+                            <td colspan="9" class="text-center text-muted">
+                                No results found
+                            </td>
+                        </tr>
+                    `;
                 }
 
-                btn.disabled = false;
+                tbody.innerHTML = html;
+
             })
-            .catch(() => {
-                Swal.fire('Error', 'Something went wrong', 'error');
-                btn.disabled = falapplication/views/admin/bookings/completed.phpse;
-            });
-        }
+            .catch(err => console.error("AJAX error:", err));
+
+        }, 300);
 
     });
-}
-</script>
 
+});
+</script>
 <?php $this->load->view('admin/layout/footer'); ?>
