@@ -22,19 +22,27 @@ class Bookings extends CI_Controller {
         }
     }
    
-    public function index()
-    {
-     $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
-        $this->db->from('bookings');
-        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
-        $this->db->order_by('bookings.booking_id', 'DESC');
+  public function index()
+{
+    // BOOKINGS LIST
+    $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+    $this->db->from('bookings');
+    $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+    $this->db->order_by('bookings.booking_id', 'DESC');
 
-        $data['bookings'] = $this->db->get()->result();
-        $data['total_bookings'] = $this->db->count_all('bookings');
+    $data['bookings'] = $this->db->get()->result();
 
-    $this->load->view('/admin/bookings/index', $data);
-    }
+    // 🔥 STATUS COUNTS (ONE QUERY)
+    $this->db->select('status, COUNT(*) as total');
+    $this->db->from('bookings');
+    $this->db->group_by('status');
 
+    $result = $this->db->get()->result();
+
+    $data['booking_counts'] = array_column($result, 'total', 'status');
+
+    $this->load->view('admin/bookings/index', $data);
+}
    public function get_customer()
 {
     $customer_id = $this->input->post('customer_id');
@@ -526,6 +534,15 @@ class Bookings extends CI_Controller {
         // ✅ IMPORTANT: required for live search
         $data['status'] = 'Confirmed';
 
+          // 🔥 STATUS COUNTS (ONE QUERY)
+        $this->db->select('status, COUNT(*) as total');
+        $this->db->from('bookings');
+        $this->db->group_by('status');
+
+        $result = $this->db->get()->result();
+
+        $data['booking_counts'] = array_column($result, 'total', 'status');
+
         $this->load->view('admin/bookings/confirmed', $data);
     }
 
@@ -542,7 +559,15 @@ class Bookings extends CI_Controller {
 
         // ✅ IMPORTANT: required for live search
         $data['status'] = 'Completed';
-        $data['total_bookings'] = $this->db->count_all('bookings');
+
+          // 🔥 STATUS COUNTS (ONE QUERY)
+        $this->db->select('status, COUNT(*) as total');
+        $this->db->from('bookings');
+        $this->db->group_by('status');
+
+        $result = $this->db->get()->result();
+
+        $data['booking_counts'] = array_column($result, 'total', 'status');
         $this->load->view('admin/bookings/completed', $data);
     }
 
@@ -559,7 +584,14 @@ class Bookings extends CI_Controller {
 
         // ✅ IMPORTANT: required for live search
         $data['status'] = 'Cancelled';
-        $data['total_bookings'] = $this->db->count_all('bookings');
+          // 🔥 STATUS COUNTS (ONE QUERY)
+        $this->db->select('status, COUNT(*) as total');
+        $this->db->from('bookings');
+        $this->db->group_by('status');
+
+        $result = $this->db->get()->result();
+
+        $data['booking_counts'] = array_column($result, 'total', 'status');
         $this->load->view('admin/bookings/cancelled', $data);
     }
 

@@ -26,6 +26,7 @@
     border-radius: 10px;
     font-weight: 500;
     white-space: nowrap;
+    font-size:15px;
 }
 
 /* ACTIVE STATE */
@@ -41,7 +42,7 @@
 }
 
 .booking-search input {
-    width: 250px;
+    width: 235px;
     height:40px;
     border-radius: 10px;
     border: 1px solid #000;
@@ -122,58 +123,59 @@
 
 <div class="main">
 
-<!-- ================= TOPBAR MENU ================= -->
+    <!-- ================= TOPBAR MENU ================= -->
 
-<div class="topbar">
+    <div class="topbar">
 
-   <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
+    <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
-    <!-- NAV BUTTONS -->
-    <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
-        <i class="fa fa-list"></i> All Bookings &nbsp;(<?= $total_bookings?>)
-    </a>
+        <!-- NAV BUTTONS -->
+        <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
+        <i class="fa fa-list"></i> All Bookings
+        (<?= array_sum($booking_counts ?? []) ?>)
+        </a>
+        <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-plus"></i> New Booking
+        </a>
 
-    <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-plus"></i> New Booking
-    </a>
+        <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-calendar-check"></i> Confirmed
+            (<?= $booking_counts['Confirmed'] ?? 0 ?>)
+        </a>
 
-    <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check"></i> Completed
-    </a>
+        <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-check-double"></i> Completed
+            (<?= $booking_counts['Completed'] ?? 0 ?>)
+        </a>
 
-    <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-times"></i> Cancelled
-    </a>
+        <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-times"></i> Cancelled
+            (<?= $booking_counts['Cancelled'] ?? 0 ?>)
+        </a>
+ 
 
-    <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check-circle"></i> Confirmed
-    </a>
+    <div class="booking-search ms-auto position-relative">
+        <input type="text"
+            id="liveSearch"
+            class="form-control form-control-sm pe-4"
+            placeholder="Booking ID, Name">
+
+        <i class="fa fa-search position-absolute"
+        style="right:10px; top:50%; transform:translateY(-50%); color:#000;"></i>
+    </div>
+        
 
 
-    <div class="booking-search ms-auto">
-    <input type="text"
-           id="liveSearch"
-           class="form-control form-control-sm"
-           placeholder="Search ID, Name, Phone...">
+
     </div>
 
-</div>
 
-</div>
 
-<!-- ================= FLASH MESSAGE ================= -->
+    <!-- ================= TABLE ================= -->
 
-<?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success'); ?>
-    </div>
-<?php endif; ?>
+    <div class="card">
 
-<!-- ================= TABLE ================= -->
-
-<div class="card">
-
-    <div class="card-body">
+        <div class="card-body">
 
         <div class="table-responsive">
 
@@ -181,9 +183,10 @@
 
                 <thead>
                     <tr>
+                        <th>SL</th>
                         <th>ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
+                        <th>Member</th>
+                        <th>Booked Date</th>
                         <th>Time</th>
                         <th>Table</th>
                         <th>Persons</th>
@@ -193,7 +196,7 @@
                 </thead>
 
                 <tbody id="bookingTableBody">
-
+                 <?php   $sl=1;?>
                 <?php if(!empty($bookings)): ?>
 
                     <?php foreach($bookings as $b): ?>
@@ -210,12 +213,13 @@
                         ?>
 
                         <tr>
-                            <td><?= $b->booking_id; ?></td>
+                            <td><?=$sl++;?></td>
+                            <td class="text-center"><?= $b->booking_id; ?></td>
                             <td><?= $b->customer_name; ?></td>
                             <td><?= date('M d, Y', strtotime($b->booking_date)); ?></td>
                             <td><?= $b->booking_time; ?></td>
-                            <td><?= $b->table_number; ?></td>
-                            <td><?= $b->number_of_guests; ?></td>
+                            <td class="text-center"><?= $b->table_number; ?></td>
+                            <td class="text-center"><?= $b->number_of_guests; ?></td>
 
                             <td>
                                 <span class="badge bg-<?= $badge; ?>">
@@ -224,11 +228,10 @@
                             </td>
 
                             <td>
-                                <button class="btn btn-danger btn-sm"
-                                        onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('bookings/delete/'.$b->booking_id); ?>">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                            <a href="<?= site_url('admin/bookings/booking_details/'.$b->booking_id); ?>"
+                                class="btn btn-primary btn-sm">
+                                 <i class="fa fa-eye"></i>
+                            </a>
                             </td>
                         </tr>
 
@@ -258,67 +261,9 @@
 
 </div>
 
-</div>
 
-<!-- ================= SWEET ALERT DELETE ================= -->
 
-<script>
-function deleteBooking(btn)
-{
-    let url = btn.dataset.url;
-    let row = btn.closest('tr');
-
-    Swal.fire({
-        title: 'Delete Booking?',
-        text: "This action cannot be undone.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, Delete'
-    }).then((result) => {
-
-        if(result.isConfirmed)
-        {
-            btn.disabled = true;
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-
-                if(data.status === 'success')
-                {
-                    row.remove();
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Deleted',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                }
-                else
-                {
-                    Swal.fire('Error', data.message, 'error');
-                }
-
-                btn.disabled = false;
-            })
-            .catch(() => {
-                Swal.fire('Error', 'Something went wrong', 'error');
-                btn.disabled = false;
-            });
-        }
-
-    });
-}
-</script>
-
+<!-- live Search Script  -->
 
 <script>
 let timer = null;
@@ -338,11 +283,12 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
                 let html = '';
 
                 if (data.data.length > 0) {
-
+                    let sl=1;
                     data.data.forEach(b => {
 
                         html += `
                             <tr>
+                        <td>${sl++}</td>
                         <td>${b.booking_id}</td>
                         <td>${b.customer_name ?? ''}</td>
                         <td>${b.booking_date}</td>
@@ -351,8 +297,9 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
                         <td>${b.number_of_guests}</td>
                         <td>${b.status}</td>
                         <td>
-                            <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}">
-                                view
+                            <a href="<<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
+                                class="btn btn-primary btn-sm">
+                                 <i class="fa fa-eye"></i>
                             </a>
                         </td>
                     </tr>
@@ -362,8 +309,8 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
                 } else {
                     html = `
                         <tr>
-                            <td colspan="7" class="text-center text-muted">
-                                No results found
+                            <td colspan="7" class="text-center text-danger">
+                                No Booking Information Found
                             </td>
                         </tr>
                     `;

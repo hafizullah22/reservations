@@ -148,7 +148,6 @@
 
 <!-- ================= CONTENT ================= -->
 <div class="row g-3">
-
     <!-- LEFT: CUSTOMER -->
     <div class="col-lg-4">
 

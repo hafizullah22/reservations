@@ -15,33 +15,24 @@
     box-shadow: 0 2px 10px rgba(0,0,0,.05);
 }
 
-/* ================= MENU ================= */
-
 .booking-menu {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
     background: #f3f4f6;
     padding: 8px;
     border-radius: 12px;
 }
 
+/* BUTTON STYLE */
 .booking-menu .btn {
     border-radius: 10px;
     font-weight: 500;
     white-space: nowrap;
-    transition: .2s;
+    font-size:15px;
 }
 
-.booking-menu .btn i {
-    margin-right: 5px;
-}
-
-.booking-menu .btn.active,
-.booking-menu .btn:hover {
+/* ACTIVE STATE */
+.booking-menu .btn.active {
     background: #111827;
     color: #fff;
-    border-color: #111827;
 }
 
 /* SEARCH */
@@ -51,12 +42,33 @@
 }
 
 .booking-search input {
-    width: 250px;
+    width: 235px;
     height:40px;
     border-radius: 10px;
     border: 1px solid #000;
 }
 
+/* MOBILE */
+@media (max-width:768px) {
+
+    .booking-menu {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .booking-search {
+        width: 100%;
+    }
+
+    .booking-search input {
+        width: 100%;
+    }
+
+    .booking-search button {
+        width: 100%;
+    }
+}
 
 /* ================= CARD ================= */
 
@@ -111,51 +123,59 @@
 
 <div class="main">
 
-<!-- ================= TOPBAR MENU ================= -->
+    <!-- ================= TOPBAR MENU ================= -->
 
-<div class="topbar">
+    <div class="topbar">
 
-   <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
+    <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
-    <!-- NAV BUTTONS -->
-    <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark active">
-        <i class="fa fa-list"></i> All Bookings &nbsp;
-    </a>
+        <!-- NAV BUTTONS -->
+        <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-outline-dark">
+        <i class="fa fa-list"></i> All Bookings
+        (<?= array_sum($booking_counts ?? []) ?>)
+        </a>
+        <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-plus"></i> New Booking
+        </a>
 
-    <a href="<?= site_url('admin/bookings/create'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-plus"></i> New Booking
-    </a>
+        <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark active">
+            <i class="fa fa-calendar-check"></i> Confirmed
+            (<?= $booking_counts['Confirmed'] ?? 0 ?>)
+        </a>
 
-    <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check"></i> Completed
-    </a>
+        <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-check-double"></i> Completed
+            (<?= $booking_counts['Completed'] ?? 0 ?>)
+        </a>
 
-    <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-times"></i> Cancelled
-    </a>
+        <a href="<?= site_url('admin/bookings/cancelled'); ?>" class="btn btn-outline-dark">
+            <i class="fa fa-times"></i> Cancelled
+            (<?= $booking_counts['Cancelled'] ?? 0 ?>)
+        </a>
+ 
 
-    <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
-        <i class="fa fa-check-circle"></i> Confirmed
-    </a>
+    <div class="booking-search ms-auto position-relative">
+        <input type="text"
+            id="liveSearch"
+            class="form-control form-control-sm pe-4"
+            placeholder="Booking ID, Name">
+
+        <i class="fa fa-search position-absolute"
+        style="right:10px; top:50%; transform:translateY(-50%); color:#000;"></i>
+    </div>
+        
 
 
-    <div class="booking-search ms-auto">
-    <input type="text"
-           id="liveSearch"
-           class="form-control form-control-sm"
-           placeholder="Search ID, Name, Phone...">
+
     </div>
 
-</div>
-
-</div>
 
 
-<!-- ================= TABLE ================= -->
+    <!-- ================= TABLE ================= -->
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-body">
+        <div class="card-body">
 
         <div class="table-responsive">
 
@@ -163,9 +183,10 @@
 
                 <thead>
                     <tr>
+                        <th>SL</th>
                         <th>ID</th>
-                        <th>Customer</th>
-                        <th>Date</th>
+                        <th>Member</th>
+                        <th>Booked Date</th>
                         <th>Time</th>
                         <th>Table</th>
                         <th>Persons</th>
@@ -175,7 +196,7 @@
                 </thead>
 
                 <tbody id="bookingTableBody">
-
+                 <?php   $sl=1;?>
                 <?php if(!empty($bookings)): ?>
 
                     <?php foreach($bookings as $b): ?>
@@ -192,12 +213,13 @@
                         ?>
 
                         <tr>
-                            <td><?= $b->booking_id; ?></td>
+                            <td><?=$sl++;?></td>
+                            <td class="text-center"><?= $b->booking_id; ?></td>
                             <td><?= $b->customer_name; ?></td>
                             <td><?= date('M d, Y', strtotime($b->booking_date)); ?></td>
                             <td><?= $b->booking_time; ?></td>
-                            <td><?= $b->table_number; ?></td>
-                            <td><?= $b->number_of_guests; ?></td>
+                            <td class="text-center"><?= $b->table_number; ?></td>
+                            <td class="text-center"><?= $b->number_of_guests; ?></td>
 
                             <td>
                                 <span class="badge bg-<?= $badge; ?>">
@@ -206,11 +228,10 @@
                             </td>
 
                             <td>
-                                <button class="btn btn-danger btn-sm"
-                                        onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('bookings/delete/'.$b->booking_id); ?>">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                            <a href="<?= site_url('admin/bookings/booking_details/'.$b->booking_id); ?>"
+                                class="btn btn-primary btn-sm">
+                                 <i class="fa fa-eye"></i>
+                            </a>
                             </td>
                         </tr>
 
@@ -226,7 +247,11 @@
 
                 <?php endif; ?>
 
+                
+
                 </tbody>
+
+
 
             </table>
 
@@ -236,90 +261,85 @@
 
 </div>
 
-</div>
 
 
-
-
+<!-- live Search Script  -->
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+let timer = null;
 
-    const input = document.getElementById('liveSearch');
-    const tbody = document.getElementById('bookingTableBody');
+const statusPage = "<?= isset($status) ? $status : '' ?>";
 
-    if (!input) {
-        console.error("liveSearch input not found");
-        return;
-    }
+document.getElementById('liveSearch').addEventListener('keyup', function () {
 
-    const bookingStatus = "<?= $status ?>"; // MUST be confirmed
+    clearTimeout(timer);
 
-    let timer = null;
+    let query = this.value.trim();
 
-    input.addEventListener('keyup', function () {
+    timer = setTimeout(() => {
 
-        clearTimeout(timer);
+        // ✅ IF EMPTY → RESTORE STATUS PAGE (NO SEARCH)
+        if (query === '') {
 
-        const query = this.value;
+            fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?status=" + statusPage)
+                .then(res => res.json())
+                .then(data => renderTable(data.data));
 
-        timer = setTimeout(() => {
+            return;
+        }
 
-            fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q="
-                + encodeURIComponent(query)
-                + "&status=" + bookingStatus
-            )
-            .then(res => res.json())
-            .then(res => {
+        // 🔍 SEARCH MODE
+        fetch("<?= site_url('admin/bookings/ajax_booking_search'); ?>?q="
+            + encodeURIComponent(query)
+            + "&status=" + statusPage
+        )
+        .then(res => res.json())
+        .then(data => renderTable(data.data));
 
-                let html = '';
-                const data = res.data || [];
-
-                if (data.length > 0) {
-
-                    let sl = 1;
-
-                    data.forEach(b => {
-
-                        html += `
-                            <tr>
-                                <td>${sl++}</td>
-                                <td>${b.booking_id}</td>
-                                <td>${b.customer_name ?? ''}</td>
-                                <td>${b.booking_date}</td>
-                                <td>${b.booking_time}</td>
-                                <td>${b.table_number}</td>
-                                <td>${b.number_of_guests}</td>
-                                <td>${b.status}</td>
-                                <td>
-                                    <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
-                                       class="btn btn-success btn-sm">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
-                        `;
-                    });
-
-                } else {
-                    html = `
-                        <tr>
-                            <td colspan="9" class="text-center text-muted">
-                                No results found
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                tbody.innerHTML = html;
-
-            })
-            .catch(err => console.error("AJAX error:", err));
-
-        }, 300);
-
-    });
+    }, 300);
 
 });
+
+function renderTable(rows) {
+
+    let html = '';
+    let sl = 1;
+
+    if (rows && rows.length > 0) {
+
+        rows.forEach(b => {
+
+            html += `
+                <tr>
+                    <td>${sl++}</td>
+                    <td>${b.booking_id}</td>
+                    <td>${b.customer_name ?? ''}</td>
+                    <td>${b.booking_date}</td>
+                    <td>${b.booking_time}</td>
+                    <td>${b.table_number}</td>
+                    <td>${b.number_of_guests}</td>
+                    <td>${b.status}</td>
+                    <td>
+                        <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
+                           class="btn btn-primary btn-sm">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } else {
+        html = `
+            <tr>
+                <td colspan="9" class="text-center text-danger">
+                    No Booking Information Found
+                </td>
+            </tr>
+        `;
+    }
+
+    document.getElementById('bookingTableBody').innerHTML = html;
+}
 </script>
 <?php $this->load->view('admin/layout/footer'); ?>
