@@ -8,14 +8,20 @@
     padding: 20px;
 }
 
+/* TOPBAR */
 .topbar {
     background: #fff;
-    padding: 15px;
+    padding: 14px 16px;
     border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
+.topbar h4 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+}
 /* ================= MENU ================= */
 
 .booking-menu {
@@ -95,56 +101,16 @@
 <div class="main">
 
 <!-- ================= TOPBAR ================= -->
-<div class="topbar">
 
-    <div class="booking-menu">
+<div class="topbar d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">
+        Booking Details #<?= $booking_id; ?>
+    </h4>
 
-        <a href="<?= site_url('bookings'); ?>" class="btn btn-outline-dark active">
-            All Bookings
-        </a>
-
-        <a href="<?= site_url('bookings/create'); ?>" class="btn btn-outline-dark">
-            New Booking
-        </a>
-
-        <a href="<?= site_url('admin/bookings/completed'); ?>" class="btn btn-outline-dark">
-            Completed
-        </a>
-
-        <a href="<?= site_url('bookings/cancelled'); ?>" class="btn btn-outline-dark">
-            Cancelled
-        </a>
-
-        <a href="<?= site_url('admin/bookings/confirmed'); ?>" class="btn btn-outline-dark">
-            Confirmed
-        </a>
-
-        <!-- SEARCH -->
-        <form action="<?= site_url('admin/bookings/booking_details'); ?>"
-              method="GET"
-              class="booking-search">
-
-            <input type="text"
-                   name="q"
-                   class="form-control form-control-sm"
-                   placeholder="Booking ID">
-
-            <button type="submit" class="btn btn-dark btn-sm">
-                Search
-            </button>
-
-        </form>
-
-    </div>
-
+    <a href="<?= site_url('admin/bookings'); ?>" class="btn btn-secondary btn-sm">
+        <i class="fa fa-arrow-left"></i> Back to Bookings
+    </a>
 </div>
-
-<!-- ================= FLASH ================= -->
-<?php if($this->session->flashdata('success')): ?>
-    <div class="alert alert-success">
-        <?= $this->session->flashdata('success'); ?>
-    </div>
-<?php endif; ?>
 
 <!-- ================= CONTENT ================= -->
 <div class="row g-3">

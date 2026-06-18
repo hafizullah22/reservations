@@ -349,13 +349,28 @@ class Bookings extends CI_Controller {
   
 
     public function delete($id)
-    {
-        $this->db->where('booking_id', $id);
-        $this->db->delete('bookings');
-
-        $this->session->set_flashdata('success', 'Booking deleted successfully!');
-        redirect('bookings');
+{
+    if (!$this->input->is_ajax_request()) {
+        show_404();
+        return;
     }
+
+    // optional: get status before delete (useful for UI refresh logic)
+    $this->db->select('status');
+    $this->db->from('bookings');
+    $this->db->where('booking_id', $id);
+    $booking = $this->db->get()->row();
+
+    $this->db->where('booking_id', $id);
+    $delete = $this->db->delete('bookings');
+
+    $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+            'status' => $delete ? 'success' : 'error',
+            'booking_status' => $booking->status ?? null
+        ]));
+}
 
     // =========================
     // UPDATE STATUS
@@ -651,7 +666,7 @@ public function booking_details($booking_id = 0)
     if (!$booking) {
         redirect('admin/bookings');
     }
-
+    $data['booking_id'] = $booking_id;
     $data['booking'] = $booking;
     $this->load->view('admin/bookings/booking_details', $data);
 }
