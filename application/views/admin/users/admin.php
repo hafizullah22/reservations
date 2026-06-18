@@ -74,12 +74,12 @@
     <div class="topbar">
         <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
-            <a href="<?= site_url('admin/users'); ?>" class="btn btn-outline-dark active">
+            <a href="<?= site_url('admin/users'); ?>" class="btn btn-outline-dark">
                 <i class="fa fa-users"></i> All
                 (<?= $total_users ?? 0 ?>)
             </a>
 
-            <a href="<?= site_url('admin/users/admin'); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/admin'); ?>" class="btn btn-outline-dark" active>
                 <i class="fa fa-user-shield"></i> Administrator
                 (<?= $booking_counts['Admin'] ?? 0; ?>)
             </a>

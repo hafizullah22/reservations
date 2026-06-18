@@ -35,7 +35,7 @@
 }
 
 .booking-search input {
-    width: 500px;
+    width: 300px;
     height:40px;
     border-radius: 10px;
     border: 1px solid #000;
@@ -88,6 +88,19 @@
                 <i class="fa fa-user"></i> Member
                 (<?= $booking_counts['Member'] ?? 0; ?>)
             </a>
+            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+                <i class="fa fa-plus"></i> Add User
+               
+            </a>
+            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+                <i class="fa-solid fa-upload"></i> Import
+               
+            </a>
+            <a href="<?= site_url(''); ?>" class="btn btn-outline-dark">
+                <i class="fa-solid fa-download"></i> Export
+               
+            </a>
+
 
             <div class="booking-search ms-auto position-relative">
                 <input type="text"
