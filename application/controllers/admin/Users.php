@@ -52,25 +52,38 @@ public function ajax_user_search()
 
     $this->db->from('customers');
 
+    // ================= SEARCH =================
     if (!empty($q)) {
+
         $this->db->group_start();
-        $this->db->like('first_name', $q);
+
+        // INT SAFE SEARCH (customer_id)
+        if (is_numeric($q)) {
+            $this->db->or_where('customer_id', (int)$q);
+        }
+
+        // TEXT SEARCH
+        $this->db->or_like('first_name', $q);
         $this->db->or_like('last_name', $q);
         $this->db->or_like('phone', $q);
         $this->db->or_like('email', $q);
-        $this->db->or_like('customer_id', $q);
+
         $this->db->group_end();
     }
 
+    // ================= ROLE FILTER =================
     if (!empty($role) && $role !== 'all') {
         $this->db->where('role', $role);
     }
 
+    // ================= RESULT =================
     $data = $this->db->order_by('customer_id', 'DESC')
                      ->get()
                      ->result();
 
-    echo json_encode(['data' => $data]);
+    echo json_encode([
+        'data' => $data
+    ]);
 }
 
 
@@ -95,9 +108,35 @@ public function member()
     $data['total_users'] = $this->db->count_all('customers');
 
     // ✅ IMPORTANT: required for live search
-        $data['status'] = 'Member';
+    $data['status'] = 'Member';
 
     $this->load->view('admin/users/member', $data);
+}
+
+public function admin()
+{
+    // Customer List
+    $data['users'] = $this->db
+        ->order_by('customer_id', 'DESC')
+        ->where('role','Admin')
+        ->get('customers')
+        ->result();
+
+    // Status Counts
+    $this->db->select('role, COUNT(*) as total');
+    $this->db->from('customers');
+    $this->db->group_by('role');
+
+    $result = $this->db->get()->result();
+
+    $data['booking_counts'] = array_column($result, 'total', 'role');
+
+    $data['total_users'] = $this->db->count_all('customers');
+
+    // ✅ IMPORTANT: required for live search
+    $data['status'] = 'Admin';
+
+    $this->load->view('admin/users/admin', $data);
 }
 
     

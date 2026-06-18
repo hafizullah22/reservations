@@ -189,13 +189,13 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
             return;
         }
 
-         // 🔍 SEARCH MODE
-        fetch("<?= site_url('admin/users/ajax_user_search'); ?>?q="
-            + encodeURIComponent(query)
-            + "&role=" + statusPage
-        )
-        .then(res => res.json())
-        .then(data => renderTable(data.data));
+        // SEARCH REQUEST
+        fetch("<?= site_url('admin/users/ajax_user_search'); ?>?q=" + encodeURIComponent(query))
+            .then(res => res.json())
+            .then(data => renderTable(data.data))
+            .catch(error => {
+                console.error('Search Error:', error);
+            });
 
     }, 300);
 });
