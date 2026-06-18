@@ -111,7 +111,7 @@ small {
 
                 <div>
                     <small>Total Bookings</small>
-                    <h3 class="mb-0"><?= $total_bookings ?></h3>
+                    <h3 class="mb-0"><?= array_sum($booking_counts ?? []) ?></h3>
                 </div>
 
                 <div class="fs-2 opacity-75">
@@ -124,16 +124,16 @@ small {
 
     <!-- CANCELLED -->
     <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-danger shadow-sm">
+        <div class="card text-white bg-dark shadow-sm">
             <div class="card-body d-flex justify-content-between align-items-center">
 
                 <div>
-                    <small>Cancelled</small>
-                    <h3 class="mb-0"><?= $total_cancelled ?? 0 ?></h3>
+                    <small>Completed</small>
+                    <h3 class="mb-0"><?= $booking_counts['Completed'] ?? 0 ?></h3>
                 </div>
 
                 <div class="fs-2 opacity-75">
-                    <i class="fa fa-times-circle"></i>
+                    <i class="fa fa-circle-check"></i>
                 </div>
 
             </div>
@@ -178,12 +178,12 @@ small {
 
     <!-- CANCELLED -->
     <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-secondary shadow-sm">
+        <div class="card text-white bg-danger shadow-sm">
             <div class="card-body d-flex justify-content-between align-items-center">
 
                 <div>
                     <small>Cancelled</small>
-                    <h3 class="mb-0"><?= $total_cancelled ?? 0 ?></h3>
+                    <h3 class="mb-0"><?= $booking_counts['Cancelled'] ?? 0 ?></h3>
                 </div>
 
                 <div class="fs-2 opacity-75">
@@ -200,8 +200,8 @@ small {
             <div class="card-body d-flex justify-content-between align-items-center">
 
                 <div>
-                    <small>Cancelled</small>
-                    <h3 class="mb-0"><?= $total_cancelled ?? 0 ?></h3>
+                    <small>Confirmed</small>
+                    <h3 class="mb-0"><?= $booking_counts['Confirmed'] ?? 0 ?></h3>
                 </div>
 
                 <div class="fs-2 opacity-75">

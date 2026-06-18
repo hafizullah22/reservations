@@ -22,51 +22,83 @@ class Users extends CI_Controller {
     }
     }
     
-public function index($page = 0)
+
+public function index()
 {
-    $this->load->library('pagination');
-
-    $per_page = 10;
-
-    // Total users
-    $config['total_rows'] = $this->db->count_all('customers');
-
-    $config['base_url'] = site_url('admin/users');
-    $config['per_page'] = $per_page;
-
-    // Pagination UI (Bootstrap style)
-    $config['full_tag_open'] = '<ul class="pagination">';
-    $config['full_tag_close'] = '</ul>';
-
-    $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
-    $config['num_tag_close'] = '</span></li>';
-
-    $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
-    $config['cur_tag_close'] = '</span></li>';
-
-    $config['next_tag_open'] = '<li class="page-item"><span class="page-link">';
-    $config['next_tag_close'] = '</span></li>';
-
-    $config['prev_tag_open'] = '<li class="page-item"><span class="page-link">';
-    $config['prev_tag_close'] = '</span></li>';
-
-    $this->pagination->initialize($config);
-
-    // Get paginated users
+    // Customer List
     $data['users'] = $this->db
-        ->limit($per_page, $page)
         ->order_by('customer_id', 'DESC')
         ->get('customers')
         ->result();
 
-    $data['pagination'] = $this->pagination->create_links();
+    // Status Counts
+    $this->db->select('role, COUNT(*) as total');
+    $this->db->from('customers');
+    $this->db->group_by('role');
 
-    $this->load->view('admin/users/all_users', $data);
+    $result = $this->db->get()->result();
+
+    $data['booking_counts'] = array_column($result, 'total', 'role');
+
+    $data['total_users'] = $this->db->count_all('customers');
+
+    $this->load->view('admin/users/index', $data);
+}
+
+public function ajax_user_search()
+{
+    $q    = $this->input->get('q');
+    $role = $this->input->get('role');
+
+    $this->db->from('customers');
+
+    if (!empty($q)) {
+        $this->db->group_start();
+        $this->db->like('first_name', $q);
+        $this->db->or_like('last_name', $q);
+        $this->db->or_like('phone', $q);
+        $this->db->or_like('email', $q);
+        $this->db->or_like('customer_id', $q);
+        $this->db->group_end();
+    }
+
+    if (!empty($role) && $role !== 'all') {
+        $this->db->where('role', $role);
+    }
+
+    $data = $this->db->order_by('customer_id', 'DESC')
+                     ->get()
+                     ->result();
+
+    echo json_encode(['data' => $data]);
 }
 
 
+public function member()
+{
+    // Customer List
+    $data['users'] = $this->db
+        ->order_by('customer_id', 'DESC')
+        ->where('role','Member')
+        ->get('customers')
+        ->result();
 
+    // Status Counts
+    $this->db->select('role, COUNT(*) as total');
+    $this->db->from('customers');
+    $this->db->group_by('role');
 
+    $result = $this->db->get()->result();
+
+    $data['booking_counts'] = array_column($result, 'total', 'role');
+
+    $data['total_users'] = $this->db->count_all('customers');
+
+    // ✅ IMPORTANT: required for live search
+        $data['status'] = 'Member';
+
+    $this->load->view('admin/users/member', $data);
+}
 
     
 }//End of Admin Controller 

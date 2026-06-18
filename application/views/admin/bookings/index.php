@@ -42,7 +42,7 @@
 }
 
 .booking-search input {
-    width: 235px;
+    width: 230px;
     height:40px;
     border-radius: 10px;
     border: 1px solid #000;

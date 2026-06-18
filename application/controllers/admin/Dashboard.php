@@ -27,7 +27,15 @@ class Dashboard extends CI_Controller {
 
     public function index()
     {
-        $data['total_bookings'] = $this->db->count_all('bookings');
+            // 🔥 STATUS COUNTS (ONE QUERY)
+        $this->db->select('status, COUNT(*) as total');
+        $this->db->from('bookings');
+        $this->db->group_by('status');
+
+        $result = $this->db->get()->result();
+
+        $data['booking_counts'] = array_column($result, 'total', 'status');
+        
         $data['total_customers'] = $this->db->count_all('customers');
         $data['total_tables']    = $this->db->count_all('tables');
         $data['recent_bookings'] = $this->db->order_by('booking_id', 'DESC')
