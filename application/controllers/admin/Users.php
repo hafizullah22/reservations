@@ -139,5 +139,37 @@ public function admin()
     $this->load->view('admin/users/admin', $data);
 }
 
+public function view($customer_id=NULL)
+{
+   $data['user'] = $this->db->select('*')->where('customer_id',$customer_id)->get('customers')->row();
+   $this->load->view('admin/users/details',$data);
+}
+
+public function password($customer_id)
+{
+    $new_password = trim($this->input->post('new_password'));
+
+    if (empty($new_password)) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Error');
+        $this->session->set_flashdata('msg_text', 'Password cannot be empty');
+
+        redirect('admin/users/view/'.$customer_id);
+        return;
+    }
+
+    $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
+
+    $this->db->where('customer_id', $customer_id);
+    $this->db->update('customers', [
+        'password' => $hashed_password
+    ]);
+
+    $this->session->set_flashdata('msg_type', 'success');
+    $this->session->set_flashdata('msg_title', 'Success');
+    $this->session->set_flashdata('msg_text', 'Password changed successfully');
+
+    redirect('admin/users/view/'.$customer_id);
+}
     
 }//End of Admin Controller 

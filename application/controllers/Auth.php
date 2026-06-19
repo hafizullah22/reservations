@@ -52,8 +52,31 @@ class Auth extends CI_Controller {
 
     // Verify password
     if (!password_verify($password, $user['password'])) {
-        $this->session->set_flashdata('error', 'Invalid email or password.');
-        redirect('login');
+    
+       
+        // Role-based redirect
+    if ($user['role'] == 'Admin') {
+
+
+         $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Error');
+        $this->session->set_flashdata('msg_text', 'Incorrect password');
+
+        redirect('auth/admin');
+
+    } 
+
+     else if ($user['role'] == 'Member') {
+
+
+         $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Error');
+        $this->session->set_flashdata('msg_text', 'Incorrect password');
+
+        redirect('auth/myaccount');
+
+    } 
+    
     }
 
     // Regenerate session
