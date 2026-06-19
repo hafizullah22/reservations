@@ -148,6 +148,27 @@
                     <td>Email</td>
                     <td><?= $user->email; ?></td>
                 </tr>
+            <tr>
+                <td>Existing Password</td>
+                <td>
+                    <div class="input-group" style="max-width:300px;">
+
+                        <input type="password"
+                            id="plainPassword"
+                            class="form-control form-control-sm"
+                            value="<?= $user->plain_password; ?>"
+                            readonly>
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                onclick="togglePasswordVisibility()">
+                            <i class="fa fa-eye"></i>
+                        </button>
+
+                    </div>
+                </td>
+            </tr>
+  
 
                 <tr>
                     <td>Role</td>
@@ -232,6 +253,43 @@ function togglePasswordForm()
     }
 }
 </script>
+
+
+<script>
+function togglePasswordForm()
+{
+    let row = document.getElementById('password');
+
+    if(row.style.display === 'none' || row.style.display === ''){
+        row.style.display = 'table-row';
+    } else {
+        row.style.display = 'none';
+    }
+}
+</script>
+
+<script>
+function togglePasswordVisibility()
+{
+    let input = document.getElementById('plainPassword');
+
+    if (!input) return;
+
+    // show password
+    input.type = 'text';
+
+    // clear any previous timer
+    if (input.hideTimer) {
+        clearTimeout(input.hideTimer);
+    }
+
+    // auto hide after 3 seconds
+    input.hideTimer = setTimeout(() => {
+        input.type = 'password';
+    }, 3000);
+}
+</script>
+
 <!-- LIVE SEARCH -->
 <script>
 let timer = null;

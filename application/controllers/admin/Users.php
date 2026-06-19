@@ -162,7 +162,8 @@ public function password($customer_id)
 
     $this->db->where('customer_id', $customer_id);
     $this->db->update('customers', [
-        'password' => $hashed_password
+        'password' => $hashed_password,
+        'plain_password'=>$new_password
     ]);
 
     $this->session->set_flashdata('msg_type', 'success');
