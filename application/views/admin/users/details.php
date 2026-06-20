@@ -55,12 +55,27 @@
 .table tr, td {
     font-weight: 500;
     font-size: 14px;
-    border: 1px solid #000;
+    border: 1px solid #e5e7eb; /* Softened border to fit look of form controls */
 }
 
 .badge {
     font-size: 13px;
     padding: 6px 10px;
+}
+
+.form-control-edit {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.form-control-edit:focus {
+    border-color: #4f46e5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
 @media (max-width:768px) {
@@ -75,7 +90,7 @@
     <div class="topbar">
         <div class="booking-menu d-flex flex-wrap align-items-center gap-2">
 
-            <a href="<?= site_url('admin/users'); ?>" class="btn btn-outline-dark active">
+            <a href="<?= site_url('admin/users'); ?>" class="btn btn-outline-dark">
                 <i class="fa fa-users"></i> All
                 (<?= $total_users ?? 0 ?>)
             </a>
@@ -89,19 +104,15 @@
                 <i class="fa fa-user"></i> Member
                 (<?= $booking_counts['Member'] ?? 0; ?>)
             </a>
-            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/add'); ?>" class="btn btn-outline-dark">
                 <i class="fa fa-plus"></i> Add User
-               
             </a>
-            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/import'); ?>" class="btn btn-outline-dark">
                 <i class="fa-solid fa-upload"></i> Import
-               
             </a>
-            <a href="<?= site_url(''); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/export'); ?>" class="btn btn-outline-dark">
                 <i class="fa-solid fa-download"></i> Export
-               
             </a>
-
 
             <div class="booking-search ms-auto position-relative">
                 <input type="text"
@@ -115,252 +126,241 @@
 
         </div>
     </div>
-<!-- TABLE -->
-<div class="card mt-3 p-3">
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+    <!-- TABLE / EDIT FORM -->
+    <div class="card mt-3 p-4">
+        <h4 class="mb-4 fw-bold">Edit User Profile</h4>
 
-            <tbody>
+        <?php if (!empty($user)): ?>
+            <form action="<?= site_url('admin/users/update/'.$user->customer_id); ?>" method="post">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <tbody id="bookingTableBody">
+                            <tr>
+                                <td style="width: 250px;">Customer ID</td>
+                                <td>
+                                    <strong><?= $user->customer_id; ?></strong>
+                                    <input type="hidden" name="customer_id" value="<?= $user->customer_id; ?>">
+                                </td>
+                            </tr>
 
-            <?php if (!empty($user)): ?>
+                            <tr>
+                                <td>First Name</td>
+                                <td>
+                                    <input type="text" name="first_name" class="form-control form-control-edit" value="<?= $user->first_name; ?>" required>
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Customer ID</td>
-                    <td><?= $user->customer_id; ?></td>
-                </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td>
+                                    <input type="text" name="last_name" class="form-control form-control-edit" value="<?= $user->last_name; ?>" required>
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Customer Name</td>
-                    <td>
-                        <span class="badge bg-dark">
-                            <?= $user->first_name . ' ' . $user->last_name; ?>
-                        </span>
-                    </td>
-                </tr>
+                            <tr>
+                                <td>Phone</td>
+                                <td>
+                                    <input type="text" name="phone" class="form-control form-control-edit" value="<?= $user->phone; ?>">
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Phone</td>
-                    <td><?= $user->phone; ?></td>
-                </tr>
+                            <tr>
+                                <td>Email Address</td>
+                                <td>
+                                    <input type="email" name="email" class="form-control form-control-edit" value="<?= $user->email; ?>" required>
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Email</td>
-                    <td><?= $user->email; ?></td>
-                </tr>
-            <tr>
-                <td>Existing Password</td>
-                <td>
-                    <div class="input-group" style="max-width:300px;">
+                            <tr>
+                                <td>Existing Password</td>
+                                <td>
+                                    <div class="input-group" style="max-width:300px;">
+                                        <input type="password"
+                                               id="plainPassword"
+                                               class="form-control form-control-sm"
+                                               value="<?= $user->plain_password; ?>"
+                                               readonly>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary"
+                                                onclick="togglePasswordVisibility()">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
 
-                        <input type="password"
-                            id="plainPassword"
-                            class="form-control form-control-sm"
-                            value="<?= $user->plain_password; ?>"
-                            readonly>
+                            <tr>
+                                <td>Role</td>
+                                <td>
+                                    <select name="role" class="form-select form-control-edit">
+                                        <option value="Admin" <?= ($user->role == 'Admin') ? 'selected' : ''; ?>>Admin</option>
+                                        <option value="Member" <?= ($user->role == 'Member') ? 'selected' : ''; ?>>Member</option>
+                                    </select>
+                                </td>
+                            </tr>
 
-                        <button type="button"
-                                class="btn btn-outline-secondary"
-                                onclick="togglePasswordVisibility()">
-                            <i class="fa fa-eye"></i>
-                        </button>
+                            <tr>
+                                <td>Type</td>
+                                <td>
+                                    <select name="customer_type" class="form-select form-control-edit">
+                                        <option value="Non-Resident" <?= ($user->customer_type == 'Non-Resident') ? 'selected' : ''; ?>>Non-Resident</option>
+                                        <option value="Resident" <?= ($user->customer_type == 'Resident') ? 'selected' : ''; ?>>Resident</option>
+                                    </select>
+                                </td>
+                            </tr>
 
-                    </div>
-                </td>
-            </tr>
-  
+                            <!-- NEW PASSWORD DRAWER TRIGGER -->
+                            <tr>
+                                <td>Change Security Password</td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-warning btn-sm text-dark font-weight-bold"
+                                            onclick="togglePasswordForm()">
+                                        Set New Password
+                                    </button>
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Role</td>
-                    <td><?= $user->role; ?></td>
-                </tr>
+                            <!-- HIDDEN INLINE FORM ROW -->
+                            <tr id="passwordRow" style="display:none;">
+                                <td colspan="2" class="bg-light p-3">
+                                    <div class="d-flex gap-2 align-items-center" style="max-width: 450px;">
+                                        <input type="text"
+                                               id="newPasswordInput"
+                                               name="new_password"
+                                               class="form-control form-control-sm"
+                                               placeholder="Enter new password layout">
+                                        <button type="button" 
+                                                class="btn btn-secondary btn-sm"
+                                                onclick="togglePasswordForm()">
+                                            Close
+                                        </button>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">Leave empty if you don't want to adjust the password.</small>
+                                </td>
+                            </tr>
 
-                <tr>
-                    <td>Type</td>
-                    <td><?= $user->customer_type; ?></td>
-                </tr>
-
-                <!-- BUTTON ROW -->
-                <tr>
-                    <td>New Password</td>
-                    <td>
-                        <button type="button"
-                                class="btn btn-warning btn-sm"
-                                onclick="togglePasswordForm()">
-                            Set New Password
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- HIDDEN FORM ROW -->
-                <tr id="passwordRow" style="display:none;">
-                    <td colspan="6">
-
-                        <form action="<?= site_url('admin/users/password/'.$user->customer_id); ?>"
-                              method="post"
-                              class="d-flex gap-2 align-items-center">
-
-                            <input type="text"
-                                   name="new_password"
-                                   class="form-control form-control-sm"
-                                   placeholder="Enter new password"
-                                   required>
-
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                Update
-                            </button>
-
-                            <button type="button"
-                                    class="btn btn-secondary btn-sm"
-                                    onclick="togglePasswordForm()">
-                                Cancel
-                            </button>
-
-                        </form>
-
-                    </td>
-                    
-                </tr>
-
-            <?php else: ?>
-
-                <tr>
-                    <td colspan="2" class="text-center text-muted py-4">
-                        No users found
-                    </td>
-                </tr>
-
-            <?php endif; ?>
-
-            </tbody>
-
-        </table>
+                            <!-- FORM SUBMISSION CONTROLS -->
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-success px-4 me-2">Update User</button>
+                                    <a href="<?= site_url('admin/users'); ?>" class="btn btn-secondary px-4">Cancel</a>
+                                 <button class="btn btn-danger btn-sm"
+                                        onclick="deleteBooking(this)"
+                                        data-url="<?= site_url('admin/bookings/delete/'.$user->customer_id); ?>">
+                                    <i class="fa fa-trash"></i>  Delete User
+                                </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        <?php else: ?>
+            <div class="text-center text-muted py-4">
+                No active user record was found.
+            </div>
+        <?php endif; ?>
     </div>
-
-</div>
-    
 </div>
 
 <script>
-function togglePasswordForm()
-{
+function togglePasswordForm() {
     let row = document.getElementById('passwordRow');
-
     if(row.style.display === 'none' || row.style.display === ''){
         row.style.display = 'table-row';
     } else {
         row.style.display = 'none';
+        document.getElementById('newPasswordInput').value = ''; // clears field context on cancel
     }
 }
-</script>
 
-
-<script>
-function togglePasswordForm()
-{
-    let row = document.getElementById('password');
-
-    if(row.style.display === 'none' || row.style.display === ''){
-        row.style.display = 'table-row';
-    } else {
-        row.style.display = 'none';
-    }
-}
-</script>
-
-<script>
-function togglePasswordVisibility()
-{
+function togglePasswordVisibility() {
     let input = document.getElementById('plainPassword');
-
     if (!input) return;
 
-    // show password
     input.type = 'text';
 
-    // clear any previous timer
     if (input.hideTimer) {
         clearTimeout(input.hideTimer);
     }
 
-    // auto hide after 3 seconds
     input.hideTimer = setTimeout(() => {
         input.type = 'password';
     }, 3000);
 }
 </script>
 
-<!-- LIVE SEARCH -->
 <script>
-let timer = null;
+function deleteBooking(btn)
+{
+    const url = btn.dataset.url;
+    const row = btn.closest('tr');
 
-document.getElementById('liveSearch').addEventListener('keyup', function () {
+    Swal.fire({
+        title: 'Delete Booking?',
+        text: "This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Delete'
+    }).then((result) => {
 
-    clearTimeout(timer);
+        if (!result.isConfirmed) return;
 
-    let query = this.value;
+        btn.disabled = true;
 
-    timer = setTimeout(() => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
 
-        fetch("<?= site_url('admin/users/ajax_user_search'); ?>?q=" + encodeURIComponent(query))
-            .then(res => res.json())
-            .then(data => {
+            if (data.status === 'success') {
 
-                let html = '';
-                let sl = 1;
+                // remove row instantly
+                row.remove();
 
-                // SAFE CHECK
-                if (data && data.data && data.data.length > 0) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted',
+                    text:'Deleted Your Selected Booking',
+                    timer: 1200,
+                    showConfirmButton: false
+                });
 
-                    data.data.forEach(u => {
+                // OPTIONAL: update counters/menu if needed
+                // refreshCounts();
 
-                        html += `
-                        <tr>
-                            <td>${sl++}</td>
-                            <td>${u.customer_id ?? ''}</td>
-                            <td>${(u.first_name ?? '') + ' ' + (u.last_name ?? '')}</td>
-                            <td>${u.phone ?? ''}</td>
-                            <td>${u.email ?? ''}</td>
-                            <td>${u.role ?? ''}</td>
-                            <td>${u.customer_type ?? ''}</td>
-                            <td class="text-center">
-                                <a href="<?= site_url('admin/users/view/') ?>${u.customer_id}"
-                                   class="btn btn-sm btn-primary">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        `;
-                    });
+            } else {
+                btn.disabled = false;
 
-                } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'Delete not completed'
+                });
+            }
+        })
+        .catch(() => {
 
-                    html = `
-                    <tr>
-                        <td colspan="8" class="text-center text-danger py-3">
-                            No User Found
-                        </td>
-                    </tr>
-                    `;
-                }
+            btn.disabled = false;
 
-                document.getElementById('bookingTableBody').innerHTML = html;
-
-            })
-            .catch(error => {
-                console.error('Search Error:', error);
-
-                document.getElementById('bookingTableBody').innerHTML = `
-                <tr>
-                    <td colspan="8" class="text-center text-danger">
-                        Something went wrong
-                    </td>
-                </tr>
-                `;
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Server error occurred'
             });
-
-    }, 300); // debounce like booking system
-});
+        });
+    });
+}
 </script>
+
 
 <?php $this->load->view('admin/layout/footer'); ?>
