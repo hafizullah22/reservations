@@ -152,6 +152,7 @@ tr:hover{
                 <tr>
                     <th>#</th>
                     <th>File Name</th>
+                    <th>Year</th>
                     <th>Report</th>
                     <th>view</th>
                     <th>Delete</th>
@@ -168,6 +169,10 @@ tr:hover{
 
                         <td>
                             <?= $file->file_name; ?>
+                        </td>
+
+                        <td>
+                            <?= $file->year; ?>
                         </td>
 
                         <td>

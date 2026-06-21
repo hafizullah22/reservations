@@ -107,7 +107,7 @@ public function tax_return()
 public function meeting()
 {
     $data['files'] = $this->db
-        ->select('id,file_name, file_path,file_type')
+        ->select('id,year,file_name, file_path,file_type')
         ->where('file_type', 'meeting')
         ->get('documents')
         ->result();
