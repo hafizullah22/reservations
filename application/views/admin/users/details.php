@@ -114,15 +114,7 @@
                 <i class="fa-solid fa-download"></i> Export
             </a>
 
-            <div class="booking-search ms-auto position-relative">
-                <input type="text"
-                       id="liveSearch"
-                       class="form-control form-control-sm pe-4"
-                       placeholder="Search name, phone, email...">
-
-                <i class="fa fa-search position-absolute"
-                   style="right:10px; top:50%; transform:translateY(-50%); color:#000;"></i>
-            </div>
+            
 
         </div>
     </div>
@@ -247,11 +239,7 @@
                                 <td>
                                     <button type="submit" class="btn btn-success px-4 me-2">Update User</button>
                                     <a href="<?= site_url('admin/users'); ?>" class="btn btn-secondary px-4">Cancel</a>
-                                 <button class="btn btn-danger btn-sm"
-                                        onclick="deleteBooking(this)"
-                                        data-url="<?= site_url('admin/bookings/delete/'.$user->customer_id); ?>">
-                                    <i class="fa fa-trash"></i>  Delete User
-                                </button>
+                                 
                                 </td>
                             </tr>
                         </tbody>
@@ -293,74 +281,7 @@ function togglePasswordVisibility() {
 }
 </script>
 
-<script>
-function deleteBooking(btn)
-{
-    const url = btn.dataset.url;
-    const row = btn.closest('tr');
 
-    Swal.fire({
-        title: 'Delete Booking?',
-        text: "This action cannot be undone.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, Delete'
-    }).then((result) => {
-
-        if (!result.isConfirmed) return;
-
-        btn.disabled = true;
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-
-            if (data.status === 'success') {
-
-                // remove row instantly
-                row.remove();
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Deleted',
-                    text:'Deleted Your Selected Booking',
-                    timer: 1200,
-                    showConfirmButton: false
-                });
-
-                // OPTIONAL: update counters/menu if needed
-                // refreshCounts();
-
-            } else {
-                btn.disabled = false;
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed',
-                    text: 'Delete not completed'
-                });
-            }
-        })
-        .catch(() => {
-
-            btn.disabled = false;
-
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Server error occurred'
-            });
-        });
-    });
-}
-</script>
 
 
 <?php $this->load->view('admin/layout/footer'); ?>

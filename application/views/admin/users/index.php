@@ -21,7 +21,7 @@
     border-radius: 10px;
     font-weight: 500;
     white-space: nowrap;
-    font-size:15px;
+    font-size:14px;
 }
 
 .booking-menu .btn.active {
@@ -35,7 +35,7 @@
 }
 
 .booking-search input {
-    width: 300px;
+    width: 270px;
     height:40px;
     border-radius: 10px;
     border: 1px solid #000;
@@ -88,15 +88,15 @@
                 <i class="fa fa-user"></i> Member
                 (<?= $booking_counts['Member'] ?? 0; ?>)
             </a>
-            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/add_user'); ?>" class="btn btn-outline-dark">
                 <i class="fa fa-plus"></i> Add User
                
             </a>
-            <a href="<?= site_url('admin/users/member'); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/import'); ?>" class="btn btn-outline-dark">
                 <i class="fa-solid fa-upload"></i> Import
                
             </a>
-            <a href="<?= site_url(''); ?>" class="btn btn-outline-dark">
+            <a href="<?= site_url('admin/users/export'); ?>" class="btn btn-outline-dark">
                 <i class="fa-solid fa-download"></i> Export
                
             </a>
@@ -158,6 +158,11 @@
                                    class="btn btn-sm btn-primary">
                                     <i class="fa fa-eye"></i>
                                 </a>
+                                <button class="btn btn-danger btn-sm"
+                                        onclick="deleteBooking(this)"
+                                        data-url="<?= site_url('admin/bookings/delete/'.$user->customer_id); ?>">
+                                    <i class="fa fa-trash"></i>  
+                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -248,6 +253,77 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
 
     }, 300); // debounce like booking system
 });
+</script>
+
+<!-- Delete Script -->
+
+<script>
+function deleteBooking(btn)
+{
+    const url = btn.dataset.url;
+    const row = btn.closest('tr');
+
+    Swal.fire({
+        title: 'Delete User?',
+        text: "This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Delete'
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        btn.disabled = true;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.status === 'success') {
+
+                // remove row instantly
+                row.remove();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted',
+                    text:'Deleted Your Selected Booking',
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+
+                // OPTIONAL: update counters/menu if needed
+                // refreshCounts();
+
+            } else {
+                btn.disabled = false;
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'Delete not completed'
+                });
+            }
+        })
+        .catch(() => {
+
+            btn.disabled = false;
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Server error occurred'
+            });
+        });
+    });
+}
 </script>
 
 <?php $this->load->view('admin/layout/footer'); ?>

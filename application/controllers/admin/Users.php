@@ -147,7 +147,6 @@ public function view($customer_id=NULL)
 
 public function update($customer_id)
 {
-    // Collect profile data from the edit form
     $update_data = [
         'first_name'    => trim($this->input->post('first_name')),
         'last_name'     => trim($this->input->post('last_name')),
@@ -157,38 +156,295 @@ public function update($customer_id)
         'customer_type' => trim($this->input->post('customer_type'))
     ];
 
-    // Basic validation check for required profile elements
-    if (empty($update_data['first_name']) || empty($update_data['last_name']) || empty($update_data['email'])) {
+    // Validation
+    if (
+        empty($update_data['first_name']) ||
+        empty($update_data['last_name']) ||
+        empty($update_data['email'])
+    ) {
         $this->session->set_flashdata('msg_type', 'error');
         $this->session->set_flashdata('msg_title', 'Validation Error');
         $this->session->set_flashdata('msg_text', 'First Name, Last Name, and Email are required.');
-        
+
         redirect('admin/users/view/' . $customer_id);
         return;
     }
 
-    // Check if a new password was provided
+    // Password update
     $new_password = trim($this->input->post('new_password'));
+
     if (!empty($new_password)) {
-        // Append password updates to the main array if changing it
         $update_data['password']       = password_hash($new_password, PASSWORD_BCRYPT);
         $update_data['plain_password'] = $new_password;
     }
 
-    // Update database record using Query Builder
+    // Update record
     $this->db->where('customer_id', $customer_id);
     $result = $this->db->update('customers', $update_data);
 
     if ($result) {
-        $this->session->set_flashdata('msg_type', 'success');
-        $this->session->set_flashdata('msg_title', 'Success');
-        $this->session->set_flashdata('msg_text', 'User profile updated successfully.');
+
+        if ($this->db->affected_rows() > 0) {
+
+            $this->session->set_flashdata('msg_type', 'success');
+            $this->session->set_flashdata('msg_title', 'Success');
+            $this->session->set_flashdata('msg_text', 'User profile updated successfully.');
+
+        } else {
+
+            $this->session->set_flashdata('msg_type', 'info');
+            $this->session->set_flashdata('msg_title', 'No Changes');
+            $this->session->set_flashdata('msg_text', 'No changes were made to the profile.');
+
+        }
+
     } else {
+
         $this->session->set_flashdata('msg_type', 'error');
         $this->session->set_flashdata('msg_title', 'Database Error');
         $this->session->set_flashdata('msg_text', 'Failed to update user profile. Please try again.');
+
     }
 
     redirect('admin/users/view/' . $customer_id);
 }
+
+public function add_user()
+{
+    $this->load->view('admin/users/add');
+}
+
+public function store()
+{
+    $first_name   = trim($this->input->post('first_name'));
+    $last_name    = trim($this->input->post('last_name'));
+    $email        = trim($this->input->post('email'));
+    $phone        = trim($this->input->post('phone'));
+    $password     = trim($this->input->post('password'));
+    $role         = trim($this->input->post('role'));
+    $customer_type = trim($this->input->post('customer_type'));
+
+    // Validation
+    if (
+        empty($first_name) ||
+        empty($last_name) ||
+        empty($email) ||
+        empty($password)
+    ) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Validation Error');
+        $this->session->set_flashdata('msg_text', 'Please fill all required fields.');
+
+        redirect('admin/users/create');
+        return;
+    }
+
+    // Check existing email
+    $exists = $this->db
+        ->where('email', $email)
+        ->count_all_results('customers');
+
+    if ($exists > 0) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Duplicate Email');
+        $this->session->set_flashdata('msg_text', 'Email already exists.');
+
+        redirect('admin/users/create');
+        return;
+    }
+
+    $data = [
+        'first_name'      => $first_name,
+        'last_name'       => $last_name,
+        'email'           => $email,
+        'phone'           => $phone,
+        'password'        => password_hash($password, PASSWORD_BCRYPT),
+        'plain_password'  => $password,
+        'role'            => $role,
+        'customer_type'   => $customer_type,
+        'created_at'      => date('Y-m-d H:i:s')
+    ];
+
+    $insert = $this->db->insert('customers', $data);
+
+    if ($insert) {
+
+        $customer_id = $this->db->insert_id();
+
+        $this->session->set_flashdata('msg_type', 'success');
+        $this->session->set_flashdata('msg_title', 'Success');
+        $this->session->set_flashdata('msg_text', 'User created successfully.');
+
+        redirect('admin/users/view/' . $customer_id);
+
+    } else {
+
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Database Error');
+        $this->session->set_flashdata('msg_text', 'Failed to create user.');
+
+        redirect('admin/users/add_user');
+    }
+}
+
+public function import()
+{
+    $this->load->view('admin/users/import');
+}
+
+public function import_csv()
+{
+    if (empty($_FILES['csv_file']['name'])) {
+
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'File Missing');
+        $this->session->set_flashdata('msg_text', 'Please select a CSV file.');
+
+        redirect('admin/users');
+        return;
+    }
+
+    $file = $_FILES['csv_file']['tmp_name'];
+
+    if (($handle = fopen($file, 'r')) === FALSE) {
+
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'File Error');
+        $this->session->set_flashdata('msg_text', 'Unable to read CSV file.');
+
+        redirect('admin/users');
+        return;
+    }
+
+    // Skip header row
+    fgetcsv($handle);
+
+    $inserted = 0;
+    $skipped  = 0;
+
+    while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+
+        if (count($row) < 7) {
+            continue;
+        }
+
+        $first_name   = trim($row[0]);
+        $last_name    = trim($row[1]);
+        $email        = trim($row[2]);
+        $phone        = trim($row[3]);
+        $password     = trim($row[4]);
+        $role         = trim($row[5]);
+        $customer_type= trim($row[6]);
+
+        if (empty($email)) {
+            $skipped++;
+            continue;
+        }
+
+        // Check duplicate email
+        $exists = $this->db
+            ->where('email', $email)
+            ->count_all_results('customers');
+
+        if ($exists > 0) {
+            $skipped++;
+            continue;
+        }
+
+        $data = [
+            'first_name'     => $first_name,
+            'last_name'      => $last_name,
+            'email'          => $email,
+            'phone'          => $phone,
+            'password'       => password_hash($password, PASSWORD_BCRYPT),
+            'plain_password' => $password,
+            'role'           => $role,
+            'customer_type'  => $customer_type,
+            'created_at'     => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->insert('customers', $data);
+        $inserted++;
+    }
+
+    fclose($handle);
+
+    $this->session->set_flashdata('msg_type', 'success');
+    $this->session->set_flashdata('msg_title', 'Import Completed');
+    $this->session->set_flashdata(
+        'msg_text',
+        $inserted . ' users imported successfully. ' .
+        $skipped . ' duplicate/invalid rows skipped.'
+    );
+
+    redirect('admin/users');
+}
+
+public function export()
+{
+    $this->load->view('admin/users/export');
+}
+public function export_csv()
+{
+    $role = $this->input->post('role');
+
+    if (empty($role)) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Validation Error');
+        $this->session->set_flashdata('msg_text', 'Please select a role.');
+
+        redirect('admin/users');
+        return;
+    }
+
+    // Filter users by role
+    $this->db->where('role', $role);
+    $users = $this->db->get('customers')->result();
+
+    if (empty($users)) {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'No Data');
+        $this->session->set_flashdata('msg_text', 'No users found for selected role.');
+
+        redirect('admin/users');
+        return;
+    }
+
+    $filename = "users_" . strtolower($role) . "_" . date('Ymd_His') . ".csv";
+
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="'.$filename.'"');
+
+    $output = fopen('php://output', 'w');
+
+    // Header row
+    fputcsv($output, [
+        'ID',
+        'First Name',
+        'Last Name',
+        'Email',
+        'Phone',
+        'Role',
+        'Customer Type',
+        'Created At'
+    ]);
+
+    // Data rows
+    foreach ($users as $user) {
+        fputcsv($output, [
+            $user->customer_id,
+            $user->first_name,
+            $user->last_name,
+            $user->email,
+            $user->phone,
+            $user->role,
+            $user->customer_type,
+            $user->created_at
+        ]);
+    }
+
+    fclose($output);
+    exit;
+}
+
 }//End of Admin Controller 
