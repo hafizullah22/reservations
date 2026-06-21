@@ -273,15 +273,16 @@ $username = $this->session->userdata('username');
                 <a href="<?php echo site_url('admin/dashboard/tables_rules');?>">
                     <i class="bi bi-building"></i> Patio Table Rules
                 </a>
-                <a href="<?php echo site_url('admin/tables_rules');?>">
-                    <i class="bi bi-building"></i> Tax Retun
+                 <a href="<?php echo site_url('admin/uploads/financial_report');?>">
+                    <i class="bi bi-book"></i> Financial Report
+                </a>
+                <a href="<?php echo site_url('admin/uploads/tax_return');?>">
+                    <i class="bi bi-currency-dollar"></i> Tax Retun
                 </a>
                 <a href="<?php echo site_url('admin/tables_rules');?>">
                     <i class="bi bi-building"></i> Trustee Meeting
                 </a>
-                <a href="<?php echo site_url('admin/tables_rules');?>">
-                    <i class="bi bi-building"></i> Financial Report
-                </a>
+               
                 <a href="<?php echo site_url('admin/dashboard/logout');?>">
                     <i class="bi bi-journal"></i> Logout 
                 </a>

@@ -156,6 +156,7 @@
             class="btn btn-success">
             Download Sample CSV
         </a>
+        <!-- first_name,last_name,email,phone,password,role,customer_type -->
     </div>
 
 <div class="form-card">

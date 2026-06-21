@@ -447,4 +447,9 @@ public function export_csv()
     exit;
 }
 
+
+public function upload()
+{
+    $this->load->view('admin/uploads/financial');
+}
 }//End of Admin Controller 

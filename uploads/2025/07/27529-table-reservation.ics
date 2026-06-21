@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//WooThemes//WooCommerce Bookings 2.2.8//EN
+CALSCALE:GREGORIAN
+X-WR-CALNAME:Clifton Park Trustees
+X-ORIGINAL-URL:https://cliftonparktrustees.org/
+X-WR-CALDESC:Bookings from Clifton Park Trustees
+X-WR-TIMEZONE:America/New_York
+BEGIN:VEVENT
+DTEND;VALUE=DATE:20250704
+UID:wc_bookings_27529
+DTSTAMP:20250702T200002
+LOCATION:
+DESCRIPTION:Resource #26469 - Table 19\n\nPerson(s): 10\n\n
+URL;VALUE=URI:https://cliftonparktrustees.org/my-account/view-order/27528/
+SUMMARY:#27529 - Table Reservation
+DTSTART;VALUE=DATE:20250704
+END:VEVENT
+END:VCALENDAR
