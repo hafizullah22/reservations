@@ -3,7 +3,7 @@
 
     <div class="footer-left">
         © <?php echo date('Y'); ?> 
-        <strong>School Management System</strong> 
+        <strong>Clifton Park Trustee</strong> 
         | All Rights Reserved
     </div>
 

@@ -7,7 +7,7 @@
     --card-bg: #ffffff;
     --text-main: #0f172a;
     --text-muted: #64748b;
-    --border-color: #1c1c1d;
+    --border-color: #babac4;
     --primary-color: #3b82f6; /* Modern blue accent */
     --radius-lg: 16px;
     --radius-md: 10px;
@@ -229,8 +229,8 @@
                 </div>
             </div>
 
-            <div class="action-bar">
-                <div class="d-flex gap-2 justify-content-end">
+           
+                <div class="d-flex gap-2 justify-content-end mt-4">
                     <a href="<?= site_url('admin/users'); ?>"
                        class="btn btn-light">
                         Cancel
@@ -241,7 +241,7 @@
                         <i class="fa fa-save me-2"></i>Create User
                     </button>
                 </div>
-            </div>
+            
 
         </form>
 

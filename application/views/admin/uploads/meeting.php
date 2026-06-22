@@ -111,7 +111,7 @@ tr:hover{
 
     <!-- TITLE -->
     <div class="page-title">
-        Financial Reports Upload and Show
+       Minutes of Trustee Meetings 
     </div>
 
     <!-- UPLOAD FORM -->
@@ -127,8 +127,11 @@ tr:hover{
 
             <div class="form-group">
                 <select name="file_type" class="form-control" required>
-                    <option value="financial">Financial</option>
+                    <option value="meeting">Meeting</option>
                 </select>
+            </div>
+            <div class="form-group">
+               <input type="date" name="meeting_date" class="form-control">
             </div>
 
             <div class="form-group">

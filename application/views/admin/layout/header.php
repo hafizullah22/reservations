@@ -81,7 +81,7 @@ $username = $this->session->userdata('username');
 
         .sidebar-menu a:hover,
         .sidebar-menu a.active {
-            background: #212529;
+            background: #17191b;
             color: #fff;
             border-left: 4px solid #0d6efd;
         }
@@ -250,46 +250,66 @@ $username = $this->session->userdata('username');
     <!-- Click-away overlay handler for mobile screens -->
     <div class="sidebar-backdrop" onclick="toggleSidebar()"></div>
 
-    <!-- ================= SIDEBAR NAVIGATION ================= -->
-    <aside class="main-sidebar" id="sidebar">
-        <a href="#" class="brand-link">
-            Clifton Park Trustee
+
+<?php
+$controller = $this->router->fetch_class();
+$method     = $this->router->fetch_method();
+?>
+
+<!-- ================= SIDEBAR NAVIGATION ================= -->
+<aside class="main-sidebar" id="sidebar">
+    <a href="#" class="brand-link">
+        Clifton Park Trustee
+    </a>
+
+    <div class="sidebar-menu">
+
+        <a href="<?= site_url('admin/dashboard'); ?>"
+           class="<?= ($controller == 'dashboard' && $method == 'index') ? 'active' : ''; ?>">
+            <i class="bi bi-speedometer2"></i> Dashboard
         </a>
 
-        <div class="sidebar-menu">
-            <a href="<?php echo site_url('admin/dashboard');?>" class="active">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
+        <a href="<?= site_url('admin/users'); ?>"
+           class="<?= ($controller == 'users') ? 'active' : ''; ?>">
+            <i class="bi bi-people-fill"></i> Users
+        </a>
 
-                <a href="<?php echo site_url('admin/users');?>">
-                    <i class="bi bi-people-fill"></i> Users
-                </a>
-                <a href="<?php echo site_url('admin/bookings');?>">
-                    <i class="bi bi-person-badge"></i> Bookings
-                </a>
-                <a href="<?php echo site_url('admin/bookings/bookings_report');?>">
-                    <i class="bi bi-person-badge"></i> Bookings Report
-                </a>
-                <a href="<?php echo site_url('admin/dashboard/tables_rules');?>">
-                    <i class="bi bi-building"></i> Patio Table Rules
-                </a>
-                 <a href="<?php echo site_url('admin/uploads/financial_report');?>">
-                    <i class="bi bi-book"></i> Financial Report
-                </a>
-                <a href="<?php echo site_url('admin/uploads/tax_return');?>">
-                    <i class="bi bi-currency-dollar"></i> Tax Retun
-                </a>
-                <a href="<?php echo site_url('admin/tables_rules');?>">
-                    <i class="bi bi-building"></i> Trustee Meeting
-                </a>
-               
-                <a href="<?php echo site_url('admin/dashboard/logout');?>">
-                    <i class="bi bi-journal"></i> Logout 
-                </a>
-               
-               
-        </div>
-    </aside>
+        <a href="<?= site_url('admin/bookings'); ?>"
+           class="<?= ($controller == 'bookings' && $method == 'index') ? 'active' : ''; ?>">
+            <i class="bi bi-person-badge"></i> Bookings
+        </a>
+
+        <a href="<?= site_url('admin/bookings/bookings_report'); ?>"
+           class="<?= ($controller == 'bookings' && $method == 'bookings_report') ? 'active' : ''; ?>">
+            <i class="bi bi-person-badge"></i> Bookings Report
+        </a>
+
+        <a href="<?= site_url('admin/dashboard/tables_rules'); ?>"
+           class="<?= ($controller == 'dashboard' && $method == 'tables_rules') ? 'active' : ''; ?>">
+            <i class="bi bi-building"></i> Patio Table Rules
+        </a>
+
+        <a href="<?= site_url('admin/uploads/financial_report'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'financial_report') ? 'active' : ''; ?>">
+            <i class="bi bi-book"></i> Financial Report
+        </a>
+
+        <a href="<?= site_url('admin/uploads/tax_return'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'tax_return') ? 'active' : ''; ?>">
+            <i class="bi bi-currency-dollar"></i> Tax Return
+        </a>
+
+        <a href="<?= site_url('admin/uploads/meeting'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'meeting') ? 'active' : ''; ?>">
+            <i class="bi bi-building"></i> Trustee Meeting
+        </a>
+
+        <a href="<?= site_url('auth/logout'); ?>">
+            <i class="bi bi-journal"></i> Logout
+        </a>
+
+    </div>
+</aside>
 
     <!-- ================= MAIN PLATFORM WRAPPER ================= -->
     <div class="content-wrapper">
