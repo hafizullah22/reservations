@@ -166,7 +166,7 @@
 
     <div class="list-group shadow-sm rounded-3">
 
-        <a href="#dashboard" class="list-group-item list-group-item-action active">
+        <a href="#dashboard" class="list-group-item list-group-item-action ">
             Dashboard
         </a>
 
@@ -178,7 +178,7 @@
             Account details
         </a>
 
-        <a href="#bookings" class="list-group-item list-group-item-action text-black">
+        <a href="#bookings" class="list-group-item list-group-item-action text-black active">
             Bookings
         </a>
 
@@ -197,13 +197,42 @@
             <div class="feature-card p-4 mb-4">
 
 
-                <h2 class="h5 fw-bold text-navy mb-3">
-                    Welcome, <?= $user['first_name']; ?>
-                </h2>
-                <p class="text-black small">
-                    From your account dashboard you can view your recent Reservations, 
-                    manage your shipping and billing addresses, and edit your password and account details.
-                </p>
+                <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Table No</th>
+                <th>Persons</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <?php foreach($bookings as $b): ?>
+            <tr>
+                <td><?= $b->booking_id; ?></td>
+                <td><?= $b->customer_name; ?></td>
+                <td><?= $b->booking_date; ?></td>
+                <td><?= $b->booking_time; ?></td>
+                <td class="text-center"><?= $b->table_number; ?></td>
+                <td class="text-center"><?= $b->number_of_guests; ?></td>
+                <td><?= $b->status; ?></td>
+                <td>
+                    <a href="<?= site_url('bookings/delete/'.$b->booking_id); ?>" 
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this booking?')">
+                       Cancel
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+
+    </table>
             </div>
 
            
