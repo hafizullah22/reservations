@@ -115,11 +115,10 @@
 
 <div class="login-card">
     <div class="header">
-        <h1>School Login</h1>
-        <p>Sign in to your school account</p>
+        <h3>Member Portral Login</h3>
     </div>
 
-    <form action="<?php echo site_url('Login/authenticate'); ?>" method="post">
+    <form action="<?php echo site_url('auth/authenticate'); ?>" method="post">
         <div class="form-group">
             <label for="id">Email:</label>
             <input type="email" name="email"  placeholder="Enter your email" required>

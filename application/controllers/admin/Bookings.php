@@ -11,15 +11,21 @@ class Bookings extends CI_Controller {
         $this->load->library('session');
         $this->load->helper(['url', 'form']);
 
-        // 🔒 Block access if not logged in
-        if (!$this->session->userdata('logged_in')) {
+       $user = $this->session->userdata('user');
 
-            $this->session->set_flashdata('msg_type', 'error');
-            $this->session->set_flashdata('msg_title', 'Unauthorize!');
-            $this->session->set_flashdata('msg_text', 'You are not authorized to access');
+    if (
+        !$this->session->userdata('logged_in') ||
+        !$user ||
+        $user['role'] != 'Admin'
+    ) {
 
-            redirect('auth/admin');
-        }
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Unauthorized!');
+        $this->session->set_flashdata('msg_text', 'You are not authorized to access');
+
+        redirect('auth/admin');
+    }
+    
     }
    
   public function index()

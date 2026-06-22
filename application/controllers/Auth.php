@@ -84,13 +84,15 @@ class Auth extends CI_Controller {
 
     // Set session data
     $this->session->set_userdata([
+    'user' => [
         'customer_id' => $user['customer_id'],
-        'name'        => $user['first_name'],
+        'first_name'  => $user['first_name'],
         'email'       => $user['email'],
         'phone'       => $user['phone'],
-        'role'        => $user['role'],
-        'logged_in'   => TRUE
-    ]);
+        'role'        => $user['role']
+    ],
+    'logged_in' => TRUE
+]);
 
     // Role-based redirect
     if ($user['role'] == 'Admin') {
@@ -103,6 +105,18 @@ class Auth extends CI_Controller {
         redirect('admin/dashboard');
 
     } 
+
+    if ($user['role'] == 'Member') {
+
+
+        $this->session->set_flashdata('msg_type', 'success');
+        $this->session->set_flashdata('msg_title', 'Login');
+        $this->session->set_flashdata('msg_text', 'Welcome back, ' . $user['first_name']);
+        $this->session->set_userdata('user', $user);
+        redirect('portals/profile');
+
+    } 
+    
     
     else {
 
