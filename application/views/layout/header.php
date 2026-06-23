@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             font-family: 'Inter', Arial;
@@ -83,7 +84,7 @@
                     <li><a class="dropdown-item" href="#history">History</a></li>
                     <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
                     <li><a class="dropdown-item" href="#governance">Governance</a></li>
-                    <li><a class="dropdown-item" href="#mission">Mission & Vision</a></li>
+                    <li><a class="dropdown-item" href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meetings</a></li>
                     <li><a class="dropdown-item" href="#contact">Contact Us</a></li>
                 </ul>
             </div>
