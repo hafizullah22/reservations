@@ -1,190 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clifton Park</title>
-
-    <!-- Google Fonts & Icons -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clifton Park Trustees | Home</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            background:#f5f6f8;
-            color:#333;
+        body {
+            font-family: 'Inter', Arial;
+            background-color: #F8F9FA;
+            color: #212529;
+        }
+        .font-serif {
+            font-family: 'Cinzel', serif;
+        }
+        .bg-navy { background-color: #112233; }
+        .text-navy { color: #112233; }
+        .text-seafoam { color: #557A8A; }
+        
+        /* Hero Sea Background Custom Setup */
+        .hero-sea-bg {
+            position: relative;
+            background-image: linear-gradient(to bottom, rgba(17, 34, 51, 0.75), rgba(17, 34, 51, 0.5)), 
+                              url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 8rem 0;
         }
 
-        .top-header{
-            background:#0f4c81;
-            color:#fff;
-            padding:8px 0;
-            font-size:14px;
+        /* Nav & Grid Link Styling */
+        .nav-link-custom {
+            color: #080808;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size:16px;
+           
+            
         }
-
-        .site-header{
-            background:#fff;
-            box-shadow:0 2px 10px rgba(0,0,0,.08);
+        .nav-link-custom:hover {
+            color: #112233;
         }
-
-        .logo-area{
-            padding:15px 0;
-        }
-
-        .site-title{
-            font-size:28px;
-            font-weight:700;
-            color:#0f4c81;
-            margin:0;
-        }
-
-        .site-subtitle{
-            font-size:14px;
-            color:#666;
-        }
-
-        .navbar-custom{
-            background:#0f4c81;
-        }
-
-        .navbar-custom .nav-link{
-            color:#fff !important;
-            font-weight:500;
-            padding:15px 18px !important;
-        }
-
-        .navbar-custom .nav-link:hover{
-            background:rgba(255,255,255,.15);
-        }
-
-        .dropdown-menu{
-            border:none;
-            box-shadow:0 5px 20px rgba(0,0,0,.1);
-        }
-
-        .section-title{
-            margin-bottom:25px;
-            font-weight:700;
-            color:#0f4c81;
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid #E9ECEF;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
         }
     </style>
 </head>
-
 <body>
 
-<!-- TOP BAR -->
-<div class="top-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                Community Trust Information Portal
+    <!-- 1. NAVIGATION MENU -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-b py-3 sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex flex-column" href="#">
+                <span class="font-serif fw-bold text-navy h4 mb-0">CLIFTON PARK</span>
+                
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+         <div class="d-flex align-items-center gap-4">
+
+            <a href="#" class="nav-link-custom text-navy fw-semibold">Home</a>
+
+            <!-- About Us Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link-custom dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                    About Us
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item" href="#history">History</a></li>
+                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+                    <li><a class="dropdown-item" href="#governance">Governance</a></li>
+                    <li><a class="dropdown-item" href="#mission">Mission & Vision</a></li>
+                    <li><a class="dropdown-item" href="#contact">Contact Us</a></li>
+                </ul>
             </div>
 
-            <div class="col-md-6 text-md-end">
-                <i class="fa fa-envelope"></i>
-                info@example.com
+            <!-- About Us Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link-custom dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                   Links
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item" href="#history">History</a></li>
+                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+               
+                </ul>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- LOGO AREA -->
-<header class="site-header">
-    <div class="container">
-        <div class="logo-area">
-
-            <div class="row align-items-center">
-
-                <div class="col-md-8">
-                    <h1 class="site-title">
-                        Clifton Park Trustees
-                    </h1>
-
-                    <div class="site-subtitle">
-                        Preserving Community Assets Since 1912
-                    </div>
-                </div>
-
-                <div class="col-md-4 text-md-end">
-                    <a href="<?= base_url('contact'); ?>"
-                       class="btn btn-primary">
-                        Contact Us
-                    </a>
-                </div>
-
+            <!-- About Us Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link-custom dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                   Beach Info
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item" href="#history">History</a></li>
+                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+               
+                </ul>
             </div>
 
-        </div>
-    </div>
-</header>
 
-<!-- NAVIGATION -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
-    <div class="container">
+            <a href="#beach" class="nav-link-custom">Contact Us</a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+             <!-- About Us Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link-custom dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                  History
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item" href="#history">History</a></li>
+                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+               
+                </ul>
+            </div>
 
-        <div class="collapse navbar-collapse" id="mainMenu">
+            <a href="#records" class="nav-link-custom">Tennis Program</a>
 
-            <ul class="navbar-nav mx-auto">
+             <!-- About Us Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="nav-link-custom dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                   Reservations
+                </a>
+                <ul class="dropdown-menu shadow-sm border-0">
+                    <li><a class="dropdown-item" href="#history">History</a></li>
+                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+               
+                </ul>
+            </div>
 
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url(); ?>">
-                        Home
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url('about'); ?>">
-                        About CPT
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url('minutes'); ?>">
-                        Meeting Minutes
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url('beach-information'); ?>">
-                        Beach Information
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url('news'); ?>">
-                        News
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="<?= base_url('contact'); ?>">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
+        <a href="<?=site_url('auth/myaccount')?>" style="font-size:25px; color:#000;">
+            <i class="bi bi-person-lock"></i>
+        </a>
 
         </div>
-    </div>
-</nav>
+        </div>
+    </nav>

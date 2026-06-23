@@ -304,7 +304,7 @@ $method     = $this->router->fetch_method();
             <i class="bi bi-building"></i> Trustee Meeting
         </a>
 
-        <a href="<?= site_url('auth/logout'); ?>">
+        <a href="<?= site_url('auth/logout_admin'); ?>">
             <i class="bi bi-journal"></i> Logout
         </a>
 
@@ -338,7 +338,7 @@ $method     = $this->router->fetch_method();
                 </div>
 
                 <!-- Session Termination -->
-                <a class="logout-btn" href="<?php echo site_url('auth/logout'); ?>">
+                <a class="logout-btn" href="<?php echo site_url('auth/logout_admin'); ?>">
                     <i class="bi bi-box-arrow-right"></i> <span>Logout</span>
                 </a>
             </div>
