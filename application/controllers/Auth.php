@@ -102,6 +102,12 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Login');
         $this->session->set_flashdata('msg_text', 'Welcome back, ' . $user['first_name']);
 
+        $this->db->where('customer_id', $user['customer_id']);
+    $this->db->update('customers', [
+        'updated_at' => date('Y-m-d H:i:s')
+    ]);
+        
+        
         redirect('admin/dashboard');
 
     } 

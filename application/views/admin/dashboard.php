@@ -1,13 +1,8 @@
 <?php $this->load->view('admin/layout/header'); ?>
 
 <style>
-/* ================= GLOBAL ADMIN STYLE ================= */
+.main { padding: 18px; }
 
-.main {
-    padding: 18px;
-}
-
-/* TOPBAR */
 .topbar {
     background: #fff;
     padding: 14px 16px;
@@ -16,302 +11,285 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-.topbar h4 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 20px;
-}
-
-/* CARD SYSTEM */
 .card {
     border: none;
     border-radius: 14px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    transition: all .2s ease;
-    
+    transition: .2s;
 }
+.card:hover { transform: translateY(-2px); }
 
-.card:hover {
-    transform: translateY(-2px);
-}
-
-/* STAT CARDS */
-.stat-icon {
-    font-size: 32px;
-}
-
-/* TABLE */
-.table-responsive {
-    overflow-x: auto;
-}
+small { font-size: 13px; font-weight: 600; }
 
 .table thead {
     background: #111827;
     color: #fff;
 }
 
-.table thead th {
-    font-weight: 500;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-/* BADGES */
-.badge {
-    font-size: 12px;
-    padding: 6px 10px;
-}
-small {
-    font-size: 14px;
-    color: #fff;
-    font-weight:600;
-}
-
-/* MOBILE */
-@media (max-width:768px) {
-
-    .main {
-        padding: 12px;
-    }
-
-    .topbar h4 {
-        font-size: 18px;
-    }
-
-    .table {
-        min-width: 700px;
-    }
-
-    .stat-icon {
-        font-size: 26px;
-    }
-
-    .card h3 {
-        font-size: 22px;
-    }
+@media (max-width:768px){
+    .main { padding: 12px; }
+    .table { min-width: 700px; }
 }
 </style>
 
 <div class="main">
 
-    <!-- ================= TOPBAR ================= -->
+<!-- ================= TOPBAR ================= -->
+<div class="topbar">
+    <h4>Dashboard Overview</h4>
+</div>
 
-    <div class="topbar">
-        <h4>Dashboard Overview</h4>
-    </div>
+<!-- ================= STATS ================= -->
+<?php
+$cards = [
+    ['label'=>'Total Bookings','value'=>array_sum($booking_counts ?? []),'bg'=>'primary','icon'=>'calendar-check'],
+    ['label'=>'Completed','value'=>$booking_counts['Completed'] ?? 0,'bg'=>'dark','icon'=>'circle-check'],
+    ['label'=>'Users','value'=>$total_customers,'bg'=>'success','icon'=>'users'],
+    ['label'=>'Tables','value'=>$total_tables,'bg'=>'warning','icon'=>'table'],
+    ['label'=>'Cancelled','value'=>$booking_counts['Cancelled'] ?? 0,'bg'=>'danger','icon'=>'times-circle'],
+    ['label'=>'Confirmed','value'=>$booking_counts['Confirmed'] ?? 0,'bg'=>'info','icon'=>'check-circle'],
+];
+?>
 
-    <!-- ================= DASHBOARD CARDS ================= -->
-
-  <div class="row g-3">
-
-    <!-- TOTAL BOOKINGS -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-primary shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <small>Total Bookings</small>
-                    <h3 class="mb-0"><?= array_sum($booking_counts ?? []) ?></h3>
+<div class="row g-3">
+    <?php foreach($cards as $c): ?>
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="card text-white bg-<?= $c['bg']; ?>">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <small><?= $c['label']; ?></small>
+                        <h3 class="mb-0"><?= $c['value']; ?></h3>
+                    </div>
+                    <i class="fa fa-<?= $c['icon']; ?> fs-2 opacity-75"></i>
                 </div>
-
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-calendar-check"></i>
-                </div>
-
             </div>
         </div>
-    </div>
+    <?php endforeach; ?>
+</div>
 
-    <!-- CANCELLED -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-dark shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
 
-                <div>
-                    <small>Completed</small>
-                    <h3 class="mb-0"><?= $booking_counts['Completed'] ?? 0 ?></h3>
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <!-- ================= Recent Activity ================= -->
+        <div class="col-md-6">
+
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Login</h5>
                 </div>
 
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-circle-check"></i>
-                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Login Date</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                        <?php if(!empty($customers)): ?>
+                            <?php foreach($customers as $c): ?>
+                                <tr>
+                                    <td><?= $c->first_name . ' ' . $c->last_name; ?></td>
+                                    <td><?= date('M d, Y', strtotime($c->updated_at)); ?></td>
+                                    <td><?= $c->email; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="3" class="text-center text-muted">No data found</td></tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
-    </div>
 
-    <!-- USERS -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-success shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
+        <!-- ================= Recent Booking================= -->
+        <div class="col-md-6">
 
-                <div>
-                    <small>Users</small>
-                    <h3 class="mb-0"><?= $total_customers ?></h3>
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Latest Bookings</h5>
                 </div>
 
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-users"></i>
-                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Table</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                        <?php if(!empty($recent_bookings)): ?>
+                            <?php foreach($recent_bookings as $b): ?>
+
+                                <?php
+                                $statusMap = [
+                                    'confirmed'=>'success',
+                                    'pending'=>'warning',
+                                    'cancelled'=>'danger',
+                                    'completed'=>'primary'
+                                ];
+                                $badge = $statusMap[strtolower($b->status)] ?? 'secondary';
+                                ?>
+
+                                <tr>
+                                    <td><?= $b->first_name; ?></td>
+                                    <td><span class="badge bg-info"><?= $b->table_number; ?></span></td>
+                                    <td><?= date('M d, Y', strtotime($b->booking_date)); ?></td>
+                                    <td><?= $b->booking_time; ?></td>
+                                    <td><span class="badge bg-<?= $badge; ?>"><?= ucfirst($b->status); ?></span></td>
+                                </tr>
+
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="5" class="text-center text-muted">No data found</td></tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
             </div>
+
         </div>
+
     </div>
-
-    <!-- AVAILABLE TABLES -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-warning shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <small>Tables</small>
-                    <h3 class="mb-0"><?= $total_tables ?></h3>
-                </div>
-
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-table"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- CANCELLED -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-danger shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <small>Cancelled</small>
-                    <h3 class="mb-0"><?= $booking_counts['Cancelled'] ?? 0 ?></h3>
-                </div>
-
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-times-circle"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-     <!-- CANCELLED -->
-    <div class="col-12 col-sm-6 col-lg-2">
-        <div class="card text-white bg-info shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
-
-                <div>
-                    <small>Confirmed</small>
-                    <h3 class="mb-0"><?= $booking_counts['Confirmed'] ?? 0 ?></h3>
-                </div>
-
-                <div class="fs-2 opacity-75">
-                    <i class="fa fa-times-circle"></i>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 
 </div>
-    <!-- ================= RECENT BOOKINGS ================= -->
+<!-- ================= REPORTS ================= -->
+<div class="container mt-4">
 
-    <div class="card mt-4">
+    <div class="row">
 
-        <div class="card-header bg-white border-0">
-            <h5 class="mb-0">Recent Bookings</h5>
+        <!-- ================= MONTHLY REPORT ================= -->
+        <div class="col-md-3">
+
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Monthly Bookings</h5>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Total Bookings</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php if (!empty($bookings)) : ?>
+                            <?php foreach ($bookings as $row) : ?>
+                                <tr>
+                                    <td><?= $row->month; ?></td>
+                                    <td><?= $row->total; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="2" class="text-center">No data found</td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Top Tables</h5>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Table</th>
+                                <th>Total Bookings</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php if (!empty($top_tables)) : ?>
+                            <?php foreach ($top_tables as $row) : ?>
+                                <tr>
+                                    <td><?= $row->table_number; ?></td>
+                                    <td><?= $row->total_bookings; ?></td>
+                                </tr>
+                               
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="2" class="text-center">No data found</td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
-        <div class="card-body">
+        <!-- ================= TOP BOOKING DAYS ================= -->
+        <div class="col-md-6">
 
-            <div class="table-responsive">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Top Booking Days</h5>
+                </div>
 
-                <table class="table table-striped table-hover align-middle">
-
-                    <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Table</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                    <?php if(!empty($recent_bookings)): ?>
-
-                        <?php foreach($recent_bookings as $b): ?>
-
-                            <?php
-                            $badge = 'secondary';
-
-                            switch(strtolower($b->status))
-                            {
-                                case 'confirmed':
-                                    $badge = 'success';
-                                    break;
-
-                                case 'pending':
-                                    $badge = 'warning';
-                                    break;
-
-                                case 'cancelled':
-                                    $badge = 'danger';
-                                    break;
-
-                                case 'completed':
-                                    $badge = 'primary';
-                                    break;
-                            }
-                            ?>
-
+                <div class="card-body table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
                             <tr>
-
-                                <td><?= $b->first_name ?></td>
-
-                                <td>
-                                    <span class="badge bg-info">
-                                        Table <?= $b->table_number ?>
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <?= date('M d, Y', strtotime($b->booking_date)) ?>
-                                </td>
-
-                                <td><?= $b->booking_time ?></td>
-
-                                <td>
-                                    <span class="badge bg-<?= $badge ?>">
-                                        <?= ucfirst($b->status) ?>
-                                    </span>
-                                </td>
-
+                                <th>Day</th>
+                                <th>Total Bookings</th>
+                                <th>Afternoon</th>
+                                <th>Evening</th>
                             </tr>
+                        </thead>
 
-                        <?php endforeach; ?>
-
-                    <?php else: ?>
-
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                No recent bookings found.
-                            </td>
-                        </tr>
-
-                    <?php endif; ?>
-
-                    </tbody>
-
-                </table>
-
+                        <tbody>
+                        <?php if (!empty($top_days)) : ?>
+                            <?php foreach ($top_days as $row) : ?>
+                                <tr>
+                                    <td><?= $row->day; ?></td>
+                                    <td><?= $row->total_bookings; ?></td>
+                                    <td><?= $row->afternoon; ?></td>
+                                    <td><?= $row->evening; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="2" class="text-center">No data found</td>
+                            </tr>
+                        <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
 
     </div>
+
+</div>
+
+
+
 
 </div>
 
