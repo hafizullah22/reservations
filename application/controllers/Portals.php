@@ -60,5 +60,23 @@ public function neighbour_map()
     $this->load->view('portal/neighbour_map', $data);
 }
 
+public function trust_deed_1912()
+{
+$this->load->view('portal/trust_deed');
 }
+
+public function contact_us()
+{
+$this->load->view('portal/contact_us');
+}
+
+
+}
+
+
+
+
+
+
+
 

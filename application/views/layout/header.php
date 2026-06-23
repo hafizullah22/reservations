@@ -97,8 +97,8 @@
                    Links
                 </a>
                 <ul class="dropdown-menu shadow-sm border-0">
-                    <li><a class="dropdown-item" href="#history">History</a></li>
-                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
+                    <li><a class="dropdown-item" href="https://cliftonclub.com/" target="_blank">Clifton Club</a></li>
+                    <li><a class="dropdown-item" href="https://lakewoodoh.gov/" target="_blank">City of Lakeewood</a></li>
                
                 </ul>
             </div>
@@ -117,7 +117,7 @@
             </div>
 
 
-            <a href="#beach" class="nav-link-custom">Contact Us</a>
+            <a href="<?=site_url('portals/contact_us')?>" class="nav-link-custom">Contact Us</a>
 
              <!-- About Us Dropdown -->
             <div class="dropdown">
