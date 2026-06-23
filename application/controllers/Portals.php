@@ -8,6 +8,27 @@ class Portals extends CI_Controller {
     $this->load->view('portal/home');
  }
 
+ public function financial()
+ {
+       $data['files'] = $this->db
+        ->select('id,file_name, file_path,file_type')
+        ->where('file_type', 'financial')
+        ->get('documents')
+        ->result();
+
+    $this->load->view('portal/financial', $data);
+ }
+
+ public function tax_return()
+ {
+       $data['files'] = $this->db
+        ->select('id,file_name, file_path,file_type')
+        ->where('file_type', 'tax_return')
+        ->get('documents')
+        ->result();
+
+    $this->load->view('portal/tax_return', $data);
+ }
  public function meetings()
 {
     $files = $this->db
@@ -26,6 +47,17 @@ class Portals extends CI_Controller {
     }
 
     $this->load->view('portal/meetings', $data);
+}
+
+public function neighbour_map()
+{
+    $data['files'] = $this->db
+        ->select('id,file_name, file_path,file_type')
+        ->where('file_type', 'neighbour_map')
+        ->get('documents')
+        ->result();
+
+    $this->load->view('portal/neighbour_map', $data);
 }
 
 }

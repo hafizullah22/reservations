@@ -36,7 +36,7 @@
     background-position: center;
     background-repeat: no-repeat;
 
-    min-height: 40vh;   /* better than fixed height */
+    min-height: 30vh;   /* better than fixed height */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="col-lg-12">
            
-                    <h1 class="font-serif display-4 fw-bold mb-3 text-center">Minutes of Trustee Meetings</h1>
+                    <h1 class=" display-4 fw-bold mb-3 text-center">Minutes of Trustee Meetings</h1>
 
                   
                 </div>
@@ -59,7 +59,7 @@
         </div>
     </header>
 
-  <main class="container my-5 py-3">
+  <main class="container my-5">
 
     <div class="row g-4">
 
@@ -71,7 +71,7 @@
 
                     <!-- Year Header -->
                     <div class="card-header bg-white border-bottom">
-                        <h5 class="mb-0 fw-bold text-black">
+                        <h5 class="mb-0 fw-bold text-black text-center">
                             <?= $year ?>
                         </h5>
                     </div>

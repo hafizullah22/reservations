@@ -81,11 +81,11 @@
                     About Us
                 </a>
                 <ul class="dropdown-menu shadow-sm border-0">
-                    <li><a class="dropdown-item" href="#history">History</a></li>
-                    <li><a class="dropdown-item" href="#board">Board of Trustees</a></li>
-                    <li><a class="dropdown-item" href="#governance">Governance</a></li>
+                    <li><a class="dropdown-item" href="#history">Trust Deed 1912</a></li>
+                    <li><a class="dropdown-item" href="<?=site_url('portals/financial')?>">Financial Information</a></li>
                     <li><a class="dropdown-item" href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meetings</a></li>
-                    <li><a class="dropdown-item" href="#contact">Contact Us</a></li>
+                    <li><a class="dropdown-item" href="<?=site_url('portals/tax_return')?>">Tax Return</a></li>
+                    <li><a class="dropdown-item" href="<?= site_url('portals/neighbour_map')?>">Neighbour Map</a></li>
                 </ul>
             </div>
 
