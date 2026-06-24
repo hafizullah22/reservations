@@ -1,18 +1,20 @@
 <?php $this->load->view('layout/header'); ?>
+
     <!-- 2. HERO SECTION WITH BG OF SEA -->
     <header class="hero-sea-bg text-white">
         <div class="container text-center text-lg-start">
             <div class="row">
-                <div class="col-lg-8">
-                    <span class="text-uppercase tracking-widest fw-bold mb-2 d-block text-white-50" style="font-size: 11px; letter-spacing: 0.2em;">Established 1912</span>
-                    <h1 class="font-serif display-4 fw-bold mb-3">Preserving the Private Seafront Heritage of Clifton Park</h1>
-                    <p class="fs-5 text-white-50 mb-4 fw-light max-w-2xl">
-                        Dedicated stewardship of communal historic land configurations, beach assets, and neighborhood fiduciary covenants.
-                    </p>
-                    <div class="d-flex flex-col flex-sm-row justify-content-center justify-content-lg-start gap-3">
-                        <a href="#beach" class="btn btn-light px-4 py-2.5 rounded-1 fw-medium shadow-sm">Reserve Beach Space</a>
-                        <a href="#governance" class="btn btn-outline-light px-4 py-2.5 rounded-1 fw-medium">View Code & Bylaws</a>
-                    </div>
+                <div class="col-lg-12">
+                    <!-- <span class="text-uppercase tracking-widest fw-bold mb-2 d-block text-white-50" style="font-size: 11px; letter-spacing: 0.2em;">Established 1912</span> -->
+                    
+                    <br>
+                    <br>
+                    <h1 class="display-4 fw-bold mb-3 text-center">TRUSTEES OF LAND RESERVED FOR PARK PURPOSES</h1>
+                    
+                    <!-- <div class="d-flex flex-col flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                        <a href="#beach" class="btn btn-light px-4 py-2.5 rounded-1 fw-medium shadow-sm">Table Reservation</a>
+                        <a href="#governance" class="btn btn-outline-light px-4 py-2.5 rounded-1 fw-medium">Contact Us</a>
+                    </div> -->
                 </div>
             </div>
         </div>

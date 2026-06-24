@@ -11,34 +11,57 @@
 
 <style>
 
+/* ================= BASE ================= */
 body{
-    font-family: Arial, sans-serif;
+    font-family:sans-serif;
     background:#F8F9FA;
+    margin:0;
 }
 
-/* ================= NAVBAR ================= */
+/* ================= TOP ROW (LOGO BAR) ================= */
+.top-bar{
+    background:#0a2b43;
+    padding:12px 0;
+    text-align:center;
 
+   
+
+}
+
+.top-bar img{
+    
+    object-fit:contain;
+}
+
+/* ================= SECOND ROW NAV ================= */
 .navbar{
-    background: #0a2b43;
-    box-shadow:0 2px 12px rgba(0,0,0,.05);
+    background:#0a2b43;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
     position:sticky;
     top:0;
     z-index:1000;
-    height:70px;
+    padding:10px 16px;
     
-
 }
 
 /* desktop menu */
+.desktop-menu{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+}
 .desktop-menu a{
     text-decoration:none;
     color:#fff;
-    font-weight:500;
-    margin:0 12px;
+    font-weight:600;
+    margin:0 14px;
 }
 
+
+
 .desktop-menu a:hover{
-    color:#112233;
+    color:#cfd8e3;
 }
 
 /* hamburger */
@@ -46,67 +69,40 @@ body{
     font-size:28px;
     cursor:pointer;
     display:none;
+    color:#fff;
 }
-/* ===== DROPDOWN (DESKTOP) ===== */
 
+/* ================= DROPDOWN DESKTOP ================= */
 .nav-dropdown{
-    position: relative;
-    display: inline-block;
+    position:relative;
+    display:inline-block;
 }
 
 .nav-dropdown-menu{
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #fff;
-    min-width: 200px;
-    box-shadow: 0 8px 20px rgba(0,0,0,.08);
-    display: none;
-    flex-direction: column;
-    z-index: 999;
+    position:absolute;
+    top:100%;
+    left:0;
+    background:#fff;
+    min-width:200px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    display:none;
+    flex-direction:column;
+    z-index:999;
 }
 
 .nav-dropdown-menu a{
-    padding: 10px 12px;
-    margin: 0;
-    display: block;
-    border-bottom: 1px solid #eee;
+    padding:10px 12px;
+    margin:0;
+    display:block;
+    color:#222 !important;
+    border-bottom:1px solid #eee;
 }
 
 .nav-dropdown:hover .nav-dropdown-menu{
-    display: flex;
-}
-
-/* ===== DRAWER DROPDOWN ===== */
-
-.drawer-section{
-    border-bottom: 1px solid #eee;
-}
-
-.drawer-toggle{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:12px 10px;
-    cursor:pointer;
-    font-weight:500;
 }
 
-.drawer-submenu{
-    display:none;
-    padding-left:15px;
-    background:#f9f9f9;
-}
-
-.drawer-submenu a{
-    border:none;
-}
-
-.drawer-section.active .drawer-submenu{
-    display:block;
-}
 /* ================= DRAWER ================= */
-
 .drawer-overlay{
     position:fixed;
     inset:0;
@@ -148,63 +144,67 @@ body{
     border-bottom:1px solid #eee;
 }
 
-.drawer a:hover{
-    background:#f5f5f5;
-}
-
 .drawer-header{
+    display:flex;
+    justify-content:space-between;
     font-weight:bold;
     font-size:18px;
     margin-bottom:10px;
-    display:flex;
-    justify-content:space-between;
 }
 
 .close-btn{
     cursor:pointer;
 }
 
-/* ================= HERO ================= */
+/* drawer dropdown */
+.drawer-section{
+    border-bottom:1px solid #eee;
+}
 
-.hero-sea-bg {
-    position: relative;
-    background-image: linear-gradient(
-        to bottom,
-        rgba(17, 34, 51, 0.75),
-        rgba(17, 34, 51, 0.5)
-    ),
+.drawer-toggle{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 10px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.drawer-submenu{
+    display:none;
+    background:#f8f9fa;
+    padding-left:12px;
+}
+
+.drawer-section.active .drawer-submenu{
+    display:block;
+}
+
+/* ================= HERO ================= */
+.hero-sea-bg{
+    position:relative;
+    background:
     url('https://cliftonparktrustees.org/wp-content/uploads/2016/12/DSCN1132-scaled.jpg');
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-size:cover;
+    background-position:center;
+    min-height:100vh;
 
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #fff;
-    text-align: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    text-align:center;
+    font-family: playfair Display;
 }
 
 /* ================= RESPONSIVE ================= */
-
 @media(max-width:991px){
-    .desktop-menu{
-        display:none;
-    }
-
-    .menu-btn{
-        display:block;
-    }
+    .desktop-menu{display:none;}
+    .menu-btn{display:block;}
 }
 
 @media(min-width:992px){
-    .drawer,
-    .drawer-overlay{
-        display:none !important;
-    }
+    .drawer,.drawer-overlay{display:none!important;}
 }
 
 </style>
@@ -212,53 +212,51 @@ body{
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<nav class="navbar d-flex align-items-center px-3 justify-content-between">
-
-    <div class="fw-bold">
-       <img src="https://cliftonparktrustees.org/wp-content/uploads/2016/12/newlogo.png" alt="">
-    </div>
-
-    <div class="desktop-menu d-none d-lg-block">
-
-    <a href="#">Home</a>
-
-    <!-- Dropdown 1 -->
-    <div class="nav-dropdown">
-        <a href="#">About <i class="bi bi-chevron-down"></i></a>
-        <div class="nav-dropdown-menu">
-            <a href="#">About Us</a>
-            <a href="#">History</a>
-            <a href="#">Trust Deed 1912</a>
-        </div>
-    </div>
-
-    <!-- Dropdown 2 -->
-    <div class="nav-dropdown">
-        <a href="#">Information <i class="bi bi-chevron-down"></i></a>
-        <div class="nav-dropdown-menu">
-            <a href="#">Financial Information</a>
-            <a href="#">Beach Info</a>
-            <a href="#">Links</a>
-        </div>
-    </div>
-
-    <a href="#">Contact</a>
-    <a href="#">Reservations</a>
-
+<!-- ================= ROW 1: LOGO ================= -->
+<div class="top-bar">
+    <img src="https://cliftonparktrustees.org/wp-content/uploads/2016/12/newlogo.png" alt="Logo">
 </div>
 
-    <!-- Hamburger -->
-    <div class="menu-btn d-lg-none" onclick="openDrawer()" aria-label="Open menu">
+<!-- ================= ROW 2: NAV ================= -->
+<nav class="navbar d-flex justify-content-between align-items-center">
+
+    <div class="desktop-menu d-none d-lg-flex align-items-center">
+
+        <a href="#">Home</a>
+
+        <div class="nav-dropdown">
+            <a href="#">About <i class="bi bi-chevron-down"></i></a>
+            <div class="nav-dropdown-menu">
+                <a href="#">About Us</a>
+                <a href="#">History</a>
+                <a href="#">Trust Deed 1912</a>
+            </div>
+        </div>
+
+        <div class="nav-dropdown">
+            <a href="#">Information <i class="bi bi-chevron-down"></i></a>
+            <div class="nav-dropdown-menu">
+                <a href="#">Financial Info</a>
+                <a href="#">Beach Info</a>
+                <a href="#">Links</a>
+            </div>
+        </div>
+
+        <a href="#">Contact</a>
+        <a href="#">Reservations</a>
+
+    </div>
+
+    <!-- hamburger -->
+    <div class="menu-btn d-lg-none" onclick="openDrawer()">
         <i class="bi bi-list"></i>
     </div>
 
 </nav>
 
-<!-- ================= OVERLAY ================= -->
+<!-- ================= DRAWER ================= -->
 <div class="drawer-overlay" id="overlay" onclick="closeDrawer()"></div>
 
-<!-- ================= DRAWER ================= -->
 <div class="drawer" id="drawer">
 
     <div class="drawer-header">
@@ -270,11 +268,9 @@ body{
 
     <a href="#">Home</a>
 
-    <!-- Drawer Dropdown 1 -->
     <div class="drawer-section">
         <div class="drawer-toggle" onclick="toggleDrawerSection(this)">
-            About
-            <i class="bi bi-chevron-down"></i>
+            About <i class="bi bi-chevron-down"></i>
         </div>
         <div class="drawer-submenu">
             <a href="#">About Us</a>
@@ -283,27 +279,24 @@ body{
         </div>
     </div>
 
-    <!-- Drawer Dropdown 2 -->
     <div class="drawer-section">
         <div class="drawer-toggle" onclick="toggleDrawerSection(this)">
-            Information
-            <i class="bi bi-chevron-down"></i>
+            Information <i class="bi bi-chevron-down"></i>
         </div>
         <div class="drawer-submenu">
-            <a href="#">Financial Information</a>
+            <a href="#">Financial Info</a>
             <a href="#">Beach Info</a>
             <a href="#">Links</a>
         </div>
     </div>
 
-    <a href="#">Contact Us</a>
+    <a href="#">Contact</a>
     <a href="#">Reservations</a>
-    <a href="#">My Account</a>
 
 </div>
 
-<script>
 
+<script>
 function openDrawer(){
     document.getElementById("drawer").classList.add("active");
     document.getElementById("overlay").classList.add("active");
@@ -315,18 +308,14 @@ function closeDrawer(){
     document.getElementById("overlay").classList.remove("active");
     document.body.style.overflow = "auto";
 }
+
 function toggleDrawerSection(el){
-    const section = el.parentElement;
-    section.classList.toggle("active");
+    el.parentElement.classList.toggle("active");
 }
 
-/* ESC close */
 document.addEventListener("keydown", function(e){
-    if(e.key === "Escape"){
-        closeDrawer();
-    }
+    if(e.key === "Escape") closeDrawer();
 });
-
 </script>
 
 </body>
