@@ -97,7 +97,7 @@ $cards = [
                         <?php if(!empty($customers)): ?>
                             <?php foreach($customers as $c): ?>
                                 <tr>
-                                    <td><?= $c->first_name . ' ' . $c->last_name; ?></td>
+                                    <td><?= $c->first_name;?></td>
                                     <td><?= date('M d, Y', strtotime($c->updated_at)); ?></td>
                                     <td><?= $c->email; ?></td>
                                 </tr>

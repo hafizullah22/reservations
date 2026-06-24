@@ -17,10 +17,10 @@
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
                         </a>
 
-                        <a href="<?= site_url('my_account/addresses'); ?>"
+                        <!-- <a href="<?= site_url('my_account/addresses'); ?>"
                            class="list-group-item list-group-item-action">
                             <i class="bi bi-geo-alt me-2"></i> Addresses
-                        </a>
+                        </a> -->
 
                         <a href="<?= site_url('my_account/profile_details'); ?>"
                            class="list-group-item list-group-item-action">

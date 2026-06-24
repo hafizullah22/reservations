@@ -18,6 +18,7 @@
     color:#fff !important;
 }
 
+
 .profile-avatar{
     width:70px;
     height:70px;
@@ -56,18 +57,18 @@
                             <i class="bi bi-speedometer2 me-2"></i> Dashboard
                         </a>
 
-                        <a href="<?= site_url('my_account/addresses'); ?>"
+                        <!-- <a href="<?= site_url('my_account/addresses'); ?>"
                            class="list-group-item list-group-item-action">
                             <i class="bi bi-geo-alt me-2"></i> Addresses
-                        </a>
+                        </a> -->
 
                         <a href="<?= site_url('my_account/profile_details'); ?>"
-                           class="list-group-item list-group-item-action">
+                           class="list-group-item list-group-item-action active">
                             <i class="bi bi-person me-2"></i> Account Details
                         </a>
 
                         <a href="<?= site_url('my_account/bookings'); ?>"
-                           class="list-group-item list-group-item-action active">
+                           class="list-group-item list-group-item-action ">
                             <i class="bi bi-calendar-check me-2"></i> Bookings
                         </a>
 
@@ -101,7 +102,7 @@
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0">
                             <i class="bi bi-person-vcard me-2"></i>
-                            Account Information
+                            Update Account Information
                         </h5>
                     </div>
 
@@ -110,9 +111,9 @@
                         <div class="row g-3">
 
                             <div class="col-md-6">
-                                <label class="form-label">Customer ID</label>
+                                <label class="form-label">Member ID</label>
                                 <input type="text"
-                                       class="form-control"
+                                       class="form-control bg-light"
                                        value="<?= html_escape($user->customer_id); ?>"
                                        readonly>
                             </div>
@@ -165,7 +166,7 @@
                                 <select name="customer_type" class="form-select form-control-edit" disabled>
                                         <option value="Non-Resident" <?= ($user->customer_type == 'Non-Resident') ? 'selected' : ''; ?>>Non-Resident</option>
                                         <option value="Resident" <?= ($user->customer_type == 'Resident') ? 'selected' : ''; ?>>Resident</option>
-                                    </select>
+                                </select>
                             </div>
 
                         </div>

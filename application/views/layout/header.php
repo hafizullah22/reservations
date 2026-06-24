@@ -275,7 +275,7 @@ body{
             </div>
         </div>
 
-       <a href="<?=site_url('auth/myaccount')?>" class="fs-5">
+       <a href="<?=site_url('myaccount')?>" class="fs-5">
         <i class="bi bi-person-fill"></i>
     </a>
 
