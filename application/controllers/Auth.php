@@ -103,7 +103,7 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('msg_text', 'Welcome back, ' . $user['first_name']);
 
         $this->db->where('customer_id', $user['customer_id']);
-    $this->db->update('customers', [
+        $this->db->update('customers', [
         'updated_at' => date('Y-m-d H:i:s')
     ]);
         
@@ -119,6 +119,12 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Login');
         $this->session->set_flashdata('msg_text', 'Welcome back, ' . $user['first_name']);
         $this->session->set_userdata('user', $user);
+
+          $this->db->where('customer_id', $user['customer_id']);
+        $this->db->update('customers', [
+        'updated_at' => date('Y-m-d H:i:s')
+         ]);
+        
         redirect('portals/profile');
 
     } 
@@ -173,6 +179,8 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Error');
         $this->session->set_flashdata('msg_text', 'Incorrect password');
 
+      
+
         redirect('auth/admin');
 
     } 
@@ -204,6 +212,11 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('msg_title', 'Login');
         $this->session->set_flashdata('msg_text', 'Welcome back, ' . $user['first_name']);
         $this->session->set_userdata('user', $user);
+
+            $this->db->where('customer_id', $user['customer_id']);
+        $this->db->update('customers', [
+        'updated_at' => date('Y-m-d H:i:s')
+        ]);
         redirect('my_account');
 
     } 

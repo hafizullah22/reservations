@@ -46,46 +46,47 @@ class Dashboard extends CI_Controller {
 
         $query = $this->db
             ->order_by('updated_at', 'DESC')
+            ->limit(5)
             ->get('customers');
 
         $data['customers'] = $query->result();
 
-       $this->db->select("DATE_FORMAT(booking_date, '%Y-%m') as month, COUNT(*) as total");
+       $this->db->select("DATE_FORMAT(booking_date, '%M,%Y') as month, COUNT(*) as total");
         $this->db->from('bookings');
-        $this->db->group_by("DATE_FORMAT(booking_date, '%Y-%m')");
+        $this->db->group_by("DATE_FORMAT(booking_date, '%M,%Y')");
         $this->db->order_by("month", "ASC");
 
         $query = $this->db->get();
         $result = $query->result();
-$data['bookings']=$result;
+        $data['bookings']=$result;
 
-$this->db->select("
-    DATE(booking_date) as day,
-    COUNT(*) as total_bookings,
-    SUM(CASE WHEN booking_time = 'afternoon' THEN 1 ELSE 0 END) as afternoon,
-    SUM(CASE WHEN booking_time = 'evening' THEN 1 ELSE 0 END) as evening
-");
+        $this->db->select("
+            DATE(booking_date) as day,
+            COUNT(*) as total_bookings,
+            SUM(CASE WHEN booking_time = 'afternoon' THEN 1 ELSE 0 END) as afternoon,
+            SUM(CASE WHEN booking_time = 'evening' THEN 1 ELSE 0 END) as evening
+        ");
 
-$this->db->from('bookings');
-$this->db->group_by("DATE(booking_date)");
-$this->db->order_by("day", "DESC");
+        $this->db->from('bookings');
+        $this->db->group_by("DATE(booking_date)");
+        $this->db->order_by("day", "DESC");
 
-$query = $this->db->get();
-$data['top_days'] = $query->result();
+        $query = $this->db->get();
+        $data['top_days'] = $query->result();
 
 
-$this->db->select("
-    table_number,
-    COUNT(*) as total_bookings
-");
+        $this->db->select("
+            table_number,
+            COUNT(*) as total_bookings
+        ");
 
-$this->db->from('bookings');
-$this->db->group_by("table_number");
-$this->db->order_by("total_bookings", "DESC");
-$this->db->limit(5);
+        $this->db->from('bookings');
+        $this->db->group_by("table_number");
+        $this->db->order_by("total_bookings", "DESC");
+        $this->db->limit(5);
 
-$query = $this->db->get();
-$data['top_tables'] = $query->result();
+        $query = $this->db->get();
+        $data['top_tables'] = $query->result();
 
         $this->load->view('admin/dashboard',$data);
     }

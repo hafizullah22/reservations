@@ -1,6 +1,10 @@
 <?php
-$role = $this->session->userdata('role');
-$username = $this->session->userdata('username');
+if (!isset($this->session)) {
+    $this->load->library('session');
+}
+$session_user = $this->session->userdata('user');
+$first_name   = isset($session_user['first_name']) ? $session_user['first_name'] : 'Admin';
+$role         = isset($session_user['role']) ? $session_user['role'] : 'Staff';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -329,7 +333,7 @@ $method     = $this->router->fetch_method();
                     <img src="https://i.pravatar.cc/100" alt="Avatar">
                     <div class="user-info">
                         <div style="font-size:14px; font-weight:600; color: #1e293b;">
-                            <?php echo htmlspecialchars($username ?? 'User'); ?>
+                            <?php echo htmlspecialchars($first_name ?? 'User'); ?>
                         </div>
                         <small class="text-muted text-capitalize">
                             <?php echo htmlspecialchars(str_replace('_', ' ', $role ?? '')); ?>

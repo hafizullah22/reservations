@@ -5,10 +5,12 @@
 
 .topbar {
     background: #fff;
-    padding: 14px 16px;
+    padding: 14px 14px;
     border-radius: 12px;
     margin-bottom: 15px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height:52px;
+    border: 1px solid #f1e6e6;
 }
 
 .card {
@@ -183,7 +185,7 @@ $cards = [
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Total Bookings</th>
+                                <th>Bookings</th>
                             </tr>
                         </thead>
 
@@ -218,7 +220,7 @@ $cards = [
                         <thead>
                             <tr>
                                 <th>Table</th>
-                                <th>Total Bookings</th>
+                                <th>Bookings</th>
                             </tr>
                         </thead>
 
@@ -226,8 +228,8 @@ $cards = [
                         <?php if (!empty($top_tables)) : ?>
                             <?php foreach ($top_tables as $row) : ?>
                                 <tr>
-                                    <td><?= $row->table_number; ?></td>
-                                    <td><?= $row->total_bookings; ?></td>
+                                    <td class="text-center"><?= $row->table_number; ?></td>
+                                    <td class="text-center"><?= $row->total_bookings; ?></td>
                                 </tr>
                                
                             <?php endforeach; ?>
