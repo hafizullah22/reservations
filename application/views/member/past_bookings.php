@@ -1,0 +1,163 @@
+<?php $this->load->view('layout/header'); ?>
+
+<main class="container my-5">
+
+    <div class="row g-4">
+
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+
+                    <div class="list-group list-group-flush">
+
+                        <a href="<?= site_url('my_account'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        </a>
+
+                        <!-- <a href="<?= site_url('my_account/addresses'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-geo-alt me-2"></i> Addresses
+                        </a> -->
+
+                        <a href="<?= site_url('my_account/profile_details'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-person me-2"></i> Account Details
+                        </a>
+
+                        <a href="<?= site_url('my_account/bookings'); ?>"
+                           class="list-group-item list-group-item-action active">
+                            <i class="bi bi-calendar-check me-2"></i> Bookings
+                        </a>
+
+                        <a href="<?= site_url('logout'); ?>"
+                           class="list-group-item list-group-item-action text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div class="col-lg-9">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-white py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        My Past Bookings
+                    </h4>
+                     <?php if($this->session->flashdata('success')): ?>
+                                            <div class="alert alert-success">
+                                                <?= $this->session->flashdata('success'); ?>
+                                            </div>
+                     <?php endif; ?>
+                </div>
+
+                <div class="card-body">
+
+                    <?php if (!empty($bookings)): ?>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-hover align-middle">
+
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#ID</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Table</th>
+                                        <th>Guests</th>
+                                        <th>Status</th>
+                                        
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                <?php foreach ($bookings as $b): ?>
+
+                                    <tr>
+
+                                        <td>#<?= $b->booking_id; ?></td>
+
+                                        <td><?= html_escape($b->customer_name); ?></td>
+
+                                        <td>
+                                            <?= date('d M Y', strtotime($b->booking_date)); ?>
+                                        </td>
+
+                                        <td><?= $b->booking_time; ?></td>
+
+                                        <td class="text-center">
+                                            <?= $b->table_number; ?>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <?= $b->number_of_guests; ?>
+                                        </td>
+
+                                        <td>
+                                            <?php
+                                            $badge = 'secondary';
+
+                                             if ($b->status == 'Completed') {
+                                                $badge = 'primary';
+                                            } elseif ($b->status == 'Cancelled') {
+                                                $badge = 'danger';
+                                            }
+                                            ?>
+
+                                            <span class="badge bg-<?= $badge; ?>">
+                                                <?= $b->status; ?>
+                                            </span>
+                                        </td>
+
+                                      
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    <?php else: ?>
+
+                        <div class="text-center py-5">
+
+                            <i class="bi bi-calendar-x fs-1 text-muted"></i>
+
+                            <h5 class="mt-3">No bookings found</h5>
+
+                            <p class="text-muted">
+                                You haven't made any table reservations yet.
+                            </p>
+
+                        </div>
+
+                    <?php endif; ?>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<?php $this->load->view('layout/footer'); ?>

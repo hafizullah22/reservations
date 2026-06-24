@@ -34,12 +34,28 @@ class My_account extends CI_Controller {
         $this->db->from('bookings');
         $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
         $this->db->where('bookings.customer_id', $this->customer_id);
+        $this->db->where('bookings.status','Confirmed');
         $this->db->order_by('bookings.booking_id', 'DESC');
 
         $data['bookings'] = $this->db->get()->result();
 
         $this->load->view('member/bookings', $data);
     }
+
+     public function past_bookings()
+    {
+        $this->db->select('bookings.*, customers.first_name as customer_name, customers.phone');
+        $this->db->from('bookings');
+        $this->db->join('customers', 'customers.customer_id = bookings.customer_id', 'left');
+        $this->db->where('bookings.customer_id', $this->customer_id);
+        $this->db->where_in('bookings.status',['Completed','Cancelled']);
+        $this->db->order_by('bookings.booking_id', 'DESC');
+
+        $data['bookings'] = $this->db->get()->result();
+
+        $this->load->view('member/past_bookings', $data);
+    }
+    
 
     public function profile_details()
     {

@@ -50,7 +50,12 @@
 
                         <a href="<?= site_url('my_account/bookings'); ?>"
                            class="list-group-item list-group-item-action ">
-                            <i class="bi bi-calendar-check me-2"></i> Bookings
+                            <i class="bi bi-calendar-check me-2"></i> Upcoming Bookings
+                        </a>
+
+                        <a href="<?= site_url('my_account/past_bookings'); ?>"
+                           class="list-group-item list-group-item-action ">
+                            <i class="bi bi-calendar-check me-2"></i> Past Bookings
                         </a>
 
                         <a href="<?= site_url('auth/logout_member'); ?>"
