@@ -32,21 +32,21 @@ class Bookings extends CI_Controller {
 
   public function create()
 {
-    // $customer_id = $this->session->userdata('customer_id');
+    $user = $this->session->userdata('user');    
+    $customer_id = $user['customer_id'];
 
-    // if (!$customer_id) {
-    //     redirect('login');
-    // }
-
-
-    // $data['customer'] = $this->db
-    //     ->where('customer_id', $customer_id)
-    //     ->get('customers')
-    //     ->row();
+    if (!$customer_id) {
+        redirect('login');
+    }
+    
+    $data['customer'] = $this->db
+        ->where('customer_id', $customer_id)
+        ->get('customers')
+        ->row();
 
     $data['tables'] = $this->db->get('tables')->result(); 
 
-    $this->load->view('portal/booking_create', $data);
+    $this->load->view('portal/booking', $data);
 }
 
 public function get_available_dates()
@@ -113,28 +113,30 @@ public function get_available_dates()
 
 public function store()
 {
-    $customer_id = $this->session->userdata('customer_id');
+    //$customer_id = $this->session->userdata('customer_id');
 
-    if (!$customer_id) {
-        redirect('login');
-    }
+    // if (!$customer_id) {
+    //     redirect('login');
+    // }
 
-    // =========================
-    // CUSTOMER INFO
-    // =========================
-    $customer = $this->db
-        ->where('customer_id', $customer_id)
-        ->get('customers')
-        ->row();
+    // // =========================
+    // // CUSTOMER INFO
+    // // =========================
+    // $customer = $this->db
+    //     ->where('customer_id', $customer_id)
+    //     ->get('customers')
+    //     ->row();
 
-    if (!$customer) {
-        $this->session->set_flashdata('error', 'Customer account not found.');
-        redirect('login');
-    }
+    // if (!$customer) {
+    //     $this->session->set_flashdata('error', 'Customer account not found.');
+    //     redirect('login');
+    // }
 
     // =========================
     // INPUTS
     // =========================
+
+    $customer_id =$this->input->post('customer_id');
     $table_number  = (int) $this->input->post('table_number', TRUE);
     $guests        = (int) $this->input->post('number_of_guests', TRUE);
     $booking_date  = $this->input->post('booking_date', TRUE);
@@ -324,7 +326,7 @@ public function store()
     // SUCCESS
     // =========================
     $this->session->set_flashdata('success', 'Booking created successfully.');
-    redirect('bookings');
+    redirect('my_account/bookings');
 }
 
 
