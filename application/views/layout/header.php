@@ -277,7 +277,7 @@ body{
         <div class="nav-dropdown">
             <a href="#">Reservation <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="<?=site_url('bookings/create')?>">Table Reservation</a>
+                <a href="<?=site_url('table-reservation')?>">Table Reservation</a>
                 <a href="#">City of Lakewood</a>
                 
             </div>
