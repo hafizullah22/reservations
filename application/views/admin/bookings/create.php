@@ -168,7 +168,7 @@ span.flatpickr-weekday {
 
 .flatpickr-day.prevMonthDay,
 .flatpickr-day.nextMonthDay {
-    color: #edf1f5 !important;
+    color: #0c0c0c !important;
 }
 
 /* ================= FORM ================= */
@@ -451,8 +451,7 @@ span.flatpickr-weekday {
 
 
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 
 <script>
@@ -501,6 +500,12 @@ $(document).ready(function () {
 
 });
 </script>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
 
 <script>
 let calendarInstance = null;
@@ -595,7 +600,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     tooltip.style.left = e.pageX + "px";
                     tooltip.style.top = (e.pageY - 20) + "px";
                     tooltip.style.opacity = "1";
-                });        <small class="text-muted">Create and manage table bookings</small>
+                });
 
                 dayElem.addEventListener("mousemove", function (e) {
                     tooltip.style.left = e.pageX + "px";
@@ -660,6 +665,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -761,8 +769,4 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- // SweetAlert2 CDN  -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
-</html>
-
-
 

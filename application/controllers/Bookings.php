@@ -32,21 +32,21 @@ class Bookings extends CI_Controller {
 
   public function create()
 {
-    $customer_id = $this->session->userdata('customer_id');
+    // $customer_id = $this->session->userdata('customer_id');
 
-    if (!$customer_id) {
-        redirect('login');
-    }
+    // if (!$customer_id) {
+    //     redirect('login');
+    // }
 
 
-    $data['customer'] = $this->db
-        ->where('customer_id', $customer_id)
-        ->get('customers')
-        ->row();
+    // $data['customer'] = $this->db
+    //     ->where('customer_id', $customer_id)
+    //     ->get('customers')
+    //     ->row();
 
     $data['tables'] = $this->db->get('tables')->result(); 
 
-    $this->load->view('member/bookings/create', $data);
+    $this->load->view('portal/booking_create', $data);
 }
 
 public function get_available_dates()

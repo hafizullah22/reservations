@@ -158,7 +158,7 @@ class Bookings extends CI_Controller {
 
         if (!$customer) {
             $this->session->set_flashdata('error', 'Customer account not found.');
-            redirect('login');
+            redirect('admin/bookings/create');
         }
 
         // =========================
