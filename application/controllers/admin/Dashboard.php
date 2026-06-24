@@ -69,7 +69,8 @@ class Dashboard extends CI_Controller {
 
         $this->db->from('bookings');
         $this->db->group_by("DATE(booking_date)");
-        $this->db->order_by("day", "DESC");
+        $this->db->order_by("total_bookings", "DESC");
+        $this->db->limit(5);
 
         $query = $this->db->get();
         $data['top_days'] = $query->result();
