@@ -36,7 +36,7 @@ class Bookings extends CI_Controller {
     $customer_id = $user['customer_id'];
 
     if (!$customer_id) {
-        redirect('login');
+        redirect('auth/booking');
     }
     
     $data['customer'] = $this->db
