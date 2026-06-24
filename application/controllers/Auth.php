@@ -18,8 +18,14 @@ class Auth extends CI_Controller {
         $this->load->view('admin/login');
     }
 
-    public function myaccount()
+   public function myaccount()
     {
+        $user = $this->session->userdata('user');
+
+        if ($user && $user['role'] == 'Member') {
+            redirect('my_account');
+        }
+
         $this->load->view('login');
     }
 
@@ -181,7 +187,7 @@ class Auth extends CI_Controller {
 
       
 
-        redirect('auth/admin');
+        redirect('auth/myaccount');
 
     } 
 

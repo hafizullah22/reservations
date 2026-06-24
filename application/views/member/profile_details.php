@@ -1,217 +1,276 @@
 <?php $this->load->view('layout/header'); ?>
 
 <style>
-    .active{color:#fff;}
+.account-card{
+    border:0;
+    border-radius:12px;
+    box-shadow:0 .125rem .5rem rgba(0,0,0,.08);
+}
+
+.account-sidebar .list-group-item{
+    border:0;
+    padding:12px 18px;
+    font-weight:500;
+}
+
+.account-sidebar .list-group-item.active{
+    background:#0d6efd;
+    color:#fff !important;
+}
+
+.profile-avatar{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#0d6efd;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+}
+
+#togglePassword{
+    cursor:pointer;
+}
+
+.form-label{
+    font-weight:600;
+}
 </style>
-<!-- ================= USER PROFILE PAGE ================= -->
-<main class="container my-5 py-3">
+
+<main class="container my-5">
+
     <div class="row g-4">
 
-        <!-- LEFT SIDEBAR MENU -->
-    <div class="col-md-3">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
 
-        <div class="list-group shadow-sm rounded-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
 
-            <a href="#dashboard" class="list-group-item list-group-item-action">
-                Dashboard
-            </a>
+                    <div class="list-group list-group-flush">
 
-            <a href="#addresses" class="list-group-item list-group-item-action text-black">
-                Addresses
-            </a>
+                        <a href="<?= site_url('my_account'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                        </a>
 
-            <a href="<?= site_url('my_account/profile_details')?>" class="list-group-item list-group-item-action text-black active">
-                Account Details
-            </a>
+                        <a href="<?= site_url('my_account/addresses'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-geo-alt me-2"></i> Addresses
+                        </a>
 
-            <a href="<?=site_url('my_account/bookings')?>" class="list-group-item list-group-item-action text-black">
-                Bookings
-            </a>
+                        <a href="<?= site_url('my_account/profile_details'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-person me-2"></i> Account Details
+                        </a>
 
-            <a href="<?=site_url('auth/logout_member')?>" class="list-group-item list-group-item-action text-black">
-                Log out
-            </a>
+                        <a href="<?= site_url('my_account/bookings'); ?>"
+                           class="list-group-item list-group-item-action active">
+                            <i class="bi bi-calendar-check me-2"></i> Bookings
+                        </a>
+
+                        <a href="<?= site_url('logout'); ?>"
+                           class="list-group-item list-group-item-action text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= CONTENT ================= -->
+        <div class="col-lg-9">
+
+            <?php if(!empty($user)): ?>
+
+            <form action="<?= site_url('my_account/update_profile'); ?>" method="post">
+
+                <input type="hidden"
+                       name="customer_id"
+                       value="<?= html_escape($user->customer_id); ?>">
+
+
+                <!-- Account Information -->
+                <div class="card account-card">
+
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-person-vcard me-2"></i>
+                            Account Information
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">Customer ID</label>
+                                <input type="text"
+                                       class="form-control"
+                                       value="<?= html_escape($user->customer_id); ?>"
+                                       readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Email Address</label>
+                                <input type="email"
+                                       name="email"
+                                       class="form-control"
+                                       value="<?= html_escape($user->email); ?>"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">First Name</label>
+                                <input type="text"
+                                       name="first_name"
+                                       class="form-control"
+                                       value="<?= html_escape($user->first_name); ?>"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Last Name</label>
+                                <input type="text"
+                                       name="last_name"
+                                       class="form-control"
+                                       value="<?= html_escape($user->last_name); ?>"
+                                       required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text"
+                                       name="phone"
+                                       class="form-control"
+                                       value="<?= html_escape($user->phone); ?>">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Role</label>
+                                <select name="role" class="form-select form-control-edit" disabled>
+                                        <option value="Admin" <?= ($user->role == 'Admin') ? 'selected' : ''; ?>>Admin</option>
+                                        <option value="Member" <?= ($user->role == 'Member') ? 'selected' : ''; ?>>Member</option>
+                                    </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">Customer Type</label>
+                                <select name="customer_type" class="form-select form-control-edit" disabled>
+                                        <option value="Non-Resident" <?= ($user->customer_type == 'Non-Resident') ? 'selected' : ''; ?>>Non-Resident</option>
+                                        <option value="Resident" <?= ($user->customer_type == 'Resident') ? 'selected' : ''; ?>>Resident</option>
+                                    </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Security Settings -->
+                <div class="card account-card mt-4">
+
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+                        <p class="mb-0 ">
+                            <i class="bi bi-shield-lock me-2"></i>
+                            if you want to change password?
+            </p>
+
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                onclick="togglePasswordSection()">
+                            Click for Password Change
+                        </button>
+
+                    </div>
+
+                    <div id="passwordSection"
+                         class="card-body"
+                         style="display:none;">
+
+                        <label class="form-label">
+                            New Password
+                        </label>
+
+                        <div class="position-relative">
+
+                            <input type="password"
+                                   id="newPassword"
+                                   name="new_password"
+                                   class="form-control pe-5"
+                                   placeholder="Enter new password">
+
+                        </div>
+
+                        <!-- <small class="text-muted">
+                            Leave blank if you don't want to change your password.
+                        </small> -->
+
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="mt-4">
+
+                    <button type="submit"
+                            class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Update Profile
+                    </button>
+
+                    <a href="<?= site_url('my_account'); ?>"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+            <?php else: ?>
+
+                <div class="alert alert-warning">
+                    No user record found.
+                </div>
+
+            <?php endif; ?>
 
         </div>
 
     </div>
 
-        <!-- RIGHT CONTENT AREA -->
-        <div class="col-md-9">
-
-            <!-- PROFILE CARD -->
-            <div class="feature-card p-4 mb-4">
-
-
-                <!-- TABLE / EDIT FORM -->
-    
-        <!-- <h4 class="mb-4 fw-bold">Edit User Profile</h4> -->
-
-        <?php if (!empty($user)): ?>
-            <form action="<?= site_url('my_account/update_profile')?>" method="post">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <tbody id="bookingTableBody">
-                            <tr>
-                                <td style="width: 250px;">Customer ID</td>
-                                <td>
-                                    <strong><?= $user->customer_id; ?></strong>
-                                    <input type="hidden" name="customer_id" value="<?= $user->customer_id; ?>">
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>First Name</td>
-                                <td>
-                                    <input type="text" name="first_name" class="form-control form-control-edit" value="<?= $user->first_name; ?>" required>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Last Name</td>
-                                <td>
-                                    <input type="text" name="last_name" class="form-control form-control-edit" value="<?= $user->last_name; ?>" required>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Phone</td>
-                                <td>
-                                    <input type="text" name="phone" class="form-control form-control-edit" value="<?= $user->phone; ?>">
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Email Address</td>
-                                <td>
-                                    <input type="email" name="email" class="form-control form-control-edit" value="<?= $user->email; ?>" required>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Existing Password</td>
-                                <td>
-                                    <div class="input-group" style="max-width:300px;">
-                                        <input type="password"
-                                               id="plainPassword"
-                                               class="form-control form-control-sm"
-                                               value="<?= $user->plain_password; ?>"
-                                               readonly>
-                                        <button type="button"
-                                                class="btn btn-outline-secondary"
-                                                onclick="togglePasswordVisibility()">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Role</td>
-                                <td>
-                                    <select name="role" class="form-select form-control-edit" disabled>
-                                        <option value="Admin" <?= ($user->role == 'Admin') ? 'selected' : ''; ?>>Admin</option>
-                                        <option value="Member" <?= ($user->role == 'Member') ? 'selected' : ''; ?>>Member</option>
-                                    </select>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Type</td>
-                                <td>
-                                    <select name="customer_type" class="form-select form-control-edit" disabled>
-                                        <option value="Non-Resident" <?= ($user->customer_type == 'Non-Resident') ? 'selected' : ''; ?>>Non-Resident</option>
-                                        <option value="Resident" <?= ($user->customer_type == 'Resident') ? 'selected' : ''; ?>>Resident</option>
-                                    </select>
-                                </td>
-                            </tr>
-
-                            <!-- NEW PASSWORD DRAWER TRIGGER -->
-                            <tr>
-                                <td>Change Security Password</td>
-                                <td>
-                                    <button type="button"
-                                            class="btn btn-warning btn-sm text-dark font-weight-bold"
-                                            onclick="togglePasswordForm()">
-                                        Set New Password
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- HIDDEN INLINE FORM ROW -->
-                            <tr id="passwordRow" style="display:none;">
-                                <td colspan="2" class="bg-light p-3">
-                                    <div class="d-flex gap-2 align-items-center" style="max-width: 450px;">
-                                        <input type="text"
-                                               id="newPasswordInput"
-                                               name="new_password"
-                                               class="form-control form-control-sm"
-                                               placeholder="Enter new password layout">
-                                        <button type="button" 
-                                                class="btn btn-secondary btn-sm"
-                                                onclick="togglePasswordForm()">
-                                            Close
-                                        </button>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">Leave empty if you don't want to adjust the password.</small>
-                                </td>
-                            </tr>
-
-                            <!-- FORM SUBMISSION CONTROLS -->
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <button type="submit" class="btn btn-success px-4 me-2">Update Profile</button>
-                                    <a href="<?= site_url('admin/users'); ?>" class="btn btn-secondary px-4">Cancel</a>
-                                 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
-        <?php else: ?>
-            <div class="text-center text-muted py-4">
-                No active user record was found.
-            </div>
-        <?php endif; ?>
-    </div>
-
-
-    </div>
-   
-
-    </div>
 </main>
 
 <script>
-function togglePasswordForm() {
-    let row = document.getElementById('passwordRow');
-    if(row.style.display === 'none' || row.style.display === ''){
-        row.style.display = 'table-row';
+function togglePasswordSection() {
+
+    const section = document.getElementById('passwordSection');
+
+    if (section.style.display === 'none') {
+        section.style.display = 'block';
     } else {
-        row.style.display = 'none';
-        document.getElementById('newPasswordInput').value = ''; // clears field context on cancel
+        section.style.display = 'none';
+
+        document.getElementById('newPassword').value = '';
+
+        const icon = document.querySelector('#togglePassword i');
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+
+        document.getElementById('newPassword').type = 'password';
     }
 }
 
-function togglePasswordVisibility() {
-    let input = document.getElementById('plainPassword');
-    if (!input) return;
 
-    input.type = 'text';
-
-    if (input.hideTimer) {
-        clearTimeout(input.hideTimer);
-    }
-
-    input.hideTimer = setTimeout(() => {
-        input.type = 'password';
-    }, 3000);
-}
 </script>
-
-
-
 
 <?php $this->load->view('layout/footer'); ?>

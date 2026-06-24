@@ -223,28 +223,61 @@ body{
 
     <div class="desktop-menu d-none d-lg-flex align-items-center">
 
-        <a href="#">Home</a>
+        <a href="<?=site_url('/')?>">Home</a>
 
         <div class="nav-dropdown">
             <a href="#">About <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="#">About Us</a>
-                <a href="#">History</a>
-                <a href="#">Trust Deed 1912</a>
+                <a href="<?=site_url('portals/trust_deed_1912')?>">Trust Deed 1912</a>
+                <a href="<?=site_url('portals/financial')?>">Financial Information</a>
+                <a href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meeting</a>
+                <a href="<?=site_url('portals/neighbour_map')?>">Neigborhood Map</a>
+                <a href="<?=site_url('portals/tax_return')?>">Tax Return</a>
+                
             </div>
         </div>
 
         <div class="nav-dropdown">
-            <a href="#">Information <i class="bi bi-chevron-down"></i></a>
+            <a href="#">Links <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="#">Financial Info</a>
-                <a href="#">Beach Info</a>
-                <a href="#">Links</a>
+                <a href="#">Clifton Club</a>
+                <a href="#">City of Lakewood</a>
+                
+            </div>
+        </div>
+        <div class="nav-dropdown">
+            <a href="#">Beach Info <i class="bi bi-chevron-down"></i></a>
+            <div class="nav-dropdown-menu">
+                <a href="#">Clifton Club</a>
+                <a href="#">City of Lakewood</a>
+                
             </div>
         </div>
 
-        <a href="#">Contact</a>
-        <a href="#">Reservations</a>
+        <a href="#">Contact us</a>
+
+        <div class="nav-dropdown">
+            <a href="#">History <i class="bi bi-chevron-down"></i></a>
+            <div class="nav-dropdown-menu">
+                <a href="#">Clifton Club</a>
+                <a href="#">City of Lakewood</a>
+                
+            </div>
+        </div>
+        <a href="#">Tennis Program</a>
+
+        <div class="nav-dropdown">
+            <a href="#">Reservation <i class="bi bi-chevron-down"></i></a>
+            <div class="nav-dropdown-menu">
+                <a href="#">Clifton Club</a>
+                <a href="#">City of Lakewood</a>
+                
+            </div>
+        </div>
+
+       <a href="<?=site_url('auth/myaccount')?>" class="fs-5">
+        <i class="bi bi-person-fill"></i>
+    </a>
 
     </div>
 
@@ -274,9 +307,11 @@ body{
             About <i class="bi bi-chevron-down"></i>
         </div>
         <div class="drawer-submenu">
-            <a href="#">About Us</a>
-            <a href="#">History</a>
-            <a href="#">Trust Deed 1912</a>
+            <a href="<?=site_url('portals/trust_deed_1912')?>">Trust Deed 1912</a>
+                <a href="<?=site_url('portals/financial')?>">Financial Information</a>
+                <a href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meeting</a>
+                <a href="<?=site_url('portals/neighbour_map')?>">Neigborhood Map</a>
+                <a href="<?=site_url('portals/tax_return')?>">Tax Return</a>
         </div>
     </div>
 
