@@ -1,6 +1,7 @@
 <?php $this->load->view('layout/header'); ?>
 
 <style>
+    
     .stats-bar {
          background: #dcebf5;
         border-radius: 20px;
@@ -22,7 +23,7 @@
     }
 
     .stat-item span {
-        color: #6c757d;
+        color: #0a0b0c;
         font-weight: 500;
     }
 
@@ -148,6 +149,8 @@
                     <p class="text-muted">
                         The first private owners of Clifton Park were Connecticut
                         real estate investors...
+                        The first private owners of Clifton Park were Connecticut
+                        real estate investors...
                     </p>
 
                     <a href="#keys" class="btn btn-outline-success btn-sm rounded-pill">
@@ -193,7 +196,7 @@
         <!-- Meetings -->
         <div class="col-lg-8">
 
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm h-100 feature-card">
                 <div class="card-header bg-white border-0 py-3">
                     <div class="d-flex justify-content-between align-items-center">
 
@@ -223,15 +226,7 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>Jun 20, 2026</td>
-                                    <td>Annual Trustee Meeting</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-outline-primary">
-                                            View
-                                        </a>
-                                    </td>
-                                </tr>
+                               
 
                                 <tr>
                                     <td>May 15, 2026</td>

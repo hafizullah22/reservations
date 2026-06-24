@@ -14,7 +14,8 @@
 /* ================= BASE ================= */
 body{
     font-family:sans-serif;
-    background:#F8F9FA;
+    /* background:#F8F9FA; */
+    background: #ebeef1;
     margin:0;
 }
 
