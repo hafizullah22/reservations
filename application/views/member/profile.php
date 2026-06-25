@@ -123,7 +123,7 @@
                                 <h4 class="fw-bold mb-2">
                                     Welcome Back,
                                     <span class="text-primary">
-                                        <?= html_escape($user['first_name']); ?>&nbsp;<?= html_escape($user['last_name']); ?>
+                                        <?= html_escape($user['first_name']); ?>
                                     </span>
                                 </h4>
 

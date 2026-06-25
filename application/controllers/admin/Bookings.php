@@ -301,54 +301,57 @@ class Bookings extends CI_Controller {
         // =========================
         // EMAIL
         // =========================
-        try {
+        // try {
 
-            $this->load->library('email');
+        //     $this->load->library('email');
 
-            $this->email->from(
-                'hafizulah322@gmail.com',
-                'Table Reservation System'
-            );
+        //     $this->email->from(
+        //         'hafizulah322@gmail.com',
+        //         'Table Reservation System'
+        //     );
 
-            $this->email->to($customer->email);
+        //     $this->email->to($customer->email);
 
-            $this->email->subject('Reservation Confirmation #' . $reservation_no);
+        //     $this->email->subject('Reservation Confirmation #' . $reservation_no);
 
-            $message = '
-            <html>
-            <body>
-                <h2>Reservation Confirmed</h2>
+        //     $message = '
+        //     <html>
+        //     <body>
+        //         <h2>Reservation Confirmed</h2>
 
-                <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
+        //         <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
 
-                <p>Your reservation has been successfully confirmed.</p>
+        //         <p>Your reservation has been successfully confirmed.</p>
 
-                <table border="1" cellpadding="8" cellspacing="0">
-                    <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
-                    <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
-                    <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
-                    <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
-                    <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
-                    <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
-                </table>
+        //         <table border="1" cellpadding="8" cellspacing="0">
+        //             <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
+        //             <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
+        //             <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
+        //             <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
+        //             <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
+        //             <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
+        //         </table>
 
-                <p>Thank you for your reservation.</p>
-            </body>
-            </html>';
+        //         <p>Thank you for your reservation.</p>
+        //     </body>
+        //     </html>';
 
-            $this->email->message($message);
+        //     $this->email->message($message);
 
-            $this->email->send();
+        //     $this->email->send();
 
-        } catch (Exception $e) {
-            log_message('error', $e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     log_message('error', $e->getMessage());
+        // }
 
 
         // =========================
         // SUCCESS
         // =========================
-        $this->session->set_flashdata('success', 'Booking created successfully.');
+
+        $this->session->set_flashdata('msg_type', 'Success');
+        $this->session->set_flashdata('msg_title', 'Booked!');
+        $this->session->set_flashdata('msg_text', 'Succesfully Created Table Reservation');
         redirect('admin/bookings');
 
     }

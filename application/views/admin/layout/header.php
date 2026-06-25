@@ -23,7 +23,7 @@ $role         = isset($session_user['role']) ? $session_user['role'] : 'Staff';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     
     <style>
@@ -57,13 +57,13 @@ $role         = isset($session_user['role']) ? $session_user['role'] : 'Staff';
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 18px 15px;
-            font-weight: 700;
+            padding: 18px 10px;
+            font-weight: 600;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
             color: #fff;
             text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid #beb5b5;
         }
         .brand-link:hover { color: #fff; }
 
@@ -117,7 +117,7 @@ $role         = isset($session_user['role']) ? $session_user['role'] : 'Staff';
         .left-nav {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .sidebar-toggle {
@@ -180,6 +180,7 @@ $role         = isset($session_user['role']) ? $session_user['role'] : 'Staff';
             color: #fff;
         }
 
+        
         /* ================= DESKTOP SIDEBAR COLLAPSE ================= */
         @media(min-width: 993px) {
             .sidebar-collapsed .main-sidebar {
@@ -261,58 +262,98 @@ $method     = $this->router->fetch_method();
 ?>
 
 <!-- ================= SIDEBAR NAVIGATION ================= -->
+<!-- ================= SIDEBAR NAVIGATION ================= -->
 <aside class="main-sidebar" id="sidebar">
-    <a href="#" class="brand-link">
-        Clifton Park Trustee
-    </a>
+
+    <!-- Brand / Site Menu -->
+    <div class="brand-link p-0">
+        <div class="dropdown w-100">
+            <a href="#"
+               class="d-flex justify-content-between align-items-center text-white text-decoration-none px-3 py-3 w-100"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+
+                <span>
+                    
+                    Clifton Park Trustee
+                </span>
+
+                <i class="bi bi-chevron-down"></i>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-dark w-100 rounded-0 border-0">
+                <li>
+                    <a class="dropdown-item"
+                       href="<?= base_url(); ?>"
+                       target="_blank">
+                        <i class="bi bi-globe me-2"></i>
+                        Visit Website
+                    </a>
+                </li>
+
+               
+
+            </ul>
+        </div>
+    </div>
 
     <div class="sidebar-menu">
 
-    <a href="<?= site_url('admin/dashboard'); ?>"
-       class="<?= ($controller == 'dashboard' && $method == 'index') ? 'active' : ''; ?>">
-        <i class="bi bi-grid-1x2-fill"></i> Dashboard
-    </a>
+        <a href="<?= site_url('admin/dashboard'); ?>"
+           class="<?= ($controller == 'dashboard' && $method == 'index') ? 'active' : ''; ?>">
+            <i class="bi bi-grid-1x2-fill"></i>
+            Dashboard
+        </a>
 
-    <a href="<?= site_url('admin/users'); ?>"
-       class="<?= ($controller == 'users') ? 'active' : ''; ?>">
-        <i class="bi bi-people"></i> Users
-    </a>
+        <a href="<?= site_url('admin/users'); ?>"
+           class="<?= ($controller == 'users') ? 'active' : ''; ?>">
+            <i class="bi bi-people"></i>
+            Users
+        </a>
 
-    <a href="<?= site_url('admin/bookings'); ?>"
-       class="<?= ($controller == 'bookings' && $method == 'index') ? 'active' : ''; ?>">
-        <i class="bi bi-calendar2-check"></i> Bookings
-    </a>
+        <a href="<?= site_url('admin/bookings'); ?>"
+           class="<?= ($controller == 'bookings' && $method == 'index') ? 'active' : ''; ?>">
+            <i class="bi bi-calendar2-check"></i>
+            Bookings
+        </a>
 
-    <a href="<?= site_url('admin/bookings/bookings_report'); ?>"
-       class="<?= ($controller == 'bookings' && $method == 'bookings_report') ? 'active' : ''; ?>">
-        <i class="bi bi-graph-up-arrow"></i> Bookings Report
-    </a>
+        <a href="<?= site_url('admin/bookings/bookings_report'); ?>"
+           class="<?= ($controller == 'bookings' && $method == 'bookings_report') ? 'active' : ''; ?>">
+            <i class="bi bi-graph-up-arrow"></i>
+            Bookings Report
+        </a>
 
-    <a href="<?= site_url('admin/dashboard/tables_rules'); ?>"
-       class="<?= ($controller == 'dashboard' && $method == 'tables_rules') ? 'active' : ''; ?>">
-        <i class="bi bi-diagram-3-fill"></i> Patio Table Rules
-    </a>
+        <a href="<?= site_url('admin/dashboard/tables_rules'); ?>"
+           class="<?= ($controller == 'dashboard' && $method == 'tables_rules') ? 'active' : ''; ?>">
+            <i class="bi bi-diagram-3-fill"></i>
+            Patio Table Rules
+        </a>
 
-    <a href="<?= site_url('admin/uploads/financial_report'); ?>"
-       class="<?= ($controller == 'uploads' && $method == 'financial_report') ? 'active' : ''; ?>">
-        <i class="bi bi-cash-coin"></i> Financial Report
-    </a>
+        <a href="<?= site_url('admin/uploads/financial_report'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'financial_report') ? 'active' : ''; ?>">
+            <i class="bi bi-cash-coin"></i>
+            Financial Report
+        </a>
 
-    <a href="<?= site_url('admin/uploads/tax_return'); ?>"
-       class="<?= ($controller == 'uploads' && $method == 'tax_return') ? 'active' : ''; ?>">
-        <i class="bi bi-receipt"></i> Tax Return
-    </a>
+        <a href="<?= site_url('admin/uploads/tax_return'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'tax_return') ? 'active' : ''; ?>">
+            <i class="bi bi-receipt"></i>
+            Tax Return
+        </a>
 
-    <a href="<?= site_url('admin/uploads/meeting'); ?>"
-       class="<?= ($controller == 'uploads' && $method == 'meeting') ? 'active' : ''; ?>">
-        <i class="bi bi-people-fill"></i> Trustee Meeting
-    </a>
+        <a href="<?= site_url('admin/uploads/meeting'); ?>"
+           class="<?= ($controller == 'uploads' && $method == 'meeting') ? 'active' : ''; ?>">
+            <i class="bi bi-people-fill"></i>
+            Trustee Meeting
+        </a>
 
-    <a href="<?= site_url('auth/logout_admin'); ?>">
-        <i class="bi bi-box-arrow-right"></i> Logout
-    </a>
+        <a href="<?= site_url('auth/logout_admin'); ?>">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
 
-</div>
+    </div>
+
 </aside>
 
     <!-- ================= MAIN PLATFORM WRAPPER ================= -->
@@ -367,3 +408,5 @@ $method     = $this->router->fetch_method();
         }
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
