@@ -58,6 +58,9 @@ $route['admin'] = 'auth/admin';
 $route['myaccount']='auth/myaccount';
 $route['table-reservation']='auth/booking';
 
+$route['trust-deed-1912']='portals/trust_deed_1912';
+
+
 
 // $route['admin/bookings/get_customer'] = 'admin/bookings/get_customer';
 //$route['admin/dashboard/dashboard']

@@ -379,5 +379,152 @@ class Auth extends CI_Controller {
     }
 
 
+    public function forgot_password()
+    {
+        $this->load->view('forgot-password');
+    }
+
+public function send_reset_link()
+{
+    $email = $this->input->post('email');
+
+    $user = $this->db
+        ->where('email', $email)
+        ->get('customers')
+        ->row();
+
+    if (!$user)
+    {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Error');
+        $this->session->set_flashdata('msg_text', 'You are not a member of Clifton Park Trustees.');
+
+        redirect('auth/forgot_password');
+    }
+
+    $token = bin2hex(random_bytes(32));
+
+    $this->db->where('customer_id', $user->customer_id)->update('customers', [
+        'reset_token'   => $token,
+        'reset_expires' => date('Y-m-d H:i:s', strtotime('+1 hour'))
+    ]);
+
+    $link = site_url('auth/reset_password/' . $token);
+
+    $this->load->library('email');
+
+    $this->email->from('hafizulah322@gmail.com', 'Clifton Park Trustees');
+    $this->email->to($email);
+    $this->email->subject('Password Reset Request');
+
+    $this->email->message("
+        <p>Hello {$user->first_name},</p>
+
+        <p>We received a request to reset your password.</p>
+
+        <p>
+            <a href='{$link}'>
+                Click Here to Reset Your Password
+            </a>
+        </p>
+
+        <p>This link will expire in 1 hour.</p>
+
+        <p>If you did not request a password reset, please ignore this email.</p>
+    ");
+
+    if ($this->email->send())
+    {
+        $this->session->set_flashdata('msg_type', 'success');
+        $this->session->set_flashdata('msg_title', 'Email Sent');
+        $this->session->set_flashdata(
+            'msg_text',
+            'A password reset link has been sent to your email address.'
+        );
+
+        redirect('auth/forgot_password');
+    }
+    else
+    {
+        $this->session->set_flashdata('msg_type', 'error');
+        $this->session->set_flashdata('msg_title', 'Email Failed');
+        $this->session->set_flashdata(
+            'msg_text',
+            'Unable to send email. Please try again later.'
+        );
+
+        redirect('auth/forgot_password');
+    }
+}
+
+    public function reset_password($token)
+    {
+        $user = $this->db
+            ->where('reset_token',$token)
+            ->where('reset_expires >', date('Y-m-d H:i:s'))
+            ->get('customers')
+            ->row();
+
+        if(!$user){
+            show_error('Invalid or expired link');
+        }
+
+        $data['token'] = $token;
+        $this->load->view('reset_password',$data);
+    }
+
+
+    public function update_password()
+{
+    $token = $this->input->post('token');
+
+    $this->form_validation->set_rules(
+        'password',
+        'Password',
+        'required|min_length[8]'
+    );
+
+    $this->form_validation->set_rules(
+        'confirm_password',
+        'Confirm Password',
+        'required|matches[password]'
+    );
+
+    if ($this->form_validation->run() == FALSE)
+    {
+        $data['token'] = $token;
+        $this->load->view('reset_password', $data);
+        return;
+    }
+
+    $user = $this->db
+        ->where('reset_token', $token)
+        ->where('reset_expires >', date('Y-m-d H:i:s'))
+        ->get('customers')
+        ->row();
+
+    if (!$user)
+    {
+        show_error('Invalid or expired reset link.');
+    }
+
+    $password = $this->input->post('password');
+
+    $this->db->where('customer_id', $user->customer_id)->update('customers', [
+        'password'      => password_hash($password, PASSWORD_DEFAULT),
+        'reset_token'   => NULL,
+        'reset_expires' => NULL,
+        'plain_password'=>$password
+    ]);
+
+    $this->session->set_flashdata('msg_type', 'success');
+    $this->session->set_flashdata('msg_title', 'Success');
+    $this->session->set_flashdata(
+        'msg_text',
+        'Password changed successfully. Please login.'
+    );
+
+    redirect('auth/myaccount');
+}
    
 }

@@ -1,6 +1,25 @@
 <?php $this->load->view('layout/header'); ?>
+
 <style>
-    #togglePassword{
+.login-card{
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.login-header{
+    background:linear-gradient(135deg,#0d6efd,#0b5ed7);
+    color:#fff;
+    text-align:center;
+    padding:10px 20px;
+}
+
+.login-header i{
+    font-size:30px; 
+    display:block;
+}
+
+#togglePassword{
     color:#6c757d;
     font-size:18px;
 }
@@ -8,23 +27,38 @@
 #togglePassword:hover{
     color:#0d6efd;
 }
+
+.form-control {
+    border: 1px solid #a7a4a4;
+}
+
 </style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-5 col-lg-6">
 
-            <div class="text-center mb-2">
-                <h2 class="fw-bold">Member Login</h2>
-            </div>
+        <div class="col-md-6 col-lg-5">
 
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-body p-4">
+            <div class="card login-card shadow-lg">
+
+                <!-- Card Header -->
+                <div class="login-header">
+                    <i class="bi bi-person-circle"></i>
+                    <h3 class="fw-bold mb-1">Member Login</h3>
+                    <!-- <p class="mb-0 opacity-75">
+                        Sign in to access your member dashboard
+                    </p> -->
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body p-4 p-lg-3">
 
                     <form action="<?= site_url('auth/authenticate_member'); ?>" method="post">
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Email Address</label>
+                            <label class="form-label fw-semibold">
+                                Email Address
+                            </label>
                             <input type="email"
                                    name="email"
                                    class="form-control"
@@ -33,24 +67,26 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Password</label>
+                            <label class="form-label fw-semibold">
+                                Password
+                            </label>
 
                             <div class="position-relative">
                                 <input type="password"
-                                    name="password"
-                                    id="password"
-                                    class="form-control pe-5"
-                                    required>
+                                       name="password"
+                                       id="password"
+                                       class="form-control pe-5"
+                                       required>
 
                                 <span id="togglePassword"
-                                    class="position-absolute top-50 end-0 translate-middle-y me-3"
-                                    style="cursor:pointer;">
+                                      class="position-absolute top-50 end-0 translate-middle-y me-3"
+                                      style="cursor:pointer;">
                                     <i class="bi bi-eye"></i>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <!-- <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="form-check">
                                 <input class="form-check-input"
                                        type="checkbox"
@@ -59,41 +95,45 @@
                                        value="forever">
 
                                 <label class="form-check-label" for="rememberme">
-                                    Remember me
+                                    Remember Me
                                 </label>
                             </div>
 
                             <a href="<?= site_url('forgot-password'); ?>"
-                               class="small text-decoration-none">
+                               class="text-decoration-none small">
                                 Forgot Password?
                             </a>
-                        </div>
+                        </div> -->
 
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>
-                            Login
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            <b>Login</b>
                         </button>
 
                     </form>
 
                 </div>
+
             </div>
 
-            <div class="text-center mt-3">
+            <div class="text-center mt-4">
+
+             <a href="<?= site_url('auth/forgot_password'); ?>"
+                               class="text-decoration-none small">
+                                Forgot Password?
+            </a>
                 <a href="<?= base_url(); ?>" class="text-decoration-none">
-                    <i class="bi bi-arrow-left"></i> Back to Website
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Website
                 </a>
             </div>
 
         </div>
+
     </div>
 </div>
 
-
-
 <?php $this->load->view('layout/footer'); ?>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 document.getElementById('togglePassword').addEventListener('click', function () {
@@ -103,16 +143,15 @@ document.getElementById('togglePassword').addEventListener('click', function () 
 
     if (password.type === 'password') {
         password.type = 'text';
-        icon.classList.remove('bi-eye');
-        icon.classList.add('bi-eye-slash');
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
     } else {
         password.type = 'password';
-        icon.classList.remove('bi-eye-slash');
-        icon.classList.add('bi-eye');
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
     }
 
 });
 </script>
+
 <?php if ($this->session->flashdata('msg_type')): ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -140,5 +179,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 <?php endif; ?>
-</body>
-</html>
+

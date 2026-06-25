@@ -448,6 +448,7 @@ span.flatpickr-weekday {
 </div>
 
 
+<?php $this->load->view('layout/footer'); ?>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

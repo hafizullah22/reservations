@@ -236,7 +236,7 @@ body{
         <div class="nav-dropdown">
             <a href="#">About <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="<?=site_url('portals/trust_deed_1912')?>">Trust Deed 1912</a>
+                <a href="<?=site_url('trust-deed-1912')?>">Trust Deed 1912</a>
                 <a href="<?=site_url('portals/financial')?>">Financial Information</a>
                 <a href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meeting</a>
                 <a href="<?=site_url('portals/neighbour_map')?>">Neigborhood Map</a>
@@ -262,7 +262,7 @@ body{
             </div>
         </div>
 
-        <a href="#">Contact us</a>
+        <a href="<?= site_url('portals/contact_us')?>">Contact us</a>
 
         <div class="nav-dropdown">
             <a href="#">History <i class="bi bi-chevron-down"></i></a>
