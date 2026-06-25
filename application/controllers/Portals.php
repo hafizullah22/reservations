@@ -68,6 +68,21 @@ public function beach_information()
 {
     $this->load->view('portal/beach_information');
 }
+public function beach_rules()
+{
+    $this->load->view('portal/beach_rules');
+}
+
+public function table_map()
+{
+    $data['files'] = $this->db
+        ->select('id,file_name, file_path,file_type')
+        ->where('file_type', 'table_map')
+        ->get('documents')
+        ->result();
+
+    $this->load->view('portal/table_map', $data);
+}
 public function contact_us()
 {
 $this->load->view('portal/contact_us');

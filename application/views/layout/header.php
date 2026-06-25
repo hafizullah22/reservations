@@ -256,8 +256,9 @@ body{
         <div class="nav-dropdown">
             <a href="#">Beach Info <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="#">Clifton Club</a>
-                <a href="#">City of Lakewood</a>
+                <a href="<?=site_url('beach-house-rental-information')?>"> Beatch House Rental Information</a>
+               <a href="<?=site_url('beach-rules')?>"> Beatch Rules</a>
+               <a href="<?=site_url('table-map')?>"> Picnic Table Map</a>
                 
             </div>
         </div>
@@ -267,8 +268,7 @@ body{
         <div class="nav-dropdown">
             <a href="#">History <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="#">Clifton Club</a>
-                <a href="#">City of Lakewood</a>
+                <a href="<?=site_url('historical-photos')?>">Historical Photos</a>
                 
             </div>
         </div>
