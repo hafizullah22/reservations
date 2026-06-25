@@ -19,21 +19,25 @@ class Auth extends CI_Controller {
     }
 
    public function myaccount()
+{
+    $user = $this->session->userdata('user');
+
+    if ($user && in_array($user['role'], ['Member', 'Admin']))
     {
-        $user = $this->session->userdata('user');
-
-        if ($user && $user['role'] == 'Member' || $user['role'] == 'Admin') {
-            redirect('my_account');
-        }
-
-        $this->load->view('login');
+        redirect('my_account');
     }
+
+    $this->load->view('login');
+}
 
      public function booking()
     {
         $user = $this->session->userdata('user');
 
-        if ($user && $user['role'] == 'Admin' || $user['role'] == 'Member') {
+       
+
+        if ($user && in_array($user['role'], ['Member', 'Admin']))
+        {
             redirect('bookings/create');
         }
 
