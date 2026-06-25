@@ -248,8 +248,8 @@ body{
         <div class="nav-dropdown">
             <a href="#">Links <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="#">Clifton Club</a>
-                <a href="#">City of Lakewood</a>
+                <a href="https://cliftonclub.com/" target="_blank">Clifton Club</a>
+                <a href="https://lakewoodoh.gov/" target="_blank">City of Lakewood</a>
                 
             </div>
         </div>
@@ -277,8 +277,8 @@ body{
         <div class="nav-dropdown">
             <a href="#">Reservation <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
-                <a href="<?=site_url('table-reservation')?>">Table Reservation</a>
-                <a href="#">City of Lakewood</a>
+                <a href="<?=site_url('table-reservation')?>">Picnic Tables</a>
+                <a href="#">Tennis Courts</a>
                 
             </div>
         </div>

@@ -62,6 +62,7 @@ $route['financial-report'] = 'portals/financial';
 $route['meeting-minutes'] = 'portals/meetings';
 $route['tax-return'] = 'portals/tax_return';
 $route['trust-deed-1912']='portals/trust_deed_1912';
+$route['beach-house-rental-information'] = 'portals/beach_information';
 
 
 

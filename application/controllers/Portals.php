@@ -64,10 +64,23 @@ public function trust_deed_1912()
 {
 $this->load->view('portal/trust_deed');
 }
-
+public function beach_information()
+{
+    $this->load->view('portal/beach_information');
+}
 public function contact_us()
 {
 $this->load->view('portal/contact_us');
+}
+
+public function historical_photos()
+{
+    $data['files'] = $this->db
+        ->select('id,file_name, file_path,file_type')
+        ->where('file_type', 'history')
+        ->get('documents')
+        ->result();
+    $this->load->view('portal/historical-photos',$data);
 }
 
 
