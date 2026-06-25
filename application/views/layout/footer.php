@@ -1,35 +1,194 @@
- <!-- 4. FOOTER -->
-    <footer class="bg-black text-white-50 py-5 mt-5 border-top">
-        <div class="container">
-            <div class="row g-4 text-center text-md-start">
-                <div class="col-md-6">
-                    <span class="font-serif text-white h5 fw-bold d-block mb-2">Clifton Park Trustees</span>
-                    <p class="small text-muted lh-base mb-0 pe-md-5">
-                        Fiduciary administrators managing communal property infrastructure and the historical beach trust grid within Lakewood, Ohio.
-                    </p>
-                </div>
-                <div class="col-md-3">
-                    <h4 class="text-white text-uppercase fw-semibold small tracking-wider mb-3" style="font-size: 11px;">Navigation Links</h4>
-                    <ul class="list-unstyled small vstack gap-2 mb-0">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Overview Dashboard</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Meeting Minutes</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Financial Statements</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h4 class="text-white text-uppercase fw-semibold small tracking-wider mb-3" style="font-size: 11px;">Inquiries</h4>
-                    <p class="small text-muted lh-base mb-0">
-                        Official escrow requests or property boundary queries should be logged securely via the internal panel system.
-                    </p>
-                </div>
+<!-- ================= FOOTER ================= -->
+ <style>
+    .footer-section{
+    background:#0f172a;
+    color:#cbd5e1;
+    padding:70px 0 25px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.footer-title{
+    color:#fff;
+    font-weight:700;
+    margin-bottom:20px;
+    font-size:1.4rem;
+}
+
+.footer-text{
+    line-height:1.8;
+    color:#94a3b8;
+    margin-bottom:0;
+}
+
+.footer-heading{
+    color:#fff;
+    font-size:.9rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:20px;
+}
+
+.footer-links,
+.footer-contact{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.footer-links li,
+.footer-contact li{
+    margin-bottom:12px;
+}
+
+.footer-links a{
+    color:#94a3b8;
+    text-decoration:none;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.footer-links a:hover{
+    color:#fff;
+    padding-left:5px;
+}
+
+.footer-contact li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    color:#94a3b8;
+}
+
+.footer-contact i{
+    color:#60a5fa;
+    margin-top:3px;
+}
+
+.footer-bottom{
+    margin-top:50px;
+    padding-top:25px;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:#64748b;
+    font-size:.9rem;
+}
+
+.footer-badge{
+    display:inline-block;
+    padding:6px 14px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:50px;
+    color:#cbd5e1;
+    font-size:.8rem;
+}
+ </style>
+<footer class="footer-section mt-5">
+    <div class="container">
+
+        <div class="row g-5">
+
+            <!-- About -->
+            <div class="col-lg-5">
+                <h5 class="footer-title">
+                    <i class="bi bi-buildings me-2"></i>
+                    Clifton Park Trustees
+                </h5>
+
+                <p class="footer-text">
+                    Preserving and managing the historic Clifton Park community,
+                    including common property, financial records, trustee governance,
+                    and resident resources for future generations.
+                </p>
             </div>
-            <div class="row mt-4 pt-4 border-top border-secondary-subtle">
-                <div class="col text-center text-muted" style="font-size: 11px;">
-                    &copy; 2026 Clifton Park Trustees. All Rights Reserved. National Register of Historic Places.
+
+            <!-- Quick Links -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="footer-heading">Quick Links</h6>
+
+                <ul class="footer-links">
+                    <li>
+                        <a href="<?= base_url(); ?>">
+                            <i class="bi bi-house-door"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= site_url('financial-report'); ?>">
+                            <i class="bi bi-cash-stack"></i>
+                            Financial Reports
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= site_url('meeting-minutes'); ?>">
+                            <i class="bi bi-file-earmark-text"></i>
+                            Meeting Minutes
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="<?= site_url('tax-return'); ?>">
+                            <i class="bi bi-receipt"></i>
+                            Tax Returns
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= site_url('myaccount'); ?>">
+                            <i class="bi bi-person"></i>
+                           Member Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-4 col-md-6">
+                <h6 class="footer-heading">Trustee Information</h6>
+
+                <ul class="footer-contact">
+                    <li>
+                        <i class="bi bi-shield-check"></i>
+                        Historic Property Administration
+                    </li>
+
+                    <li>
+                        <i class="bi bi-file-earmark-lock"></i>
+                        Secure Document Management
+                    </li>
+
+                    <li>
+                        <i class="bi bi-people"></i>
+                        Community Trustee Governance
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="row align-items-center">
+
+                <div class="col-md-6 text-center text-md-start">
+                    © <?= date('Y'); ?> Clifton Park Trustees.
+                    All Rights Reserved.
                 </div>
+
+                <div class="col-md-6 text-center text-md-end">
+                    <span class="footer-badge">
+                        National Historic Community
+                    </span>
+                </div>
+
             </div>
         </div>
-    </footer>
+
+    </div>
+</footer>
+
 
     <!-- Bootstrap 5 Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

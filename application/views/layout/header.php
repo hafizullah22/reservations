@@ -237,10 +237,10 @@ body{
             <a href="#">About <i class="bi bi-chevron-down"></i></a>
             <div class="nav-dropdown-menu">
                 <a href="<?=site_url('trust-deed-1912')?>">Trust Deed 1912</a>
-                <a href="<?=site_url('portals/financial')?>">Financial Information</a>
-                <a href="<?=site_url('portals/meetings')?>">Minutes of Trustee Meeting</a>
+                <a href="<?=site_url('financial-report')?>">Financial Information</a>
+                <a href="<?=site_url('meeting-minutes')?>">Minutes of Trustee Meeting</a>
                 <a href="<?=site_url('portals/neighbour_map')?>">Neigborhood Map</a>
-                <a href="<?=site_url('portals/tax_return')?>">Tax Return</a>
+                <a href="<?=site_url('tax-return')?>">Tax Return</a>
                 
             </div>
         </div>
