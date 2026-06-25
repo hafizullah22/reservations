@@ -247,8 +247,8 @@
 </div>
 
 <div class="nav-links">
-    <a href="#">Lost your password?</a>
-    <a href="#">&larr; Go to site</a>
+    <a href="<?=site_url('forgot-password')?>">Lost your password?</a>
+    <a href="<?=site_url()?>">&larr; Go to site</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -43,7 +43,8 @@
 
                 <!-- Card Header -->
                 <div class="login-header">
-                    <i class="bi bi-person-circle"></i>
+                   
+                    <i class="bi bi-shield-lock-fill"></i>
                     <h3 class="fw-bold mb-1">Forgot Password</h3>
                     <!-- <p class="mb-0 opacity-75">
                         Sign in to access your member dashboard

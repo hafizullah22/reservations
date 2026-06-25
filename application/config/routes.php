@@ -57,6 +57,7 @@ $route['bookings/get-booked-dates'] = 'bookings/get_booked_dates';
 $route['admin'] = 'auth/admin';
 $route['myaccount']='auth/myaccount';
 $route['table-reservation']='auth/booking';
+$route['forgot-password'] = 'auth/forgot_password';
 
 $route['trust-deed-1912']='portals/trust_deed_1912';
 

@@ -18,7 +18,18 @@
     font-size:30px; 
     display:block;
 }
+.form-control{
+    border:1px solid #ced4da;
+}
 
+.form-control:focus{
+    box-shadow:none;
+    border-color:#0d6efd;
+}
+
+.input-group-text{
+    background:#fff;
+}
 #togglePassword{
     color:#6c757d;
     font-size:18px;
@@ -34,24 +45,24 @@
 
 </style>
 
-<div class="container py-5">
+<div class="container py-4">
     <div class="row justify-content-center">
 
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-6 col-lg-4">
 
             <div class="card login-card shadow-lg">
 
-                <!-- Card Header -->
+                <!-- Header -->
                 <div class="login-header">
-                    <i class="bi bi-person-circle"></i>
+                     <i class="bi bi-person-circle"></i>
                     <h3 class="fw-bold mb-1">Member Login</h3>
                     <!-- <p class="mb-0 opacity-75">
-                        Sign in to access your member dashboard
+                        Access your member dashboard
                     </p> -->
                 </div>
 
-                <!-- Card Body -->
-                <div class="card-body p-4 p-lg-3">
+                <!-- Body -->
+                <div class="card-body ">
 
                     <form action="<?= site_url('auth/authenticate_member'); ?>" method="post">
 
@@ -59,14 +70,21 @@
                             <label class="form-label fw-semibold">
                                 Email Address
                             </label>
-                            <input type="email"
-                                   name="email"
-                                   class="form-control"
-                                   autocomplete="username"
-                                   required>
+
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+
+                                <input type="email"
+                                       name="email"
+                                       class="form-control"
+                                       autocomplete="username"
+                                       required>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label fw-semibold">
                                 Password
                             </label>
@@ -83,49 +101,40 @@
                                       style="cursor:pointer;">
                                     <i class="bi bi-eye"></i>
                                 </span>
+
                             </div>
                         </div>
 
-                        <!-- <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       name="rememberme"
-                                       id="rememberme"
-                                       value="forever">
-
-                                <label class="form-check-label" for="rememberme">
-                                    Remember Me
-                                </label>
-                            </div>
-
-                            <a href="<?= site_url('forgot-password'); ?>"
-                               class="text-decoration-none small">
-                                Forgot Password?
-                            </a>
-                        </div> -->
-
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit"
+                                class="btn btn-primary w-100 py-2">
                             <i class="bi bi-box-arrow-in-right me-2"></i>
-                            <b>Login</b>
+                            Login
                         </button>
 
                     </form>
 
                 </div>
 
-            </div>
+                <!-- Footer -->
+                <div class="card-footer bg-white border-top">
 
-            <div class="text-center mt-4">
+                    <div class="d-flex justify-content-between">
 
-             <a href="<?= site_url('auth/forgot_password'); ?>"
-                               class="text-decoration-none small">
-                                Forgot Password?
-            </a>
-                <a href="<?= base_url(); ?>" class="text-decoration-none">
-                    <i class="bi bi-arrow-left"></i>
-                    Back to Website
-                </a>
+                        <a href="<?= base_url(); ?>"
+                           class="text-decoration-none">
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Website
+                        </a>
+
+                        <a href="<?= site_url('forgot-password'); ?>"
+                           class="text-decoration-none">
+                            Forgot Password?
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

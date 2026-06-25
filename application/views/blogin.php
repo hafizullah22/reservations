@@ -1,6 +1,6 @@
 <?php $this->load->view('layout/header'); ?>
 
-<div class="container py-5">
+<div class="container py-3">
     <div class="row justify-content-center">
         <div class="col-lg-8">
 
@@ -13,7 +13,7 @@
                             <i class="bi bi-calendar-check display-3 mb-3"></i>
 
                             <h2 class="fw-bold mb-3">
-                                Reservation Required
+                                Reservation 
                             </h2>
 
                             <p class="mb-0 opacity-75">
@@ -29,9 +29,9 @@
 
                             <div class="text-center mb-4">
                                 <h3 class="fw-bold">Member Login</h3>
-                                <p class="text-muted mb-0">
+                                <!-- <p class="text-muted mb-0">
                                     Access your account to continue your reservation.
-                                </p>
+                                </p> -->
                             </div>
 
                             <form action="<?= site_url('auth/authenticate_booking'); ?>" method="post">
@@ -79,44 +79,41 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            name="rememberme"
-                                            id="rememberme"
-                                            value="forever">
+                               
 
-                                        <label class="form-check-label" for="rememberme">
-                                            Remember Me
-                                        </label>
-                                    </div>
-
-                                    <a href="<?= site_url('forgot-password'); ?>" class="text-decoration-none small">
-                                        Forgot Password?
-                                    </a>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <button type="submit" class="btn btn-primary w-100">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    Login & Continue Reservation
+                                   <b> Login & Continue Reservation</b>
                                 </button>
 
                             </form>
 
                         </div>
+                        <!-- Footer -->
+                    <div class="card-footer bg-white border-top">
+
+                        <div class="d-flex justify-content-between">
+
+                            <a href="<?= base_url(); ?>"
+                            class="text-decoration-none">
+                                <i class="bi bi-arrow-left"></i>
+                                Back to Website
+                            </a>
+
+                            <a href="<?= site_url('forgot-password'); ?>"
+                            class="text-decoration-none">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+                    </div>
                     </div>
 
                 </div>
             </div>
 
-            <div class="text-center mt-4">
-                <a href="<?= base_url(); ?>" class="text-decoration-none">
-                    <i class="bi bi-arrow-left-circle"></i>
-                    Back to Website
-                </a>
-            </div>
+           
 
         </div>
     </div>
