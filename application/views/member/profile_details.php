@@ -9,7 +9,7 @@
 
 .account-sidebar .list-group-item{
     border:0;
-    padding:12px 18px;
+    padding:10px 10px;
     font-weight:500;
 }
 
@@ -18,18 +18,6 @@
     color:#fff !important;
 }
 
-
-.profile-avatar{
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    background:#0d6efd;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-}
 
 #togglePassword{
     cursor:pointer;
