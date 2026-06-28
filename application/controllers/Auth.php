@@ -372,6 +372,12 @@ class Auth extends CI_Controller {
         $this->load->view('forgot-password');
     }
 
+       public function after_forgot_password()
+    {
+        
+        $this->load->view('forgot-password-after');
+    }
+
     public function send_reset_link()
     {
         $email = $this->input->post('email');
@@ -430,7 +436,7 @@ class Auth extends CI_Controller {
                 'A password reset link has been sent to your email address.'
             );
 
-            redirect('auth/forgot_password');
+            redirect('auth/after_forgot_password');
         }
         else
         {
