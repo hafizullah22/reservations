@@ -1,181 +1,265 @@
-## Restaurant Table Reservation System
+# 🍽️ Reservation System
 
-A fully customized PHP-based booking system will replace the existing WordPress solution, offering advanced features:
-User Registration and Login: Only registered users can make bookings; secure password handling with hashing.
-
-
-Booking Management: Users can reserve tables or facilities by selecting date, time slot, and number of guests.
-
-
-Admin Control: Administrators can manage table availability, approve or cancel bookings, and set booking limits per table or per user.
-
-
-Email Notifications: Automated confirmation emails upon booking and reminder emails 30 minutes prior to the reservation.
-
-
-Booking Reports: Generate, view, and export detailed reports in PDF or CSV format.
-
-
+A custom-built **Restaurant & Facility Reservation System** developed using **PHP (CodeIgniter 3)**. This application replaces the previous WordPress-based reservation solution with a faster, more secure, and scalable platform featuring online reservations, user management, reporting, and an administrative dashboard.
 
 ---
 
-## ✨ Features
+## 📌 Overview
 
-### Customer Features
+The Reservation System enables registered users to book tables or facilities online while providing administrators with complete control over reservations, users, reports, and website content through a centralized administration panel.
+
+---
+
+## ✨ Key Features
+
+- Secure User Authentication
+- Online Table & Facility Reservations
+- Role-Based Access Control (RBAC)
+- Administrative Dashboard
+- Booking Approval & Cancellation
+- Automated Email Notifications
+- PDF & CSV Report Export
+- CSV User Import
+- Responsive Web Portal
+- REST API Support
+
+---
+
+# 📦 Modules
+
+## Module 01 – Reservation / Booking System
+
+A fully customized booking engine that allows registered users to reserve tables or facilities.
+
+### Features
 
 - User Registration & Login
-- Secure Authentication
-- Online Table Reservation
+- Secure Password Hashing
+- Table & Facility Reservation
 - Date & Time Slot Selection
-- Booking Validation
-- Booking Confirmation
+- Guest Capacity Validation
 - Booking History
-- Booking Details
-- Email Confirmation
-- Profile Management
+- Booking Cancellation
+- Booking Limit per User
+- Booking Limit per Table
+- Duplicate Booking Prevention
+- Business Rule Validation
+- Booking Confirmation Emails
+- Reservation Reminder Emails (30 minutes before booking)
+- PDF & CSV Booking Reports
 
 ---
 
-### Admin Features
+## Module 02 – User Management
 
-- Dashboard
-- Manage Users
-- Manage Tables
-- Booking Management
-- Approve / Reject Bookings
-- Cancel Bookings
-- Booking Reports
+A complete user management module for administrators.
+
+### Features
+
+- Create Individual Users
+- Bulk User Import via CSV
+- Edit User Information
+- Delete Users
+- Search & Filter Users
+- Role-Based Access Control
+
+### Supported Roles
+
+- Administrator
+- Member
+- Resident
+
+### Security
+
+- Password Hashing
+- Secure Authentication
+- Automated Welcome Email
+- Password Reset Support
+
+---
+
+## Module 03 – Administrative Panel
+
+A centralized administration dashboard providing full control over the reservation system.
+
+### Dashboard
+
+- Booking Statistics
+- User Statistics
+- Recent Reservations
+- System Summary
+
+### Booking Management
+
+- View Bookings
+- Search Reservations
 - Filter by Date
 - Filter by Time Slot
-- Export Reports to PDF
-- CSV User Import
-- Email Notifications
-- System Settings
+- Approve Reservations
+- Cancel Reservations
+- View Booking Details
+
+### User Management
+
+- Add Users
+- Edit Users
+- Delete Users
+- CSV Import
+- Role Management
+
+### Reports
+
+- Booking Reports
+- User Activity Reports
+- Reservation Summary Reports
+- Export to PDF
+- Export to CSV
+
+### Access Control
+
+- Role-Based Permissions
+- Secure Session Management
+- Administrator Authentication
 
 ---
 
-## 🚀 Technologies Used
+## Module 04 – Web Portal
 
-- PHP
-- CodeIgniter 3
-- MySQL / MariaDB
-- Bootstrap 5
-- jQuery
-- AJAX
-- SweetAlert2
-- PHPMailer
-- HTML5
-- CSS3
-- JavaScript
+A responsive public-facing website allowing visitors and registered users to access reservation services.
+
+### Public Pages
+
+- Home
+- About
+- Contact
+- News & Announcements
+- Gallery
+- Resources & Documents
+
+### User Portal
+
+- Registration
+- Login
+- User Dashboard
+- Profile Management
+- Booking History
+- Booking Details
+
+### Reservation Portal
+
+- Online Reservation Form
+- Date Selection
+- Time Slot Selection
+- Guest Count Selection
+- Availability Validation
+- Instant Confirmation
+
+### Responsive Design
+
+- Mobile Friendly
+- Tablet Compatible
+- Desktop Optimized
+- Cross-Browser Support
 
 ---
 
-## 📂 Project Structure
+# 🔐 Security Features
 
-```
-application/
-    controllers/
-    models/
-    views/
-    libraries/
-    helpers/
-
-assets/
-uploads/
-system/
-```
-
----
-
-## 🔐 Authentication
-
-The system supports:
-
-- Customer Login
-- Admin Login
+- Password Hashing
+- Role-Based Access Control (RBAC)
 - Session Authentication
-- Role Based Access Control
+- Input Validation
+- SQL Injection Protection
+- XSS Protection
+- CSRF Protection
+- API Key Authentication
 
 ---
 
-## 📅 Reservation Workflow
+# 📧 Email Notifications
 
-1. Customer logs in.
-2. Selects reservation date.
-3. Selects available time slot.
-4. Chooses table.
-5. Enters reservation information.
-6. System validates business rules.
-7. Reservation is saved.
-8. Customer receives confirmation email.
-9. Admin receives notification.
-10. Reservation appears in admin dashboard.
+The system automatically sends emails for:
+
+- Booking Confirmation
+- Booking Reminder (30 minutes before reservation)
+- Booking Cancellation *(optional)*
+- New User Welcome Email
 
 ---
 
-## 📊 Booking Reports
+# 📊 Reporting
 
-Administrators can:
+Generate and export reports including:
 
-- View all reservations
-- Filter reservations by date
-- Filter reservations by time slot
-- View booking details
-- Export reports as PDF
+- Reservation Reports
+- User Activity Reports
+- Daily Bookings
+- Monthly Bookings
+- Booking Status Reports
 
----
+Supported formats:
 
-## 📧 Email Notifications
-
-Automatic emails are sent when:
-
-- Booking is created
-- Booking is confirmed
-- Booking is cancelled (optional)
+- PDF
+- CSV
 
 ---
 
-## 🔑 API
+# 🛠 Technology Stack
 
-The project also includes REST API support for integration with external systems.
+| Category | Technology |
+|----------|------------|
+| Backend | PHP |
+| Framework | CodeIgniter 3 |
+| Database | MySQL / MariaDB |
+| Frontend | HTML5, CSS3, Bootstrap 5 |
+| JavaScript | jQuery, AJAX |
+| Email | PHPMailer |
+| Alerts | SweetAlert2 |
+| Reports | PDF & CSV Export |
 
-Example endpoint:
+---
+
+# 📁 Project Structure
 
 ```
-GET /api/customers
-```
-
-Authentication is performed using an API Key.
-
-Example header:
-
-```
-X-API-KEY: YOUR_API_KEY
+reservation/
+│
+├── application/
+│   ├── controllers/
+│   ├── models/
+│   ├── views/
+│   ├── libraries/
+│   ├── helpers/
+│   └── config/
+│
+├── assets/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── uploads/
+│
+├── system/
+├── index.php
+└── README.md
 ```
 
 ---
 
-## ⚙️ Installation
+# 🚀 Installation
 
-### 1. Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/reservation.git
 ```
 
----
-
-### 2. Move to Project
+## Navigate to Project
 
 ```bash
 cd reservation
 ```
 
----
-
-### 3. Configure Database
-
-Create a MySQL database and import the SQL file.
+## Configure Database
 
 Update:
 
@@ -194,9 +278,9 @@ $db['default'] = array(
 );
 ```
 
----
+## Configure Base URL
 
-### 4. Configure Base URL
+Edit:
 
 ```
 application/config/config.php
@@ -206,84 +290,63 @@ application/config/config.php
 $config['base_url'] = 'http://localhost/reservation/';
 ```
 
----
+## Configure Email
 
-### 5. Configure Email
-
-Update your SMTP credentials in:
-
-```
-application/config/email.php
-```
-
-or your custom email configuration.
+Update your SMTP settings in your email configuration file.
 
 ---
 
-### 6. File Permissions
+# 🔌 REST API
 
-Make sure these directories are writable if used:
+The system supports REST API integration for external applications.
+
+Example:
 
 ```
-uploads/
-logs/
+GET /api/customers
+```
+
+Authentication Header:
+
+```
+X-API-KEY: YOUR_API_KEY
 ```
 
 ---
 
-## 🛠 Requirements
+# 📸 Screenshots
 
-- PHP 7.4+
-- MySQL 5.7+
-- Apache or Nginx
-- Composer (optional)
-
----
-
-## Screenshots
-
-You can add screenshots here.
+Add project screenshots here.
 
 ```
 docs/images/home.png
 docs/images/dashboard.png
 docs/images/booking.png
+docs/images/report.png
 ```
 
 ---
 
-## Future Improvements
+# 📈 Future Enhancements
 
 - Payment Gateway Integration
 - QR Code Booking Confirmation
 - SMS Notifications
 - Google Calendar Integration
-- Table Availability Calendar
 - Waitlist Management
 - Multi-Branch Support
-- Coupon System
-- Online Ordering Integration
+- Online Ordering
 - Progressive Web App (PWA)
+- API Documentation (Swagger/OpenAPI)
 
 ---
 
-## Security
+# 🤝 Contributing
 
-- SQL Injection Protection
-- XSS Filtering
-- CSRF Protection
-- Session Authentication
-- Input Validation
-- API Key Authentication
-
----
-
-## Contributing
-
-Contributions are welcome.
+Contributions are welcome!
 
 1. Fork the repository
-2. Create a new feature branch
+2. Create a feature branch
 
 ```bash
 git checkout -b feature/new-feature
@@ -305,28 +368,14 @@ git push origin feature/new-feature
 
 ---
 
-## License
+# 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
 
 ---
 
-## Author
+# 👨‍💻 Author
 
 **Hafiz Ullah**
 
-GitHub:
-https://github.com/yourusername
-
----
-
-## Acknowledgements
-
-- CodeIgniter
-- Bootstrap
-- SweetAlert2
-- PHPMailer
-
----
-
-⭐ If you found this project useful, consider giving it a star on GitHub.
+If you find this project useful, consider giving it a ⭐ on GitHub!
