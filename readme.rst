@@ -1,70 +1,319 @@
-###################
-Booking System of Clifton Park Trustee
-###################
+# 🍽️ Restaurant Table Reservation System
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
+A modern web-based **Restaurant Table Reservation System** built with **CodeIgniter 3** that allows customers to reserve tables online while providing administrators with a complete booking management dashboard.
 
-*******************
-Release Information
-*******************
+This project focuses on fast booking, business rule validation, email notifications, booking reports, and an easy-to-use administration panel.
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+---
 
-**************************
-Changelog and New Features
-**************************
+## ✨ Features
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+### Customer Features
 
-*******************
-Server Requirements
-*******************
+- User Registration & Login
+- Secure Authentication
+- Online Table Reservation
+- Date & Time Slot Selection
+- Booking Validation
+- Booking Confirmation
+- Booking History
+- Booking Details
+- Email Confirmation
+- Profile Management
 
-PHP version 5.6 or newer is recommended.
+---
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+### Admin Features
 
-************
-Installation
-************
+- Dashboard
+- Manage Users
+- Manage Tables
+- Booking Management
+- Approve / Reject Bookings
+- Cancel Bookings
+- Booking Reports
+- Filter by Date
+- Filter by Time Slot
+- Export Reports to PDF
+- CSV User Import
+- Email Notifications
+- System Settings
 
-Please see the `installation section <https://codeigniter.com/userguide3/installation/index.html>`_
-of the CodeIgniter User Guide.
+---
 
-*******
-License
-*******
+## 🚀 Technologies Used
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+- PHP
+- CodeIgniter 3
+- MySQL / MariaDB
+- Bootstrap 5
+- jQuery
+- AJAX
+- SweetAlert2
+- PHPMailer
+- HTML5
+- CSS3
+- JavaScript
 
-*********
-Resources
-*********
+---
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Contributing Guide <https://github.com/bcit-ci/CodeIgniter/blob/develop/contributing.md>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+## 📂 Project Structure
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
+```
+application/
+    controllers/
+    models/
+    views/
+    libraries/
+    helpers/
 
-***************
-Acknowledgement
-***************
+assets/
+uploads/
+system/
+```
 
-Project Requirement link:https://docs.google.com/document/d/1RY97TBQqyp0TjmlphE-DBmdHWpy3OUpBASBi8KAI_EI
+---
+
+## 🔐 Authentication
+
+The system supports:
+
+- Customer Login
+- Admin Login
+- Session Authentication
+- Role Based Access Control
+
+---
+
+## 📅 Reservation Workflow
+
+1. Customer logs in.
+2. Selects reservation date.
+3. Selects available time slot.
+4. Chooses table.
+5. Enters reservation information.
+6. System validates business rules.
+7. Reservation is saved.
+8. Customer receives confirmation email.
+9. Admin receives notification.
+10. Reservation appears in admin dashboard.
+
+---
+
+## 📊 Booking Reports
+
+Administrators can:
+
+- View all reservations
+- Filter reservations by date
+- Filter reservations by time slot
+- View booking details
+- Export reports as PDF
+
+---
+
+## 📧 Email Notifications
+
+Automatic emails are sent when:
+
+- Booking is created
+- Booking is confirmed
+- Booking is cancelled (optional)
+
+---
+
+## 🔑 API
+
+The project also includes REST API support for integration with external systems.
+
+Example endpoint:
+
+```
+GET /api/customers
+```
+
+Authentication is performed using an API Key.
+
+Example header:
+
+```
+X-API-KEY: YOUR_API_KEY
+```
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/yourusername/reservation.git
+```
+
+---
+
+### 2. Move to Project
+
+```bash
+cd reservation
+```
+
+---
+
+### 3. Configure Database
+
+Create a MySQL database and import the SQL file.
+
+Update:
+
+```
+application/config/database.php
+```
+
+Example:
+
+```php
+$db['default'] = array(
+    'hostname' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'database' => 'reservation',
+);
+```
+
+---
+
+### 4. Configure Base URL
+
+```
+application/config/config.php
+```
+
+```php
+$config['base_url'] = 'http://localhost/reservation/';
+```
+
+---
+
+### 5. Configure Email
+
+Update your SMTP credentials in:
+
+```
+application/config/email.php
+```
+
+or your custom email configuration.
+
+---
+
+### 6. File Permissions
+
+Make sure these directories are writable if used:
+
+```
+uploads/
+logs/
+```
+
+---
+
+## 🛠 Requirements
+
+- PHP 7.4+
+- MySQL 5.7+
+- Apache or Nginx
+- Composer (optional)
+
+---
+
+## Screenshots
+
+You can add screenshots here.
+
+```
+docs/images/home.png
+docs/images/dashboard.png
+docs/images/booking.png
+```
+
+---
+
+## Future Improvements
+
+- Payment Gateway Integration
+- QR Code Booking Confirmation
+- SMS Notifications
+- Google Calendar Integration
+- Table Availability Calendar
+- Waitlist Management
+- Multi-Branch Support
+- Coupon System
+- Online Ordering Integration
+- Progressive Web App (PWA)
+
+---
+
+## Security
+
+- SQL Injection Protection
+- XSS Filtering
+- CSRF Protection
+- Session Authentication
+- Input Validation
+- API Key Authentication
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a new feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push your branch
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Author
+
+**Hafiz Ullah**
+
+GitHub:
+https://github.com/yourusername
+
+---
+
+## Acknowledgements
+
+- CodeIgniter
+- Bootstrap
+- SweetAlert2
+- PHPMailer
+
+---
+
+⭐ If you found this project useful, consider giving it a star on GitHub.
