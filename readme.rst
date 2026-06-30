@@ -1,4 +1,4 @@
-# 🍽️ Restaurant Table Reservation System
+## Restaurant Table Reservation System
 
 A fully customized PHP-based booking system will replace the existing WordPress solution, offering advanced features:
 User Registration and Login: Only registered users can make bookings; secure password handling with hashing.
