@@ -1,6 +1,6 @@
 **Reservation System with Website**
 ===============================
-**Visit Project?**
+**Visit Project
 =====================
 
 Portal: https://reservation.free.nf/
@@ -8,7 +8,7 @@ Portal: https://reservation.free.nf/
 
 Admin: https://reservation.free.nf/admin
 
-Email: hafizullah@ictcell.jnu.ac.bd
+Email: hafizullah@gmail.com
 
 password: admin@2026#
 
