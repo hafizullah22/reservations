@@ -1,5 +1,26 @@
 **Reservation System with Website**
 ===============================
+**Visit Project?**
+=====================
+
+Portal: https://reservation.free.nf/
+-----------------------------------
+
+Admin: https://reservation.free.nf/admin
+
+Email: hafizullah@ictcell.jnu.ac.bd
+
+password: admin@2026#
+
+————————————————————————-
+
+Member: https://reservation.free.nf/myaccount
+
+Email: customer12@gmail.com
+
+password: admin@2026#
+
+————————————————————————-
 
 **Module 01: Reservation / Booking System**
 -------------------------------------------
@@ -224,22 +245,4 @@ A responsive public-facing website that provides visitors and registered users w
 *   Cross-browser support
     
 
-**Visit Project?**
-=====================
 
-Portal: https://reservation.free.nf/
------------------------------------
-
-Admin: https://reservation.free.nf/admin
-
-Email: hafizullah@ictcell.jnu.ac.bd
-
-password: admin@2026#
-
-————————————————————————-
-
-Member: https://reservation.free.nf/myaccount
-
-Email: customer12@gmail.com
-
-password: admin@2026#
