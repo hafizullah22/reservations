@@ -330,154 +330,137 @@ public function store()
 }
 
 
-
-
-
-    // =========================
-    // UPDATE STATUS
-    // =========================
-    public function update_status($id, $status)
-    {
-        $this->db->where('booking_id', $id);
-        $this->db->update('bookings', ['status' => $status]);
-
-        $this->session->set_flashdata('success', 'Status updated successfully!');
-        redirect('bookings');
-    }
-
+   
    
 
-
-    public function edit($id)
-    {
-        $data['booking'] = $this->db->where('booking_id', $id)->get('bookings')->row();
-        $data['tables'] = $this->db->get('tables')->result(); 
-
-        $this->load->view('bookings/edit', $data);
+ public function cancel($booking_id = null)
+{
+    if (!$this->input->is_ajax_request()) {
+        show_404();
     }
 
-    public function update($id)
-    {
-        $table_number  = (int) $this->input->post('table_number', TRUE);
-        $guests        = (int) $this->input->post('number_of_guests', TRUE);
-        $booking_date  = $this->input->post('booking_date', TRUE);
-        $booking_time  = $this->input->post('booking_time', TRUE);
-        $arrival_time  = $this->input->post('arrival_time', TRUE);
-        $guest_names   = $this->input->post('guest_names', TRUE);
+    if (empty($booking_id) || !is_numeric($booking_id)) {
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status'  => 'error',
+                'message' => 'Invalid booking ID.'
+            ]));
+    }
 
-        // Basic validation
-        if (empty($booking_date) || empty($booking_time) || empty($table_number)) {
-            $this->session->set_flashdata('error', 'All fields are required.');
-            redirect("bookings/edit/{$id}");
-        }
+    // Check if booking exists
+    $booking = $this->db
+        ->where('booking_id', $booking_id)
+        ->get('bookings')
+        ->row();
 
-        // Update booking
-        $update = $this->db->where('booking_id', $id)->update('bookings', [
-            'booking_date'    => $booking_date,
-            'booking_time'    => $booking_time,
-            'table_number'    => $table_number,
-            'number_of_guests'=> $guests,
-            'arrival_time'    => $arrival_time,
-            'guest_names'     => $guest_names
+    if (!$booking) {
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([
+                'status'  => 'error',
+                'message' => 'Booking not found.'
+            ]));
+    }
+
+    // Update status
+    $updated = $this->db
+        ->where('booking_id', $booking_id)
+        ->update('bookings', [
+            'status' => 'Cancelled'
         ]);
 
-        if (!$update) {
-            $this->session->set_flashdata('error', 'Unable to update booking. Please try again.');
-            redirect("bookings/edit/{$id}");
-        }
-
-        // Success
-        $this->session->set_flashdata('success', 'Booking updated successfully!');
-        redirect('bookings');
-    }
-
-
-    public function cancel($id)
-    {
-        $this->db->where('booking_id', $id);
-        $this->db->update('bookings', ['status' => 'cancelled']);
-
-        $this->session->set_flashdata('success', 'Booking cancelled successfully!');
-        redirect('bookings');
-    }
+    return $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode([
+            'status'         => $updated ? 'success' : 'error',
+            'booking_id'     => $booking_id,
+            'booking_status' => $updated ? 'Cancelled' : $booking->status,
+            'message'        => $updated
+                ? 'Booking cancelled successfully.'
+                : 'Unable to cancel booking.'
+        ]));
 
 
-    public function update_status_cron()
-{
-    if (!$this->input->is_cli_request()) {
-        return;
-    }
-
-    $today = date('Y-m-d');
-
-    // Get all expired bookings
-    $bookings = $this->db
-        ->where('booking_date <', $today)
-        ->where('status', 'Confirmed')
-        ->get('bookings')
-        ->result();
-
-    if (empty($bookings)) {
-        log_message('info', 'Cron: No bookings found');
-        return;
-    }
-
-    $this->load->library('email');
-
-    foreach ($bookings as $booking) {
-
-        // OPTIONAL: fetch customer if stored separately
-        $customer = $this->db
-            ->where('customer_id', $booking->customer_id)
-            ->get('customers')
-            ->row();
-
-        if (!$customer) {
-            log_message('error', 'Customer not found for booking ID ' . $booking->booking_id);
-            continue;
-        }
-
-        // Email config
-        $this->email->clear();
-        $this->email->from('hafizulah322@gmail.com', 'Table Reservation System');
-        $this->email->to($customer->email);
-
-        $this->email->subject('Reservation Completed #' . $booking->reservation_no);
-
-        $message = '
-        <html>
-        <body>
-            <h2>Reservation Completed</h2>
-
-            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
-
-            <p>Your reservation has been marked as completed.</p>
-
-            <table border="1" cellpadding="8" cellspacing="0">
-                <tr><td><strong>Reservation No</strong></td><td>' . $booking->reservation_no . '</td></tr>
-                <tr><td><strong>Date</strong></td><td>' . $booking->booking_date . '</td></tr>
-                <tr><td><strong>Time</strong></td><td>' . $booking->booking_time . '</td></tr>
-                <tr><td><strong>Table</strong></td><td>' . $booking->table_number . '</td></tr>
-            </table>
-
-            <br>
-            <p>Thank you.</p>
-        </body>
-        </html>';
-
-        $this->email->message($message);
-
-        if ($this->email->send()) {
-
-            // Update only this booking
-            $this->db->where('booking_id', $booking->booking_id)
-                     ->update('bookings', ['status' => 'Completed']);
-
-        } else {
-            log_message('error', 'Email failed for booking ID ' . $booking->booking_id);
-        }
-    }
 }
+
+
+//     public function update_status_cron()
+// {
+//     if (!$this->input->is_cli_request()) {
+//         return;
+//     }
+
+//     $today = date('Y-m-d');
+
+//     // Get all expired bookings
+//     $bookings = $this->db
+//         ->where('booking_date <', $today)
+//         ->where('status', 'Confirmed')
+//         ->get('bookings')
+//         ->result();
+
+//     if (empty($bookings)) {
+//         log_message('info', 'Cron: No bookings found');
+//         return;
+//     }
+
+//     $this->load->library('email');
+
+//     foreach ($bookings as $booking) {
+
+//         // OPTIONAL: fetch customer if stored separately
+//         $customer = $this->db
+//             ->where('customer_id', $booking->customer_id)
+//             ->get('customers')
+//             ->row();
+
+//         if (!$customer) {
+//             log_message('error', 'Customer not found for booking ID ' . $booking->booking_id);
+//             continue;
+//         }
+
+//         // Email config
+//         $this->email->clear();
+//         $this->email->from('hafizulah322@gmail.com', 'Table Reservation System');
+//         $this->email->to($customer->email);
+
+//         $this->email->subject('Reservation Completed #' . $booking->reservation_no);
+
+//         $message = '
+//         <html>
+//         <body>
+//             <h2>Reservation Completed</h2>
+
+//             <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
+
+//             <p>Your reservation has been marked as completed.</p>
+
+//             <table border="1" cellpadding="8" cellspacing="0">
+//                 <tr><td><strong>Reservation No</strong></td><td>' . $booking->reservation_no . '</td></tr>
+//                 <tr><td><strong>Date</strong></td><td>' . $booking->booking_date . '</td></tr>
+//                 <tr><td><strong>Time</strong></td><td>' . $booking->booking_time . '</td></tr>
+//                 <tr><td><strong>Table</strong></td><td>' . $booking->table_number . '</td></tr>
+//             </table>
+
+//             <br>
+//             <p>Thank you.</p>
+//         </body>
+//         </html>';
+
+//         $this->email->message($message);
+
+//         if ($this->email->send()) {
+
+//             // Update only this booking
+//             $this->db->where('booking_id', $booking->booking_id)
+//                      ->update('bookings', ['status' => 'Completed']);
+
+//         } else {
+//             log_message('error', 'Email failed for booking ID ' . $booking->booking_id);
+//         }
+//     }
+// }
 
 
 

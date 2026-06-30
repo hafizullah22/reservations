@@ -112,39 +112,96 @@
     </a>
 </div>
 
-<!-- ================= CONTENT ================= -->
-<div class="row g-3">
-    <!-- LEFT: CUSTOMER -->
-    <div class="col-lg-4">
+<!-- ================= MEMBER & BOOKING INFORMATION ================= -->
+<form action="<?= site_url('admin/bookings/update_booking/' . $booking_id); ?>" method="post">
 
-        <div class="card">
+<div class="row g-4">
+
+    <!-- ================= MEMBER INFORMATION ================= -->
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 h-100">
 
             <div class="card-header bg-primary text-white">
-                Customer Information
+                <h5 class="mb-0">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Member Information
+                </h5>
             </div>
 
             <div class="card-body p-0">
 
-                <table class="table table-bordered">
+                <div class="table-responsive">
 
-                    <?php if(!empty($booking)): ?>
+                    <table class="table table-bordered table-striped align-middle mb-0">
 
-                        <tr><th>Member ID</th><td><?= $booking->customer_id; ?></td></tr>
-                        <tr><th>First Name</th><td><?= $booking->first_name; ?></td></tr>
-                        <tr><th>Last Name</th><td><?= $booking->last_name; ?></td></tr>
-                        <tr><th>Email</th><td><?= $booking->email; ?></td></tr>
-                        <tr><th>Phone</th><td><?= $booking->phone; ?></td></tr>
-                        <tr><th>Member Type</th><td><?= $booking->customer_type; ?></td></tr>
+                        <tbody>
 
-                    <?php else: ?>
+                            <tr>
+                                <th width="35%">Member ID</th>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="customer_id"
+                                           value="<?= $booking->customer_id; ?>">
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="text-center text-muted">No customer data</td>
-                        </tr>
+                            <tr>
+                                <th>First Name</th>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="first_name"
+                                           value="<?= $booking->first_name; ?>">
+                                </td>
+                            </tr>
 
-                    <?php endif; ?>
+                            <tr>
+                                <th>Last Name</th>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="last_name"
+                                           value="<?= $booking->last_name; ?>">
+                                </td>
+                            </tr>
 
-                </table>
+                            <tr>
+                                <th>Email</th>
+                                <td>
+                                    <input type="email"
+                                           class="form-control"
+                                           name="email"
+                                           value="<?= $booking->email; ?>">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Phone</th>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="phone"
+                                           value="<?= $booking->phone; ?>">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Member Type</th>
+                                <td>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="member_type"
+                                           value="<?= $booking->customer_type; ?>">
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
@@ -152,57 +209,131 @@
 
     </div>
 
-    <!-- RIGHT: BOOKING -->
-    <div class="col-lg-8">
+    <!-- ================= BOOKING INFORMATION ================= -->
+    <div class="col-lg-6">
 
-        <div class="card">
+        <div class="card shadow-sm border-0 h-100">
 
             <div class="card-header bg-success text-white">
-                Booking Information
+                <h5 class="mb-0">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Booking Information
+                </h5>
             </div>
+
+            <?php if($this->session->flashdata('error')): ?>
+                                    <div class="alert alert-danger">
+                                    <?= $this->session->flashdata('error'); ?>
+                                    </div>
+            <?php endif; ?>
 
             <div class="card-body p-0">
 
-                <table class="table table-bordered">
+                <?php if (!empty($booking)): ?>
 
-                    <?php if(!empty($booking)): ?>
 
-                        <tr><th>Booking ID</th><td><?= $booking->booking_id; ?></td></tr>
-                        <tr><th>Booking Date</th><td><?= date('M d, Y', strtotime($booking->booking_date)); ?></td></tr>
-                        <tr><th>Table</th><td><?= $booking->table_number; ?></td></tr>
-                        <tr><th>Booking Slot</th><td><?= $booking->booking_time; ?></td></tr>
-                        <tr><th>Arrival Time</th><td><?= $booking->arrival_time; ?></td></tr>
-                        <tr><th> No. of Guests</th><td><?= $booking->number_of_guests; ?></td></tr>
+                    <div class="table-responsive">
 
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                <?php
-                                $badge = 'secondary';
-                                switch(strtolower($booking->status)) {
-                                    case 'confirmed': $badge = 'success'; break;
-                                    case 'pending': $badge = 'warning'; break;
-                                    case 'cancelled': $badge = 'danger'; break;
-                                    case 'completed': $badge = 'primary'; break;
-                                }
-                                ?>
-                                <span class="badge bg-<?= $badge; ?>">
-                                    <?= ucfirst($booking->status); ?>
-                                </span>
-                            </td>
-                        </tr>
+                        <table class="table table-bordered table-striped align-middle mb-0">
 
-                        <tr><th>Guest Names</th><td><?= $booking->guest_names; ?></td></tr>
+                            <tbody>
 
-                    <?php else: ?>
+                                <tr>
+                                    <th width="35%">Booking ID</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="booking_id"
+                                               value="<?= $booking->booking_id; ?>"
+                                               readonly>
+                                    </td>
+                                </tr>
 
-                        <tr>
-                            <td class="text-center text-muted">No booking data</td>
-                        </tr>
+                                <tr>
+                                    <th>Booking Date</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control" name="booking_date"
+                                               value="<?= date('M d, Y', strtotime($booking->booking_date)); ?>"
+                                               readonly>
+                                    </td>
+                                </tr>
 
-                    <?php endif; ?>
+                                <tr>
+                                    <th>Table Number</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control" name="table_number"
+                                               value="<?= $booking->table_number; ?>"
+                                               >
+                                    </td>
+                                </tr>
 
-                </table>
+                                <tr>
+                                    <th>Booking Slot</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control" name="booking_time"
+                                               value="<?= $booking->booking_time; ?>"
+                                               >
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Arrival Time</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control" name="arrival_time"
+                                               value="<?= $booking->arrival_time; ?>"
+                                               >
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>No. of Guests</th>
+                                    <td>
+                                        <input type="text"
+                                               class="form-control" name="number_of_guests"
+                                               value="<?= $booking->number_of_guests; ?>"
+                                               >
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+                                        <select name="status" class="form-select">
+                                            <option value="<?= $booking->status; ?>">
+                                                <?= $booking->status; ?>
+                                            </option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Confirmed">Confirmed</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Guest Names</th>
+                                    <td>
+                                       <input type="text" class="form-control" value="<?= $booking->guest_names; ?>"readonly>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="p-4 text-center text-muted">
+                        No booking information found.
+                    </div>
+
+                <?php endif; ?>
 
             </div>
 
@@ -211,6 +342,15 @@
     </div>
 
 </div>
+
+<div class="text-end mt-4">
+    <button class="btn btn-primary px-4">
+        <i class="bi bi-save me-1"></i>
+        Save Changes
+    </button>
+</div>
+
+</form>
 
 </div>
 

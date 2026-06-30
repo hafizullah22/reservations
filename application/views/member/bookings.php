@@ -108,11 +108,7 @@
                         <i class="bi bi-calendar-check me-2"></i>
                         My Bookings
                     </h4>
-                     <?php if($this->session->flashdata('success')): ?>
-                                            <div class="alert alert-success">
-                                                <?= $this->session->flashdata('success'); ?>
-                                            </div>
-                     <?php endif; ?>
+                    
                 </div>
 
                 <div class="card-body">
@@ -181,13 +177,13 @@
                                         <td>
 
                                             <?php if ($b->status != 'Cancelled'): ?>
-
-                                                <a href="<?= site_url('bookings/delete/'.$b->booking_id); ?>"
-                                                   class="btn btn-outline-danger btn-sm"
-                                                   onclick="return confirm('Are you sure you want to cancel this booking?');">
-
-                                                    <i class="bi bi-x-circle"></i>
-                                                </a>
+                                 
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="deleteBooking(this)"
+                                                data-url="<?= site_url('bookings/cancel/'.$b->booking_id); ?>">
+                                            <i class="fa fa-close"></i>
+                                            </button>
+                        
 
                                             <?php endif; ?>
 
@@ -228,5 +224,78 @@
     </div>
 
 </main>
+
+<script>
+function deleteBooking(btn)
+{
+    const url = btn.dataset.url;
+    const row = btn.closest('tr');
+
+    Swal.fire({
+        title: 'Cancel Booking?',
+        text: "This action cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e92e0d',
+        cancelButtonColor: '#128f07',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+
+        
+    }).then((result) => {
+
+        if (!result.isConfirmed) return;
+
+        btn.disabled = true;
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.status === 'success') {
+
+                // remove row instantly
+                row.remove();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cancelled',
+                    text:'Cancelled Your Booking',
+                    timer: 1200,
+                    showConfirmButton: false
+                });
+
+                // OPTIONAL: update counters/menu if needed
+                // refreshCounts();
+
+            } else {
+                btn.disabled = false;
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed',
+                    text: 'Delete not completed'
+                });
+            }
+        })
+        .catch(() => {
+
+            btn.disabled = false;
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Server error occurred'
+            });
+        });
+    });
+}
+</script>
+
 
 <?php $this->load->view('layout/footer'); ?>

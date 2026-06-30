@@ -169,7 +169,11 @@
 
     </div>
 
-
+ <?php if($this->session->flashdata('success')): ?>
+                                    <div class="alert alert-success">
+                                    <?= $this->session->flashdata('success'); ?>
+                                    </div>
+                                <?php endif; ?>
 
     <!-- ================= TABLE ================= -->
 
@@ -297,7 +301,7 @@ document.getElementById('liveSearch').addEventListener('keyup', function () {
                         <td>${b.number_of_guests}</td>
                         <td>${b.status}</td>
                         <td>
-                            <a href="<<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
+                            <a href="<?= site_url('admin/bookings/booking_details/') ?>${b.booking_id}"
                                 class="btn btn-primary btn-sm">
                                  <i class="fa fa-eye"></i>
                             </a>
