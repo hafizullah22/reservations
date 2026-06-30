@@ -1,4 +1,4 @@
-**Reservation System**
+**Reservation System with Website**
 ===============================
 
 **Module 01: Reservation / Booking System**
@@ -224,27 +224,17 @@ A responsive public-facing website that provides visitors and registered users w
 *   Cross-browser support
     
 
-**System Highlights**
+**Visit Project?**
 =====================
+**For Portal:** 
+https://dev.cliftonparktrustees.org/
 
-*   Custom PHP (CodeIgniter 3) Application
-    
-*   Secure Authentication
-    
-*   Role-Based Access Control
-    
-*   Automated Email Notifications
-    
-*   CSV User Import
-    
-*   PDF & CSV Report Export
-    
-*   Business Rule Validation
-    
-*   Responsive Bootstrap Interface
-    
-*   REST API Support for External Integration
-    
-*   Optimized Database Design
-    
-*   Scalable Architecture for Future Enhancements
+**For Admin:** 
+https://dev.cliftonparktrustees.org/admin
+Email: hafizullah@ictcell.jnu.ac.bd
+password: admin@202#
+
+**For Member:** 
+https://dev.cliftonparktrustees.org/myaccount
+Email: hafizullah@ictcell.jnu.ac.bd
+password: admin@202#
