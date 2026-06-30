@@ -226,15 +226,8 @@ A responsive public-facing website that provides visitors and registered users w
 
 **Visit Project?**
 =====================
-**For Portal:** 
-https://dev.cliftonparktrustees.org/
+**For Portal:** [https://dev.cliftonparktrustees.org/](https://dev.cliftonparktrustees.org/)
 
-**For Admin:** 
-https://dev.cliftonparktrustees.org/admin
-Email: hafizullah@ictcell.jnu.ac.bd
-password: admin@202#
+**For Admin:** [https://dev.cliftonparktrustees.org/admin](https://dev.cliftonparktrustees.org/admin) Email: [hafizullah@ictcell.jnu.ac.bd](mailto:hafizullah@ictcell.jnu.ac.bd) password: admin@202#
 
-**For Member:** 
-https://dev.cliftonparktrustees.org/myaccount
-Email: hafizullah@ictcell.jnu.ac.bd
-password: admin@202#
+**For Member:** [https://dev.cliftonparktrustees.org/myaccount](https://dev.cliftonparktrustees.org/myaccount) Email: [hafizullah@ictcell.jnu.ac.bd](mailto:hafizullah@ictcell.jnu.ac.bd) password: admin@202#
