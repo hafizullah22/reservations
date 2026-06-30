@@ -226,20 +226,19 @@ A responsive public-facing website that provides visitors and registered users w
 
 **Visit Project?**
 =====================
-Portal: https://dev.cliftonparktrustees.org/
-
+Portal: https://reservation.free.nf/
 ————————————————————-
 
-Admin: https://dev.cliftonparktrustees.org/admin
+Admin: https://reservation.free.nf/admin
 
 Email: hafizullah@ictcell.jnu.ac.bd
 
-password: admin@202#
+password: admin@2026#
 
 ————————————————————————-
 
-Member: https://dev.cliftonparktrustees.org/myaccount
+Member: https://reservation.free.nf/myaccount
 
-Email: hafizullah@ictcell.jnu.ac.bd
+Email: customer12@gmail.com
 
-password: admin@202#
+password: admin@2026#
