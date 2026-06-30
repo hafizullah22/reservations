@@ -1,4 +1,4 @@
-**Reservation System For Clud**
+**Reservation System For **
 ===============================
 
 **Module 01: Reservation / Booking System**
@@ -6,7 +6,7 @@
 
 A fully customized PHP-based reservation system designed to replace the previous WordPress booking solution, providing a faster, more secure, and feature-rich booking experience.
 
-### **Features**
+**Features**
 
 *   **User Registration & Authentication**
     
