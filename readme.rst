@@ -1,8 +1,21 @@
 # 🍽️ Restaurant Table Reservation System
 
-A modern web-based **Restaurant Table Reservation System** built with **CodeIgniter 3** that allows customers to reserve tables online while providing administrators with a complete booking management dashboard.
+A fully customized PHP-based booking system will replace the existing WordPress solution, offering advanced features:
+User Registration and Login: Only registered users can make bookings; secure password handling with hashing.
 
-This project focuses on fast booking, business rule validation, email notifications, booking reports, and an easy-to-use administration panel.
+
+Booking Management: Users can reserve tables or facilities by selecting date, time slot, and number of guests.
+
+
+Admin Control: Administrators can manage table availability, approve or cancel bookings, and set booking limits per table or per user.
+
+
+Email Notifications: Automated confirmation emails upon booking and reminder emails 30 minutes prior to the reservation.
+
+
+Booking Reports: Generate, view, and export detailed reports in PDF or CSV format.
+
+
 
 ---
 
