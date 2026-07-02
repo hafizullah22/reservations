@@ -82,7 +82,7 @@ body {
 .wp-section-title {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #222;
+    color: #050505;
     margin-bottom: 15px;
     position: relative;
 }
