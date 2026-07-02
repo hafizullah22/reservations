@@ -71,6 +71,11 @@
                             <i class="bi bi-person me-2"></i>
                             Account Details
                         </a>
+                        <a href="<?= site_url('bookings/create'); ?>"
+                           class="list-group-item list-group-item-action">
+                            <i class="bi bi-calendar-plus me-2"></i>
+                            Make a Reservation
+                        </a>
 
                         <a href="<?= site_url('my_account/bookings'); ?>"
                            class="list-group-item list-group-item-action">
