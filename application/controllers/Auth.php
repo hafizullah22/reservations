@@ -183,9 +183,9 @@ class Auth extends CI_Controller {
     if (!$user) {
         
             $this->session->set_flashdata('msg_type', 'error');
-            $this->session->set_flashdata('msg_title', 'Error');
-            $this->session->set_flashdata('msg_text', 'You Are Not Authorized Person');
-            redirect('auth/admin');
+            $this->session->set_flashdata('msg_title', 'Sorry');
+            $this->session->set_flashdata('msg_text', 'You Are Not a Member of Clifton Park Trustees');
+            redirect('auth/myaccount');
     }
 
     // Verify password
