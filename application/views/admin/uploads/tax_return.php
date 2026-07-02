@@ -113,6 +113,11 @@ tr:hover{
     <div class="page-title">
       Tax Retun Upload and Show
     </div>
+    <?php if ($this->session->flashdata('msg_text')) : ?>
+        <div class="alert alert-info">
+            <?= $this->session->flashdata('msg_text'); ?>
+        </div>
+    <?php endif; ?> 
 
     <!-- UPLOAD FORM -->
     <div class="upload-card">
@@ -127,7 +132,7 @@ tr:hover{
 
            <div class="form-group">
                 <select name="file_type" class="form-control" required>
-                    <option value="tax-return">Tax Return</option>
+                    <option value="tax_return">Tax Return</option>
                 </select>
             </div>
 

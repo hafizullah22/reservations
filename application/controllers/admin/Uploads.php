@@ -29,7 +29,7 @@ public function upload_file()
 
     if (!$file_name || !$file_type) {
         $this->session->set_flashdata('msg_text', 'File title and type are required.');
-        redirect('admin/uploads');
+        redirect('admin/uploads/upload_file');
         return;
     }
 
@@ -40,10 +40,14 @@ public function upload_file()
     $absolutePath = FCPATH . $relativePath;
 
     // Create folder if not exists
+    // if (!is_dir($absolutePath)) {
+    //     mkdir($absolutePath, 0775, true);
+    // }
     if (!is_dir($absolutePath)) {
-        mkdir($absolutePath, 0775, true);
+    if (!mkdir($absolutePath, 0775, true)) {
+        die('Failed to create directory: ' . $absolutePath);
     }
-
+}
     $config = [
         'upload_path'   => $absolutePath,
         'allowed_types' => 'pdf|doc|docx|xls|xlsx',
@@ -59,7 +63,7 @@ public function upload_file()
             'msg_text',
             strip_tags($this->upload->display_errors())
         );
-        redirect('admin/uploads');
+        redirect('/');
         return;
     }
 
@@ -77,9 +81,20 @@ public function upload_file()
 
     $this->db->insert('documents', $data);
 
+    
+
     $this->session->set_flashdata('msg_text', 'File uploaded successfully!');
-    redirect('admin/uploads');
+    if( $file_type=='financial')
+        {
+    redirect('admin/uploads/financial_report');
+        }
+    
+    else if( $file_type=='tax_return')
+        {
+    redirect('admin/uploads/tax_return');
+        }
 }
+
 
 
 public function financial_report()
