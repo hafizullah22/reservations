@@ -265,8 +265,14 @@
 
 </div>
 
+<!-- sent mail script -->
+<script>
+window.addEventListener('load', function () {
 
+    fetch("<?= site_url('admin/bookings/send_confirmation_email/'.$booking->booking_id) ?>");
 
+});
+</script>
 <!-- live Search Script  -->
 
 <script>

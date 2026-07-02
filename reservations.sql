@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2026 at 04:21 AM
+-- Generation Time: Jun 30, 2026 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -48,52 +48,58 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`booking_id`, `customer_id`, `reservation_no`, `booking_date`, `booking_time`, `arrival_time`, `number_of_guests`, `table_number`, `guest_names`, `special_request`, `status`, `created_at`, `updated_at`) VALUES
-(8, 1, NULL, '2026-06-29', 'afternoon', '12:00', 12, 10, 'AAAAA', NULL, 'Confirmed', '2026-06-07 14:07:56', '2026-06-10 15:24:28'),
-(14, 78, 'RES-126261', '2026-06-28', 'afternoon', '2:00 PM', 5, 13, 'Guest-819', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(15, 84, 'RES-843286', '2026-06-28', 'afternoon', '6:00 PM', 10, 17, 'Guest-666', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(16, 72, 'RES-908591', '2026-06-28', 'afternoon', '7:00 PM', 5, 32, 'Guest-683', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
+(8, 1, NULL, '0000-00-00', 'afternoon', '12:00', 12, 10, '', NULL, 'Cancelled', '2026-06-07 14:07:56', '2026-06-30 07:22:37'),
+(14, 78, 'RES-126261', '2026-06-28', 'afternoon', '2:00 PM', 5, 13, 'Guest-819', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:07'),
+(15, 84, 'RES-843286', '2026-06-28', 'afternoon', '6:00 PM', 10, 17, 'Guest-666', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:11'),
+(16, 72, 'RES-908591', '2026-06-28', 'afternoon', '7:00 PM', 5, 32, 'Guest-683', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:17'),
 (17, 86, 'RES-105293', '2026-06-28', 'evening', '7:00 PM', 9, 47, 'Guest-863', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-18 03:15:09'),
-(19, 89, 'RES-148235', '2026-06-28', 'evening', '1:00 PM', 9, 8, 'Guest-275', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(20, 59, 'RES-865789', '2026-06-28', 'evening', '6:00 PM', 10, 30, 'Guest-3', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
+(19, 89, 'RES-148235', '2026-06-28', 'evening', '1:00 PM', 9, 8, 'Guest-275', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:21'),
+(20, 59, 'RES-865789', '2026-06-28', 'evening', '6:00 PM', 10, 30, 'Guest-3', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:26'),
 (21, 91, 'RES-401966', '2026-06-28', 'afternoon', '1:00 PM', 7, 20, 'Guest-980', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-18 03:15:15'),
-(22, 71, 'RES-166178', '2026-06-28', 'evening', '12:30 PM', 6, 28, 'Guest-132', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(27, 75, 'RES-682447', '2026-06-28', 'afternoon', '2:00 PM', 10, 30, 'Guest-73', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(29, 79, 'RES-557742', '2026-06-28', 'afternoon', '1:00 PM', 4, 43, 'Guest-82', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(30, 85, 'RES-136691', '2026-06-28', 'evening', '6:00 PM', 10, 17, 'Guest-807', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(32, 94, 'RES-871560', '2026-06-28', 'evening', '6:00 PM', 8, 19, 'Guest-593', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(33, 82, 'RES-942405', '2026-06-28', 'evening', '12:30 PM', 4, 23, 'Guest-194', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(34, 73, 'RES-960619', '2026-06-28', 'evening', '12:30 PM', 2, 36, 'Guest-983', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(35, 67, 'RES-836727', '2026-06-28', 'afternoon', '7:00 PM', 8, 48, 'Guest-341', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(36, 87, 'RES-506760', '2026-06-28', 'afternoon', '6:00 PM', 8, 20, 'Guest-560', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(37, 77, 'RES-298867', '2026-06-28', 'afternoon', '12:30 PM', 8, 43, 'Guest-690', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(38, 76, 'RES-247486', '2026-06-28', 'evening', '2:00 PM', 10, 8, 'Guest-17', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(41, 96, 'RES-456542', '2026-06-28', 'evening', '12:30 PM', 9, 51, 'Guest-324', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(42, 97, 'RES-626912', '2026-06-28', 'evening', '1:00 PM', 7, 30, 'Guest-906', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(43, 58, 'RES-689089', '2026-06-28', 'afternoon', '5:30 PM', 5, 39, 'Guest-274', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(44, 92, 'RES-813852', '2026-06-28', 'evening', '1:00 PM', 1, 32, 'Guest-808', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(45, 63, 'RES-958281', '2026-06-28', 'evening', '6:00 PM', 9, 6, 'Guest-91', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
+(22, 71, 'RES-166178', '2026-06-28', 'evening', '12:30 PM', 6, 28, 'Guest-132', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:31'),
+(27, 75, 'RES-682447', '2026-06-28', 'afternoon', '2:00 PM', 10, 30, 'Guest-73', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:36'),
+(29, 79, 'RES-557742', '2026-06-28', 'afternoon', '1:00 PM', 4, 43, 'Guest-82', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:41'),
+(30, 85, 'RES-136691', '2026-06-28', 'evening', '6:00 PM', 10, 17, 'Guest-807', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:46'),
+(32, 94, 'RES-871560', '2026-06-28', 'evening', '6:00 PM', 8, 19, 'Guest-593', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:52'),
+(33, 82, 'RES-942405', '2026-06-28', 'evening', '12:30 PM', 4, 23, 'Guest-194', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:00:58'),
+(34, 73, 'RES-960619', '2026-06-28', 'evening', '12:30 PM', 2, 36, 'Guest-983', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:03'),
+(35, 67, 'RES-836727', '2026-06-28', 'afternoon', '7:00 PM', 8, 48, 'Guest-341', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:10'),
+(36, 87, 'RES-506760', '2026-06-28', 'afternoon', '6:00 PM', 8, 20, 'Guest-560', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:15'),
+(37, 77, 'RES-298867', '2026-06-28', 'afternoon', '12:30 PM', 8, 43, 'Guest-690', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:20'),
+(38, 76, 'RES-247486', '2026-06-28', 'evening', '2:00 PM', 10, 8, 'Guest-17', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:26'),
+(41, 96, 'RES-456542', '2026-06-28', 'evening', '12:30 PM', 9, 51, 'Guest-324', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:31'),
+(42, 97, 'RES-626912', '2026-06-28', 'evening', '1:00 PM', 7, 30, 'Guest-906', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:35'),
+(43, 58, 'RES-689089', '2026-06-28', 'afternoon', '5:30 PM', 5, 39, 'Guest-274', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:40'),
+(44, 92, 'RES-813852', '2026-06-28', 'evening', '1:00 PM', 1, 32, 'Guest-808', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:46'),
+(45, 63, 'RES-958281', '2026-06-28', 'evening', '6:00 PM', 9, 6, 'Guest-91', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:50'),
 (46, 101, 'RES-953244', '2026-06-28', 'afternoon', '1:00 PM', 3, 7, 'Guest-33', 'No special request', 'Cancelled', '2026-06-12 05:03:49', '2026-06-18 07:59:36'),
-(47, 57, 'RES-801012', '2026-06-28', 'evening', '5:30 PM', 1, 21, 'Guest-986', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(48, 56, 'RES-819049', '2026-06-28', 'evening', '7:00 PM', 5, 24, 'Guest-27', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(49, 66, 'RES-678416', '2026-06-28', 'evening', '1:00 PM', 10, 37, 'Guest-738', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(50, 62, 'RES-878589', '2026-06-28', 'evening', '6:00 PM', 9, 17, 'Guest-939', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(51, 81, 'RES-107310', '2026-06-28', 'evening', '6:00 PM', 9, 5, 'Guest-971', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(52, 52, 'RES-335754', '2026-06-28', 'evening', '12:30 PM', 5, 38, 'Guest-265', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(53, 98, 'RES-578658', '2026-06-28', 'afternoon', '7:00 PM', 4, 7, 'Guest-479', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(54, 74, 'RES-432772', '2026-06-28', 'afternoon', '1:00 PM', 2, 52, 'Guest-662', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(55, 54, 'RES-948372', '2026-06-28', 'afternoon', '6:00 PM', 2, 26, 'Guest-121', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(56, 70, 'RES-986200', '2026-06-28', 'afternoon', '7:00 PM', 8, 1, 'Guest-979', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(57, 61, 'RES-761559', '2026-06-28', 'evening', '1:00 PM', 8, 45, 'Guest-83', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(58, 95, 'RES-870176', '2026-06-28', 'afternoon', '7:00 PM', 1, 39, 'Guest-382', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(59, 65, 'RES-957904', '2026-06-28', 'evening', '6:00 PM', 3, 36, 'Guest-769', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(60, 90, 'RES-989029', '2026-06-28', 'afternoon', '1:00 PM', 3, 32, 'Guest-136', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(61, 80, 'RES-614976', '2026-06-28', 'evening', '12:30 PM', 8, 13, 'Guest-999', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(62, 55, 'RES-848437', '2026-06-28', 'afternoon', '2:00 PM', 9, 36, 'Guest-968', 'No special request', 'Confirmed', '2026-06-12 05:03:49', '2026-06-12 05:03:49'),
-(63, 1, 'RES-20260614-7752', '2026-06-20', 'afternoon', '12:00', 10, 38, 'AAA', NULL, 'Confirmed', '2026-06-14 13:50:02', '2026-06-14 13:50:02'),
-(64, 53, 'RES-20260615-8986', '2026-06-29', 'afternoon', '12:00', 15, 1, '10', NULL, 'Confirmed', '2026-06-15 04:24:52', '2026-06-15 04:24:52'),
-(65, 63, 'RES-20260617071249-1315', '2026-06-21', 'afternoon', '12:30', 10, 1, 'AAA', NULL, 'Confirmed', '2026-06-17 05:12:49', '2026-06-17 05:12:49'),
-(66, 65, 'RES-20260617071315-6393', '2026-06-25', 'afternoon', '12:00', 15, 1, 'AA', NULL, 'Confirmed', '2026-06-17 05:13:15', '2026-06-17 05:13:15'),
-(67, 69, 'RES-20260617072504-9730', '2026-06-25', 'afternoon', '12:00', 15, 2, 'A', NULL, 'Confirmed', '2026-06-17 05:25:04', '2026-06-17 05:25:04');
+(47, 57, 'RES-801012', '2026-06-28', 'evening', '5:30 PM', 1, 21, 'Guest-986', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:01:55'),
+(48, 56, 'RES-819049', '2026-06-28', 'evening', '7:00 PM', 5, 24, 'Guest-27', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:00'),
+(49, 66, 'RES-678416', '2026-06-28', 'evening', '1:00 PM', 10, 37, 'Guest-738', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:05'),
+(50, 62, 'RES-878589', '2026-06-28', 'evening', '6:00 PM', 9, 17, 'Guest-939', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:10'),
+(51, 81, 'RES-107310', '2026-06-28', 'evening', '6:00 PM', 9, 5, 'Guest-971', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:15'),
+(52, 52, 'RES-335754', '2026-06-28', 'evening', '12:30 PM', 5, 38, 'Guest-265', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:20'),
+(54, 74, 'RES-432772', '2026-06-28', 'afternoon', '1:00 PM', 2, 52, 'Guest-662', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:25'),
+(55, 54, 'RES-948372', '2026-06-28', 'afternoon', '6:00 PM', 2, 26, 'Guest-121', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:30'),
+(56, 70, 'RES-986200', '2026-06-28', 'afternoon', '7:00 PM', 8, 1, 'Guest-979', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:35'),
+(57, 61, 'RES-761559', '2026-06-28', 'evening', '1:00 PM', 8, 45, 'Guest-83', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:40'),
+(58, 95, 'RES-870176', '2026-06-28', 'afternoon', '7:00 PM', 1, 39, 'Guest-382', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:45'),
+(59, 65, 'RES-957904', '2026-06-28', 'evening', '6:00 PM', 3, 36, 'Guest-769', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:50'),
+(60, 90, 'RES-989029', '2026-06-28', 'afternoon', '1:00 PM', 3, 32, 'Guest-136', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:55'),
+(61, 80, 'RES-614976', '2026-06-28', 'evening', '12:30 PM', 8, 13, 'Guest-999', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:02:59'),
+(62, 55, 'RES-848437', '2026-06-28', 'afternoon', '2:00 PM', 9, 36, 'Guest-968', 'No special request', 'Completed', '2026-06-12 05:03:49', '2026-06-28 22:03:04'),
+(63, 1, 'RES-20260614-7752', '0000-00-00', 'afternoon', '12:00', 10, 38, '', NULL, 'Cancelled', '2026-06-14 13:50:02', '2026-06-30 07:14:56'),
+(64, 53, 'RES-20260615-8986', '2026-06-29', 'afternoon', '12:00', 15, 1, '10', NULL, 'Completed', '2026-06-15 04:24:52', '2026-06-30 04:20:11'),
+(65, 63, 'RES-20260617071249-1315', '2026-06-21', 'afternoon', '12:30', 10, 1, 'AAA', NULL, 'Completed', '2026-06-17 05:12:49', '2026-06-25 03:34:11'),
+(66, 65, 'RES-20260617071315-6393', '0000-00-00', 'afternoon', '12:00', 15, 1, '', NULL, 'Cancelled', '2026-06-17 05:13:15', '2026-06-30 06:02:53'),
+(67, 69, 'RES-20260617072504-9730', '2026-06-25', 'afternoon', '12:00', 15, 2, 'A', NULL, 'Completed', '2026-06-17 05:25:04', '2026-06-28 05:03:12'),
+(68, 69, 'RES-20260625092904-9824', '2026-07-09', 'afternoon', '12:00', 10, 3, 'AA', NULL, 'Confirmed', '2026-06-25 07:29:04', '2026-06-25 07:29:04'),
+(69, 100, 'RES-20260625101439-6108', '2026-06-26', 'afternoon', '12:00', 10, 1, 'A', NULL, 'Completed', '2026-06-25 08:14:39', '2026-06-28 05:03:17'),
+(70, 101, 'RES-20260625101821-1927', '2026-07-03', 'afternoon', '12:00', 10, 2, 'AA', NULL, 'Confirmed', '2026-06-25 08:18:21', '2026-06-25 08:18:21'),
+(71, 1, 'RES-20260628-6239', '0000-00-00', 'afternoon', '12:00', 10, 2, '', NULL, 'Cancelled', '2026-06-28 07:10:51', '2026-06-30 07:08:00'),
+(72, 93, 'RES-20260628-1129', '2026-07-03', 'afternoon', '12:00', 10, 5, 'AA', NULL, 'Confirmed', '2026-06-28 08:51:45', '2026-06-28 08:51:45'),
+(73, 93, 'RES-20260628-9280', '2026-07-04', 'afternoon', '12:00', 10, 13, 'AAA', NULL, 'Confirmed', '2026-06-28 09:02:20', '2026-06-28 09:02:20'),
+(75, 92, 'RES-20260628-3053', '0000-00-00', 'afternoon', '12:30', 9, 11, '', NULL, 'Confirmed', '2026-06-28 09:09:37', '2026-06-30 07:14:23');
 
 -- --------------------------------------------------------
 
@@ -119,68 +125,70 @@ CREATE TABLE `customers` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `role` enum('Member','Admin') NOT NULL DEFAULT 'Member',
   `customer_type` enum('Non-Resident','Resident') NOT NULL DEFAULT 'Non-Resident',
-  `plain_password` varchar(2000) NOT NULL
+  `plain_password` varchar(2000) NOT NULL,
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `username`, `phone`, `email`, `password`, `address_line1`, `address_line2`, `city`, `state`, `postal_code`, `country`, `created_at`, `updated_at`, `role`, `customer_type`, `plain_password`) VALUES
-(1, 'Hafiz ', 'Ullah', 'hafizullah', '01723411403', 'hafizullah@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'AA', 'BB', 'Dhyaka', 'AA', '102', 'AA', '2026-06-07 07:42:53', '2026-06-12 03:46:31', 'Admin', 'Resident', ''),
-(52, 'Customer1', 'User', 'customer1', '01710000001', 'customer1@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 1', 'Road 1', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(53, 'Customer2', 'User2', 'customer2', '01710000002', 'customer2@gmail.com', '$2y$10$tJa5Qk5s7vG70ugyq.xnleBMna8YgR91UXbipmO38mUIvFq01UJn.', 'House 2', 'Road 2', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-22 09:25:56', '', '', 'admin@2027#'),
-(54, 'Customer3', 'User', 'customer3', '01710000003', 'customer3@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 3', 'Road 3', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(55, 'Customer4', 'User', 'customer4', '01710000004', 'customer4@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 4', 'Road 4', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(56, 'Customer5', 'User', 'customer5', '01710000005', 'customer5@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 5', 'Road 5', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(57, 'Customer6', 'User', 'customer6', '01710000006', 'customer6@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 6', 'Road 6', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(58, 'Customer7', 'User', 'customer7', '01710000007', 'customer7@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 7', 'Road 7', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(59, 'Customer8', 'User', 'customer8', '01710000008', 'customer8@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 8', 'Road 8', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(60, 'Customer9', 'User', 'customer9', '01710000009', 'customer9@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 9', 'Road 9', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(61, 'Customer10', 'User', 'customer10', '01710000010', 'customer10@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 10', 'Road 10', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(62, 'Customer11', 'User', 'customer11', '01710000011', 'customer11@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 11', 'Road 11', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(63, 'Customer12', 'User', 'customer12', '01710000012', 'customer12@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 12', 'Road 12', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(64, 'Customer13', 'User', 'customer13', '01710000013', 'customer13@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 13', 'Road 13', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(65, 'Customer14', 'User', 'customer14', '01710000014', 'customer14@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 14', 'Road 14', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(66, 'Customer15', 'User', 'customer15', '01710000015', 'customer15@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 15', 'Road 15', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(67, 'Customer16', 'User', 'customer16', '01710000016', 'customer16@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 16', 'Road 16', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(68, 'Customer17', 'User', 'customer17', '01710000017', 'customer17@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 17', 'Road 17', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(69, 'Customer18', 'User', 'customer18', '01710000018', 'customer18@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 18', 'Road 18', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(70, 'Customer19', 'User', 'customer19', '01710000019', 'customer19@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 19', 'Road 19', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(71, 'Customer20', 'User', 'customer20', '01710000020', 'customer20@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 20', 'Road 20', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(72, 'Customer21', 'User', 'customer21', '01710000021', 'customer21@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 21', 'Road 21', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(73, 'Customer22', 'User', 'customer22', '01710000022', 'customer22@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 22', 'Road 22', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(74, 'Customer23', 'User', 'customer23', '01710000023', 'customer23@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 23', 'Road 23', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(75, 'Customer24', 'User', 'customer24', '01710000024', 'customer24@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 24', 'Road 24', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(76, 'Customer25', 'User', 'customer25', '01710000025', 'customer25@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 25', 'Road 25', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(77, 'Customer26', 'User', 'customer26', '01710000026', 'customer26@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 26', 'Road 26', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(78, 'Customer27', 'User', 'customer27', '01710000027', 'customer27@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 27', 'Road 27', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(79, 'Customer28', 'User', 'customer28', '01710000028', 'customer28@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 28', 'Road 28', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(80, 'Customer29', 'User', 'customer29', '01710000029', 'customer29@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 29', 'Road 29', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(81, 'Customer30', 'User', 'customer30', '01710000030', 'customer30@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 30', 'Road 30', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(82, 'Customer31', 'User', 'customer31', '01710000031', 'customer31@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 31', 'Road 31', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(83, 'Customer32', 'User', 'customer32', '01710000032', 'customer32@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 32', 'Road 32', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(84, 'Customer33', 'User', 'customer33', '01710000033', 'customer33@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 33', 'Road 33', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(85, 'Customer34', 'User', 'customer34', '01710000034', 'customer34@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 34', 'Road 34', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(86, 'Customer35', 'User', 'customer35', '01710000035', 'customer35@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 35', 'Road 35', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(87, 'Customer36', 'User', 'customer36', '01710000036', 'customer36@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 36', 'Road 36', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(88, 'Customer37', 'User', 'customer37', '01710000037', 'customer37@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 37', 'Road 37', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(89, 'Customer38', 'User', 'customer38', '01710000038', 'customer38@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 38', 'Road 38', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(90, 'Customer39', 'User', 'customer39', '01710000039', 'customer39@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 39', 'Road 39', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(91, 'Customer40', 'User', 'customer40', '01710000040', 'customer40@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 40', 'Road 40', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(92, 'Customer41', 'User', 'customer41', '01710000041', 'customer41@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 41', 'Road 41', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(93, 'Customer42', 'User', 'customer42', '01710000042', 'customer42@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 42', 'Road 42', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(94, 'Customer43', 'User', 'customer43', '01710000043', 'customer43@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 43', 'Road 43', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(95, 'Customer44', 'User', 'customer44', '01710000044', 'customer44@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 44', 'Road 44', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(96, 'Customer45', 'User', 'customer45', '01710000045', 'customer45@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 45', 'Road 45', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(97, 'Customer46', 'User', 'customer46', '01710000046', 'customer46@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 46', 'Road 46', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(98, 'Customer47', 'User', 'customer47', '01710000047', 'customer47@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 47', 'Road 47', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(99, 'Customer48', 'User', 'customer48', '01710000048', 'customer48@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 48', 'Road 48', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(100, 'Customer49', 'User', 'customer49', '01710000049', 'customer49@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 49', 'Road 49', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(101, 'Customer50', 'User', 'customer50', '01710000050', 'customer50@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 50', 'Road 50', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', ''),
-(102, 'monir', 'Ahamed', '', '01711123456', 'monir@cse.jnu.ac.bd', '$2y$10$y8tl9v8TTJHAyTVXLgG1suiobJC40NNdLdgfF7mDQpcwirfOHKXeq', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:05:36', '2026-06-21 03:05:36', 'Member', 'Non-Resident', '12345'),
-(103, 'John', 'Doe', '', '01711111111', 'john@example.com', '$2y$10$p441R3B4gvYcyBoOCiB8E.aiABGFzvP/A7GRLW4FwZVhL7S5q43cO', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:18:24', '2026-06-21 03:18:24', 'Member', 'Non-Resident', '123456'),
-(104, 'Jane', 'Smith', '', '01822222222', 'jane@example.com', '$2y$10$iQ7IRb6jbzzuYDomAb9xXebG/kr73dhtMqZ2QyBb1ek2oMqm7M./G', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:18:24', '2026-06-21 03:18:24', 'Admin', 'Non-Resident', '123456');
+INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `username`, `phone`, `email`, `password`, `address_line1`, `address_line2`, `city`, `state`, `postal_code`, `country`, `created_at`, `updated_at`, `role`, `customer_type`, `plain_password`, `reset_token`, `reset_expires`) VALUES
+(1, 'Hafiz ', 'Ullah', 'hafizullah', '01723411403', 'hafizullah@ictcell.jnu.ac.bd', '$2y$10$ACMGQZeezWb8RhQ6Xu7RE.cliBXXuWz4mi8Pk0llUODraMAAcObkC', 'AA', 'BB', 'Dhyaka', 'AA', '102', 'AA', '2026-06-07 07:42:53', '2026-06-30 02:20:59', 'Admin', 'Resident', 'admin@2026#', '61284f41c2a68825f39725ca5147c8fa8ac679ee407078c4496fd12e2ea7f905', '2026-06-28 08:36:44'),
+(52, 'Customer1', 'User', 'customer1', '01710000001', 'customer1@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 1', 'Road 1', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(53, 'Customer2', 'User2', 'customer2', '01710000002', 'customer2@gmail.com', '$2y$10$tJa5Qk5s7vG70ugyq.xnleBMna8YgR91UXbipmO38mUIvFq01UJn.', 'House 2', 'Road 2', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-24 10:21:37', 'Member', 'Non-Resident', 'admin@2027#', NULL, NULL),
+(54, 'Customer3', 'User', 'customer3', '01710000003', 'customer3@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 3', 'Road 3', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(55, 'Customer4', 'User', 'customer4', '01710000004', 'customer4@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 4', 'Road 4', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(56, 'Customer5', 'User', 'customer5', '01710000005', 'customer5@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 5', 'Road 5', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(57, 'Customer6', 'User', 'customer6', '01710000006', 'customer6@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 6', 'Road 6', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(58, 'Customer7', 'User', 'customer7', '01710000007', 'customer7@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 7', 'Road 7', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(59, 'Customer8', 'User', 'customer8', '01710000008', 'customer8@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 8', 'Road 8', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(60, 'Customer9', 'User', 'customer9', '01710000009', 'customer9@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 9', 'Road 9', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(61, 'Customer10', 'User', 'customer10', '01710000010', 'customer10@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 10', 'Road 10', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(62, 'Customer11', 'User', 'customer11', '01710000011', 'customer11@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 11', 'Road 11', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(63, 'Customer12', 'User', 'customer12', '01710000012', 'customer12@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 12', 'Road 12', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-25 01:58:35', 'Member', 'Non-Resident', '', NULL, NULL),
+(64, 'Customer13', 'User', 'customer13', '01710000013', 'customer13@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 13', 'Road 13', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(65, 'Customer14', 'User', 'customer14', '01710000014', 'customer14@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 14', 'Road 14', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(66, 'Customer15', 'User', 'customer15', '01710000015', 'customer15@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 15', 'Road 15', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(67, 'Customer16', 'User', 'customer16', '01710000016', 'customer16@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 16', 'Road 16', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(68, 'Customer17', 'User', 'customer17', '01710000017', 'customer17@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 17', 'Road 17', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(69, 'Customer18', 'User', 'customer18', '01710000018', 'customer18@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 18', 'Road 18', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(70, 'Customer19', 'User', 'customer19', '01710000019', 'customer19@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 19', 'Road 19', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(71, 'Customer20', 'User', 'customer20', '01710000020', 'customer20@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 20', 'Road 20', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(72, 'Customer21', 'User', 'customer21', '01710000021', 'customer21@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 21', 'Road 21', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(73, 'Customer22', 'User', 'customer22', '01710000022', 'customer22@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 22', 'Road 22', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(74, 'Customer23', 'User', 'customer23', '01710000023', 'customer23@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 23', 'Road 23', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(75, 'Customer24', 'User', 'customer24', '01710000024', 'customer24@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 24', 'Road 24', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(76, 'Customer25', 'User', 'customer25', '01710000025', 'customer25@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 25', 'Road 25', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(77, 'Customer26', 'User', 'customer26', '01710000026', 'customer26@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 26', 'Road 26', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(78, 'Customer27', 'User', 'customer27', '01710000027', 'customer27@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 27', 'Road 27', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(79, 'Customer28', 'User', 'customer28', '01710000028', 'customer28@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 28', 'Road 28', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(80, 'Customer29', 'User', 'customer29', '01710000029', 'customer29@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 29', 'Road 29', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(81, 'Customer30', 'User', 'customer30', '01710000030', 'customer30@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 30', 'Road 30', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(82, 'Customer31', 'User', 'customer31', '01710000031', 'customer31@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 31', 'Road 31', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(83, 'Customer32', 'User', 'customer32', '01710000032', 'customer32@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 32', 'Road 32', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(84, 'Customer33', 'User', 'customer33', '01710000033', 'customer33@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 33', 'Road 33', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(85, 'Customer34', 'User', 'customer34', '01710000034', 'customer34@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 34', 'Road 34', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(86, 'Customer35', 'User', 'customer35', '01710000035', 'customer35@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 35', 'Road 35', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(87, 'Customer36', 'User', 'customer36', '01710000036', 'customer36@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 36', 'Road 36', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(88, 'Customer37', 'User', 'customer37', '01710000037', 'customer37@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 37', 'Road 37', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(89, 'Customer38', 'User', 'customer38', '01710000038', 'customer38@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 38', 'Road 38', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(90, 'Customer39', 'User', 'customer39', '01710000039', 'customer39@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 39', 'Road 39', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(91, 'Customer40', 'User', 'customer40', '01710000040', 'customer40@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 40', 'Road 40', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(92, 'Customer41', 'User', 'customer41', '01710000041', 'customer41@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 41', 'Road 41', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-30 02:20:23', 'Member', 'Non-Resident', '', NULL, NULL),
+(93, 'Customer42', 'User', 'customer42', '01710000042', 'customer42@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 42', 'Road 42', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-28 04:51:23', 'Member', 'Non-Resident', '', NULL, NULL),
+(94, 'Customer43', 'User', 'customer43', '01710000043', 'customer43@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 43', 'Road 43', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-28 05:04:30', 'Member', 'Non-Resident', '', NULL, NULL),
+(95, 'Customer44', 'User', 'customer44', '01710000044', 'customer44@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 44', 'Road 44', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(96, 'Customer45', 'User', 'customer45', '01710000045', 'customer45@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 45', 'Road 45', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(97, 'Customer46', 'User', 'customer46', '01710000046', 'customer46@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 46', 'Road 46', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(98, 'Customer47', 'User', 'customer47', '01710000047', 'customer47@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 47', 'Road 47', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(99, 'Customer48', 'User', 'customer48', '01710000048', 'customer48@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 48', 'Road 48', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-12 03:31:36', 'Member', 'Non-Resident', '', NULL, NULL),
+(100, 'Customer49', 'User', 'customer49', '0171000112', 'customer49@gmail.com', '$2y$10$2bjCW7yUcjurOgTGoi2pAeuvaH2iG1PBF./SlX/1YFTJ/eBN4W8Pu', 'House 49', 'Road 49', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-24 10:21:02', 'Member', 'Non-Resident', 'admin2027#', NULL, NULL),
+(101, 'Customer50', 'User50', 'customer50', '01710000050', 'customer50@gmail.com', '$2y$10$TfzI4MwV3P86dWefH/dTLeaUtbKkfozPgYNPlyMJV0ZqTP9qJRi8K', 'House 50', 'Road 50', 'Dhaka', 'Dhaka', '1207', 'Bangladesh', '2026-06-12 03:30:51', '2026-06-24 10:21:15', 'Member', 'Non-Resident', '', NULL, NULL),
+(102, 'monir', 'Ahamed', '', '01711123456', 'monir@cse.jnu.ac.bd', '$2y$10$y8tl9v8TTJHAyTVXLgG1suiobJC40NNdLdgfF7mDQpcwirfOHKXeq', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:05:36', '2026-06-21 03:05:36', 'Member', 'Non-Resident', '12345', NULL, NULL),
+(103, 'John', 'Doe', '', '01711111111', 'john@example.com', '$2y$10$p441R3B4gvYcyBoOCiB8E.aiABGFzvP/A7GRLW4FwZVhL7S5q43cO', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:18:24', '2026-06-21 03:18:24', 'Member', 'Non-Resident', '123456', NULL, NULL),
+(104, 'Jane', 'Smith', '', '01822222222', 'jane@example.com', '$2y$10$iQ7IRb6jbzzuYDomAb9xXebG/kr73dhtMqZ2QyBb1ek2oMqm7M./G', NULL, NULL, NULL, NULL, NULL, NULL, '2026-06-20 23:18:24', '2026-06-21 03:18:24', 'Admin', 'Non-Resident', '123456', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -358,7 +366,8 @@ INSERT INTO `documents` (`id`, `file_name`, `file_path`, `file_type`, `year`, `c
 (171, 'Annual Town Hall Meeting 5-22-25', 'uploads/2025/05/CPT-Town-Meeting-May-22-2025-v3.pdf', 'meeting', '2025', '2026-06-21'),
 (172, 'Meeting Minutes 4-25-25', 'uploads/2025/05/CPT-minutes-4-25-25.pdf', 'meeting', '2025', '2026-06-21'),
 (173, 'Meeting Minutes 4-24-26', 'uploads/2026/06/min-4-24-26-.pdf', 'meeting', '2026', '2026-06-21'),
-(174, 'Annual Town Hall Meeting 5-14-26', 'uploads/2026/05/CPT-Town-Meeting-May-14-2026-v2-1-1.pdf', 'meeting', '2026', '2026-06-21');
+(174, 'Annual Town Hall Meeting 5-14-26', 'uploads/2026/05/CPT-Town-Meeting-May-14-2026-v2-1-1.pdf', 'meeting', '2026', '2026-06-21'),
+(175, 'Neighbour Map', 'uploads/2019/07/final-clifton-park-030812.jpg', 'neighbour_map', '2026', '2026-06-21');
 
 -- --------------------------------------------------------
 
@@ -502,7 +511,7 @@ ALTER TABLE `table_available_dates`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -514,7 +523,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- AUTO_INCREMENT for table `tables`

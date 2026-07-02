@@ -249,11 +249,6 @@ public function store()
     }
 
     // =========================
-    // BOOKING REFERENCE
-    // =========================
-    $reservation_no = 'RES-' . date('Ymd') . '-' . rand(1000, 9999);
-
-    // =========================
     // INSERT BOOKING
     // =========================
     $insert = $this->db->insert('bookings', [
@@ -267,7 +262,7 @@ public function store()
         'guest_names'      => $guest_names,
         'status'           => 'Confirmed'
     ]);
-
+    $booking_id = $this->db->insert_id();
     if (!$insert) {
         $this->session->set_flashdata(
             'error',
@@ -276,60 +271,105 @@ public function store()
         redirect('bookings/create');
     }
 
-    // =========================
-    // EMAIL
-    // =========================
-    try {
-
-        $this->load->library('email');
-
-        $this->email->from(
-            'hafizulah322@gmail.com',
-            'Table Reservation System'
-        );
-
-        $this->email->to($customer->email);
-
-        $this->email->subject('Reservation Confirmation #' . $reservation_no);
-
-        $message = '
-        <html>
-        <body>
-            <h2>Reservation Confirmed</h2>
-
-            <p>Dear ' . htmlspecialchars($customer->first_name) . ',</p>
-
-            <p>Your reservation has been successfully confirmed.</p>
-
-            <table border="1" cellpadding="8" cellspacing="0">
-                <tr><td><strong>Reservation No.</strong></td><td>' . $reservation_no . '</td></tr>
-                <tr><td><strong>Date</strong></td><td>' . $booking_date . '</td></tr>
-                <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking_time) . '</td></tr>
-                <tr><td><strong>Table Number</strong></td><td>' . $table_number . '</td></tr>
-                <tr><td><strong>Arrival Time</strong></td><td>' . $arrival_time . '</td></tr>
-                <tr><td><strong>Guests</strong></td><td>' . $guests . '</td></tr>
-            </table>
-
-            <p>Thank you for your reservation.</p>
-        </body>
-        </html>';
-
-        $this->email->message($message);
-
-        $this->email->send();
-
-    } catch (Exception $e) {
-        log_message('error', $e->getMessage());
-    }
-
+  
     // =========================
     // SUCCESS
     // =========================
     $this->session->set_flashdata('success', 'Booking created successfully.');
-    redirect('my_account/bookings');
+   
+    redirect('bookings/checkout/'.$booking_id);
 }
 
+public function checkout($booking_id = null)
+{
+    if ($booking_id === null) {
+        show_404();
+    }
 
+    $booking = $this->db
+        ->where([
+            'booking_id' => $booking_id,
+            'status'     => 'Confirmed'
+        ])
+        ->join('customers', 'customers.customer_id = bookings.customer_id', 'left')
+        ->get('bookings')
+        ->row();
+
+    if (!$booking) {
+        // $this->session->set_flashdata('error', 'Booking not found or not confirmed.');
+        // redirect('bookings');
+        show_404();
+    }
+
+    $data['booking'] = $booking;
+
+    $this->load->view('member/checkout', $data);
+}
+
+public function send_confirmation_email($booking_id)
+{
+    $booking = $this->db
+        ->where([
+            'booking_id' => $booking_id,
+            'status'     => 'Confirmed',
+            'mail_sent'  => 'No'
+        ])
+        ->join('customers', 'customers.customer_id = bookings.customer_id', 'left')
+        ->get('bookings')
+        ->row();
+
+    if (!$booking) {
+        return;
+    }
+
+    // =========================
+        // EMAIL
+        // =========================
+        try {
+
+            $this->load->library('email');
+
+            $this->email->from(
+                'hafizulah322@gmail.com',
+                'Table Reservation System'
+            );
+
+            $this->email->to($booking->email);
+
+            $this->email->subject('Reservation Confirmation #' . $booking_id);
+
+            $message = '
+            <html>
+            <body>
+                <h2>Reservation Confirmed</h2>
+
+                <p>Dear ' . htmlspecialchars($booking->first_name) . ',</p>
+
+                <p>Your reservation has been successfully confirmed.</p>
+
+                <table border="1" cellpadding="8" cellspacing="0">
+                    <tr><td><strong>Reservation No.</strong></td><td>' . $booking->booking_id . '</td></tr>
+                    <tr><td><strong>Date</strong></td><td>' . $booking->booking_date . '</td></tr>
+                    <tr><td><strong>Time Slot</strong></td><td>' . ucfirst($booking->booking_time) . '</td></tr>
+                    <tr><td><strong>Table Number</strong></td><td>' . $booking->table_number . '</td></tr>
+                    <tr><td><strong>Arrival Time</strong></td><td>' . $booking->arrival_time . '</td></tr>
+                    <tr><td><strong>Guests</strong></td><td>' . $booking->number_of_guests . '</td></tr>
+                </table>
+
+                <p>Thank you for your reservation.</p>
+            </body>
+            </html>';
+
+            $this->email->message($message);
+
+            if($this->email->send()) {
+                $this->db->where('booking_id', $booking_id);
+                $this->db->update('bookings', ['mail_sent' => 'Yes']);
+            }
+        } catch (Exception $e) {
+            log_message('error', $e->getMessage());
+        }
+}
    
    
 
