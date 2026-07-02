@@ -26,6 +26,7 @@ public function upload_file()
 {
     $file_name = trim($this->input->post('file_name', true));
     $file_type = trim($this->input->post('file_type', true));
+    
 
     if (!$file_name || !$file_type) {
         $this->session->set_flashdata('msg_text', 'File title and type are required.');
